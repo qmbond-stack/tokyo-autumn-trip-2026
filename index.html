@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#8eb7c4">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="東京秋日手帳">
+<link rel="manifest" href="manifest.webmanifest">
+<title>🍁 東京秋日旅行手帳｜2026</title>
+<style>
+:root{--ink:#3f4a4d;--paper:#fffaf1;--cream:#fff5df;--blue:#8eb7c4;--blue2:#dceff2;--orange:#e8a26b;--green:#9dbb9b;--pink:#e8b6ad;--line:#ddcfbd;--shadow:0 12px 30px #4d5a5d18}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif;background:linear-gradient(#eaf6f7,#fff8ed 30%,#fffaf2);line-height:1.6}
+button,input,textarea{font:inherit}button{cursor:pointer}.app{max-width:780px;margin:auto;padding-bottom:100px}
+.hero{margin:12px;border:1px solid #dfd2c2;border-radius:30px;overflow:hidden;background:var(--paper);box-shadow:var(--shadow)}
+.hero img{display:block;width:100%;max-height:440px;object-fit:cover;object-position:top}
+.hero-body{padding:18px 18px 20px;text-align:center}.eyebrow{display:inline-block;padding:5px 12px;border-radius:999px;background:#e8f2ee;font-size:13px}
+h1{font-size:30px;line-height:1.25;margin:10px 0 5px}.subtitle{margin:0 0 15px;color:#6d7475}
+.count{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.count div{background:#fff;border:1px solid var(--line);border-radius:17px;padding:8px 3px}.count b{display:block;font-size:22px}.count small{font-size:11px}
+.nav{position:sticky;top:0;z-index:20;padding:8px 10px;background:#fffaf1eF;backdrop-filter:blur(12px);display:flex;gap:7px;overflow:auto;border-bottom:1px solid #eadfd0}.nav button{white-space:nowrap;border:1px solid var(--line);background:#fffdf9;border-radius:999px;padding:8px 12px;color:var(--ink)}.nav button.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+section.card{margin:12px;padding:17px;border:1px solid var(--line);border-radius:26px;background:#fffdf8;box-shadow:var(--shadow)}section.card h2{margin:0 0 5px;font-size:22px}.muted{color:#777;font-size:13px}
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.info{background:var(--cream);border-radius:17px;padding:12px}.info strong{display:block}
+.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.tool{padding:14px;border:1px solid var(--line);border-radius:20px;background:#fff}
+input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-radius:12px;padding:9px;margin:4px 0 7px}textarea{min-height:90px;resize:vertical}.btn{border:0;border-radius:12px;padding:9px 12px;background:var(--orange);color:#fff}.btn.secondary{background:var(--blue)}.btn.ghost{background:#f2eee7;color:var(--ink)}
+.fx-result{font-size:22px;font-weight:800;margin-top:5px}.expense-list{list-style:none;margin:8px 0;padding:0}.expense-list li{display:flex;gap:8px;align-items:center;border-bottom:1px dashed #dfd3c6;padding:7px 0}.expense-list li span:first-child{flex:1}.del{border:0;background:#f3e7e2;border-radius:9px;padding:3px 8px}
+.day{border-left:5px solid var(--blue);padding-left:14px;margin:15px 0 24px}.day:nth-child(2){border-color:var(--orange)}.day:nth-child(3){border-color:var(--green)}.day:nth-child(4){border-color:var(--pink)}.day:nth-child(5){border-color:#9fa9cf}
+.day-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.day h3{margin:0;font-size:20px}.badge{background:#eef4f2;border-radius:999px;padding:3px 8px;font-size:12px}
+.item{display:grid;grid-template-columns:68px 1fr;gap:10px;padding:10px 0;border-bottom:1px dashed #dfd3c6}.time{font-weight:800}.item-title{font-weight:700}.item small{display:block;color:#777}.check{margin-top:7px}.check label{font-size:13px}.check input{width:auto;margin-right:5px}
+.weather{background:linear-gradient(145deg,#e8f6f7,#fff4e5)}.weather-now{display:flex;align-items:center;gap:12px;padding:12px;border-radius:18px;background:#ffffffaa;margin-bottom:10px}.weather-icon{font-size:44px}.weather-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.weather-day{background:#fffdf8;border:1px solid var(--line);border-radius:15px;padding:9px;text-align:center;font-size:12px}.weather-day .wi{font-size:25px}.weather-note{font-size:12px;color:#6d7475}
+.pack label{display:block;padding:8px 0;border-bottom:1px dashed #ddd1c3}.pack input{width:auto;margin-right:7px}.progress{height:10px;background:#eee5d9;border-radius:99px;overflow:hidden;margin:8px 0}.bar{height:100%;width:0;background:var(--green);transition:.25s}
+.mapgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.mapgrid a{text-decoration:none;color:var(--ink);background:#f1f6f3;border:1px solid #d8e4df;border-radius:14px;padding:10px}
+.tip{padding:10px 12px;background:#fff4d8;border-radius:15px;margin:8px 0}.footer{text-align:center;color:#777;font-size:12px;padding:18px}
+@media(max-width:620px){.app{width:100%}.hero{margin:8px;border-radius:25px}.hero img{max-height:380px}.tools{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}.weather-grid{grid-template-columns:repeat(2,1fr)}.count b{font-size:19px}.item{grid-template-columns:58px 1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hero">
+  <img src="tokyo-autumn.png" alt="東京秋日旅行手帳插畫">
+  <div class="hero-body">
+    <span class="eyebrow">🍁 2026 秋日・無障礙・四人小旅行</span>
+    <h1>東京無障礙尊榮<br>5 天 4 夜旅行手帳</h1>
+    <p class="subtitle">10/26（一）～ 10/30（五）｜一起把東京走成一頁頁的回憶</p>
+    <div class="count" aria-label="出發倒數">
+      <div><b id="cdD">--</b><small>天</small></div><div><b id="cdH">--</b><small>小時</small></div><div><b id="cdM">--</b><small>分鐘</small></div><div><b id="cdS">--</b><small>秒</small></div>
+    </div>
+  </div>
+</header>
+
+<nav class="nav" id="nav">
+<button class="active" data-target="overview">🌸總覽</button><button data-target="days">🗓️五日</button><button data-target="weather">🌦️天氣</button><button data-target="tools">💴工具</button><button data-target="maps">🗺️地圖</button><button data-target="pack">🎒打包</button>
+</nav>
+
+<section class="card" id="overview">
+<h2>🌸 旅程小檔案</h2>
+<div class="info-grid">
+<div class="info"><strong>✈️ 航班</strong>去程 JX314｜13:25 抵達成田 T2<br>回程 JX315｜14:25 起飛</div>
+<div class="info"><strong>🏨 住宿</strong>東京車站周邊飯店<br>建議：丸之內大飯店／龍名館</div>
+<div class="info"><strong>👨‍👩‍👧‍👦 成員</strong>40歲 × 2＋60歲以上長輩 × 2<br>♿ 含輪椅需求</div>
+<div class="info"><strong>🚆 交通節奏</strong>盡量直達、少轉乘<br>優先電梯、平路與寬敞動線</div>
+</div>
+<div class="tip">💡 <b>今日旅行哲學：</b>不趕行程，讓長輩舒服、大家開心，才是這趟旅行的隱藏主線。</div>
+</section>
+
+<section class="card" id="days">
+<h2>🗓️ 五日手繪行程</h2>
+<div class="day"><div class="day-head"><h3>Day 1｜10/26（一）抵達東京・丸之內夜景</h3><span class="badge">✈️ Welcome!</span></div>
+<div class="item"><div class="time">13:25</div><div><div class="item-title">🛬 抵達成田機場 T2（JX314）</div><small>入境、領行李，保持悠閒節奏</small></div></div>
+<div class="item"><div class="time">14:30</div><div><div class="item-title">🚆 N'EX 前往東京車站</div><small>優先平路／無障礙席，減少轉乘</small></div></div>
+<div class="item"><div class="time">16:30</div><div><div class="item-title">🏨 飯店 Check-in</div><small>東京車站周邊</small></div></div>
+<div class="item"><div class="time">18:30</div><div><div class="item-title">🌃 丸之內大樓／新丸大樓高層景觀餐廳</div><small>俯瞰東京車站，舒服收尾第一天</small></div></div></div>
+
+<div class="day"><div class="day-head"><h3>Day 2｜10/27（二）皇居・KITTE</h3><span class="badge">🏰 悠閒散策</span></div>
+<div class="item"><div class="time">10:00</div><div><div class="item-title">🌳 皇居外苑與二重橋</div><small>平路大道，輪椅推行友善</small></div></div>
+<div class="item"><div class="time">12:30</div><div><div class="item-title">🍱 大丸百貨高層午餐</div><small>設施完整，安心用餐</small></div></div>
+<div class="item"><div class="time">14:30</div><div><div class="item-title">🌿 KITTE 大樓屋頂庭園</div><small>電梯直達，平視東京車站</small></div></div>
+<div class="item"><div class="time">18:00</div><div><div class="item-title">🍶 友善無障礙和食／居酒屋</div></div></div></div>
+
+<div class="day"><div class="day-head"><h3>Day 3｜10/28（三）高輪庭園・SHIBUYA SKY</h3><span class="badge">🌇 今日高光</span></div>
+<div class="item"><div class="time">09:30</div><div><div class="item-title">🍃 高輪庭園</div><small>高輪王子大飯店內，綠意與秋色</small></div></div>
+<div class="item"><div class="time">12:00</div><div><div class="item-title">🍵 品川／高輪靜謐和食</div></div></div>
+<div class="item"><div class="time">14:30</div><div><div class="item-title">🌇 SHIBUYA SKY</div><small>晴天可遠眺富士山與夕陽，建議提前購票</small></div></div>
+<div class="item"><div class="time">18:00</div><div><div class="item-title">🥩 敘敘苑燒肉豪華晚宴</div><small>建議預約澀谷 Opera City 店或大丸東京店，備註輪椅需求</small></div></div></div>
+
+<div class="day"><div class="day-head"><h3>Day 4｜10/29（四）Costco 大採購</h3><span class="badge">🛒 Shopping!</span></div>
+<div class="item"><div class="time">10:00</div><div><div class="item-title">🛒 Costco 幕張店／川崎店</div><small>建議包車／多功能計程車，減少轉乘負擔</small></div></div>
+<div class="item"><div class="time">16:30</div><div><div class="item-title">🛍️ 返回飯店休息</div><small>整理戰利品，慢慢來</small></div></div>
+<div class="item"><div class="time">19:00</div><div><div class="item-title">🍲 壽喜燒／涮涮鍋慶功宴</div></div></div></div>
+
+<div class="day"><div class="day-head"><h3>Day 5｜10/30（五）伴手禮・返台</h3><span class="badge">🎁 滿載而歸</span></div>
+<div class="item"><div class="time">09:30</div><div><div class="item-title">🎁 東京車站一番街</div><small>最後補貨：銘菓與伴手禮</small></div></div>
+<div class="item"><div class="time">11:30</div><div><div class="item-title">🚆 N'EX 前往成田機場 T2</div><small>預留充足時間，舒服回家</small></div></div>
+<div class="item"><div class="time">14:25</div><div><div class="item-title">🛫 JX315 起飛</div><small>東京五日，平安返台</small></div></div></div>
+</section>
+
+<section class="card weather" id="weather">
+<h2>🌦️ 東京天氣小站</h2>
+<p class="weather-note" id="weatherNote">正在取得東京即時資料…</p>
+<div class="weather-now" id="weatherNow">🌤️ 載入中…</div>
+<div class="weather-grid" id="weatherGrid"></div>
+<p class="weather-note">※ 10/26～10/30 距離現在超過 16 天時，逐日預報尚未發布，App 會顯示「尚未進入預報範圍」，不會拿季節平均冒充真正預報。接近出發日期後重新開啟即可更新。</p>
+</section>
+
+<section class="card" id="tools">
+<h2>🧰 旅途中會真的用到的小工具</h2>
+<div class="tools">
+<div class="tool"><h3>💴 日圓 → 台幣</h3><input id="jpy" type="number" inputmode="decimal" placeholder="例如 10000"><label class="muted">1 日圓 ≈ 台幣</label><input id="rate" type="number" step="0.001" value="0.205"><button class="btn secondary" id="fx">立即換算</button><div class="fx-result" id="twd">NT$ 0</div><small class="muted">匯率可自行調整，屬參考值。</small></div>
+<div class="tool"><h3>🧾 東京旅費記帳</h3><input id="exName" placeholder="項目，例如：晚餐"><input id="exAmount" type="number" inputmode="numeric" placeholder="日圓金額"><button class="btn" id="addEx">＋加入</button><div style="margin-top:8px">目前合計：<b id="exTotal">¥0</b></div><ul class="expense-list" id="exList"></ul></div>
+<div class="tool"><h3>📝 我的旅行備註</h3><textarea id="notes" placeholder="例如：10/28 SHIBUYA SKY 門票、長輩集合時間…"></textarea><button class="btn ghost" id="saveNotes">💾 儲存備註</button> <small id="noteSaved" class="muted"></small></div>
+</div>
+</section>
+
+<section class="card" id="maps">
+<h2>🗺️ 景點地圖快速入口</h2>
+<div class="mapgrid">
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Tokyo+Station">📍 東京車站</a>
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Imperial+Palace+Tokyo">🏰 皇居</a>
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=KITTE+Tokyo">🌿 KITTE</a>
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=SHIBUYA+SKY">🌇 SHIBUYA SKY</a>
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Costco+Makuhari">🛒 Costco 幕張</a>
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Narita+International+Airport+Terminal+2">✈️ 成田 T2</a>
+</div>
+</section>
+
+<section class="card pack" id="pack">
+<h2>🎒 出發前打包</h2>
+<div class="progress"><div class="bar" id="packBar"></div></div><div class="muted" id="packPct">0% 完成</div>
+<label><input type="checkbox" data-pack>護照／證件</label><label><input type="checkbox" data-pack>藥品與常備用品</label><label><input type="checkbox" data-pack>輪椅／輔具確認</label><label><input type="checkbox" data-pack>充電器與行動電源</label><label><input type="checkbox" data-pack>薄外套與雨具</label><label><input type="checkbox" data-pack>交通／門票／餐廳預約資料</label>
+</section>
+
+<section class="card">
+<h2>💡 四個貼心提醒</h2>
+<div class="tip">① 東京車站地下較複雜，優先尋找「丸之內地下中央口」與直達電梯。</div>
+<div class="tip">② SHIBUYA SKY 建議提前預約想看的時段，尤其夕陽時段。</div>
+<div class="tip">③ 敘敘苑熱門分店建議提早預約，並備註輪椅需求。</div>
+<div class="tip">④ Costco 建議提前安排無障礙計程車或包車。</div>
+</section>
+<div class="footer">🍁 東京秋日旅行手帳 V6.1｜四人一起，慢慢走，剛剛好。<br><span class="muted">天氣採東京即時資料；出發日期進入預報範圍後會自動顯示逐日預報。</span></div>
+</div>
+
+<script>
+const trip=new Date('2026-10-26T00:00:00+08:00');
+function tick(){let d=trip-new Date();if(d<0)d=0;document.getElementById('cdD').textContent=Math.floor(d/864e5);document.getElementById('cdH').textContent=String(Math.floor(d%864e5/36e5)).padStart(2,'0');document.getElementById('cdM').textContent=String(Math.floor(d%36e5/6e4)).padStart(2,'0');document.getElementById('cdS').textContent=String(Math.floor(d%6e4/1e3)).padStart(2,'0')}tick();setInterval(tick,1000);
+
+const tabs=document.querySelectorAll('.nav button');tabs.forEach(b=>b.onclick=()=>document.getElementById(b.dataset.target).scrollIntoView({behavior:'smooth',block:'start'}));
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){tabs.forEach(b=>b.classList.toggle('active',b.dataset.target===e.target.id))}}),{rootMargin:'-25% 0px -65% 0px'});document.querySelectorAll('section.card[id]').forEach(s=>obs.observe(s));
+
+function fx(){const j=+document.getElementById('jpy').value||0,r=+document.getElementById('rate').value||0;document.getElementById('twd').textContent='NT$ '+Math.round(j*r).toLocaleString()}document.getElementById('fx').onclick=fx;document.getElementById('jpy').oninput=fx;document.getElementById('rate').oninput=fx;
+
+let expenses=JSON.parse(localStorage.getItem('tokyoExpensesV6')||'[]');
+function renderEx(){const l=document.getElementById('exList');l.innerHTML='';let total=0;expenses.forEach((x,i)=>{total+=+x.amount;let li=document.createElement('li');li.innerHTML='<span>'+x.name+'</span><b>¥'+(+x.amount).toLocaleString()+'</b><button class="del" data-i="'+i+'">刪除</button>';li.querySelector('button').onclick=()=>{expenses.splice(i,1);saveEx()};l.appendChild(li)});document.getElementById('exTotal').textContent='¥'+total.toLocaleString()}function saveEx(){localStorage.setItem('tokyoExpensesV6',JSON.stringify(expenses));renderEx()}document.getElementById('addEx').onclick=()=>{let n=document.getElementById('exName'),a=document.getElementById('exAmount');if(!n.value||!a.value)return;expenses.push({name:n.value,amount:+a.value});n.value='';a.value='';saveEx()};renderEx();
+
+const notes=document.getElementById('notes');notes.value=localStorage.getItem('tokyoNotesV6')||'';document.getElementById('saveNotes').onclick=()=>{localStorage.setItem('tokyoNotesV6',notes.value);document.getElementById('noteSaved').textContent='已儲存 ✓';setTimeout(()=>document.getElementById('noteSaved').textContent='',1600)};
+
+document.querySelectorAll('[data-pack]').forEach((x,i)=>{x.checked=localStorage.getItem('packV6_'+i)==='1';x.onchange=()=>{localStorage.setItem('packV6_'+i,x.checked?'1':'0');renderPack()}});function renderPack(){let a=[...document.querySelectorAll('[data-pack]')],n=a.filter(x=>x.checked).length,p=Math.round(n/a.length*100);document.getElementById('packBar').style.width=p+'%';document.getElementById('packPct').textContent=p+'% 完成'}renderPack();
+
+const wmap={0:['☀️','晴朗'],1:['🌤️','大致晴朗'],2:['⛅','局部多雲'],3:['☁️','多雲'],45:['🌫️','霧'],48:['🌫️','霧'],51:['🌦️','毛毛雨'],53:['🌦️','毛毛雨'],55:['🌧️','細雨'],61:['🌧️','小雨'],63:['🌧️','中雨'],65:['🌧️','大雨'],71:['🌨️','小雪'],73:['🌨️','中雪'],75:['❄️','大雪'],80:['🌦️','陣雨'],81:['🌦️','陣雨'],82:['⛈️','強陣雨'],95:['⛈️','雷雨'],96:['⛈️','雷雨伴冰雹'],99:['⛈️','雷雨伴冰雹']};
+async function weather(){try{const api='https://api.open-meteo.com/v1/forecast?latitude=35.6762&longitude=139.6503&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=16';let r=await fetch(api,{cache:'no-store',mode:'cors'});if(!r.ok)throw 0;let d=await r.json(),q=wmap[d.current.weather_code]||['🌤️','天氣'];document.getElementById('weatherNow').innerHTML='<div class="weather-icon">'+q[0]+'</div><div><b>東京目前 '+Math.round(d.current.temperature_2m)+'°C</b><br>'+q[1]+'｜體感 '+Math.round(d.current.apparent_temperature)+'°C<br><small>風速 '+Math.round(d.current.wind_speed_10m)+' km/h</small></div>';let g=document.getElementById('weatherGrid');g.innerHTML='';['2026-10-26','2026-10-27','2026-10-28','2026-10-29','2026-10-30'].forEach((date,i)=>{let k=d.daily.time.indexOf(date),el=document.createElement('div');el.className='weather-day';if(k<0)el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi">🍁</div><div>尚未進入預報</div>';else{let z=wmap[d.daily.weather_code[k]]||['🌤️','天氣'];el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi">'+z[0]+'</div><div>'+z[1]+'</div><b>'+Math.round(d.daily.temperature_2m_max[k])+'°/'+Math.round(d.daily.temperature_2m_min[k])+'°</b><br><small>雨 '+(d.daily.precipitation_probability_max[k]??'--')+'%</small>'}g.appendChild(el)});document.getElementById('weatherNote').textContent='東京即時資料已更新｜'+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});}catch(e){document.getElementById('weatherNow').textContent='⚠️ 暫時無法取得天氣，請確認網路後重新整理。';document.getElementById('weatherNote').textContent='天氣服務連線失敗';}}weather();
+
+if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body></html>
