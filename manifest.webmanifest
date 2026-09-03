@@ -1,9 +1,9 @@
 {
-  "name":"東京秋日旅行手帳 2026",
-  "short_name":"東京秋日手帳",
+  "name":"2026 東京楓旅行手帳",
+  "short_name":"2026 東京楓",
   "start_url":"./",
   "display":"standalone",
   "background_color":"#fffaf1",
-  "theme_color":"#8eb7c4",
+  "theme_color":"#e7a9b3",
   "icons":[]
 }
