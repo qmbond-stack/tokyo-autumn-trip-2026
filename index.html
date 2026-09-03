@@ -30,8 +30,8 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 .weather{background:linear-gradient(145deg,#fff0f2,#fff6e8)}.weather-now{display:flex;align-items:center;gap:12px;padding:12px;border-radius:18px;background:#ffffffaa;margin-bottom:10px}.weather-icon{font-size:44px}.weather-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.weather-day{background:#fffdf8;border:1px solid var(--line);border-radius:15px;padding:9px;text-align:center;font-size:12px}.weather-day .wi{font-size:25px}.weather-note{font-size:12px;color:#6d7475}
 .pack label{display:block;padding:8px 0;border-bottom:1px dashed #ddd1c3}.pack input{width:auto;margin-right:7px}.progress{height:10px;background:#eee5d9;border-radius:99px;overflow:hidden;margin:8px 0}.bar{height:100%;width:0;background:var(--green);transition:.25s}
 .mapgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.mapgrid a{text-decoration:none;color:var(--ink);background:#f1f6f3;border:1px solid #d8e4df;border-radius:14px;padding:10px}
-.tip{padding:10px 12px;background:#fff0e8;border-radius:15px;margin:8px 0;border:1px solid #f0d8cc}.footer{text-align:center;color:#777;font-size:12px;padding:18px}
-@media(max-width:620px){.app{width:100%}.hero{margin:8px;border-radius:25px}.hero img{max-height:380px}.tools{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}.weather-grid{grid-template-columns:repeat(2,1fr)}.count b{font-size:19px}.item{grid-template-columns:58px 1fr}}
+.tip{padding:10px 12px;background:#fff0e8;border-radius:15px;margin:8px 0;border:1px solid #f0d8cc}.flight-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.flight{border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,#fff,#fff4f2);padding:14px}.flight .label{font-size:12px;color:#8b7777;margin-bottom:4px}.flight .route{font-size:18px;font-weight:800;margin:4px 0 8px}.flight .route span{font-weight:500;color:#a17b7b}.flight .meta{font-size:13px;line-height:1.7}.flight .note{margin-top:8px;padding-top:8px;border-top:1px dashed #dfd3c6;color:#777;font-size:12px}.flight-status{display:inline-block;text-decoration:none;margin-top:10px;width:100%;text-align:center}.flight-live{margin-top:12px;padding:12px 14px;border-radius:17px;background:#f4f7f1;border:1px solid #dbe7d6}.flight-live strong{display:block;margin-bottom:3px}.footer{text-align:center;color:#777;font-size:12px;padding:18px}
+@media(max-width:620px){.app{width:100%}.hero{margin:8px;border-radius:25px}.hero img{max-height:380px}.tools{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}.flight-grid{grid-template-columns:1fr}.weather-grid{grid-template-columns:repeat(2,1fr)}.count b{font-size:19px}.item{grid-template-columns:58px 1fr}}
 </style>
 </head>
 <body>
@@ -49,18 +49,44 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 </header>
 
 <nav class="nav" id="nav">
-<button class="active" data-target="overview">🌸總覽</button><button data-target="days">🗓️五日</button><button data-target="weather">🌦️天氣</button><button data-target="tools">💴工具</button><button data-target="maps">🗺️地圖</button><button data-target="pack">🎒打包</button>
+<button class="active" data-target="overview">🌸總覽</button><button data-target="flights">✈️航班</button><button data-target="days">🗓️五日</button><button data-target="weather">🌦️天氣</button><button data-target="tools">💴工具</button><button data-target="maps">🗺️地圖</button><button data-target="pack">🎒打包</button>
 </nav>
 
 <section class="card" id="overview">
 <h2>🌸 旅程小檔案</h2>
 <div class="info-grid">
-<div class="info"><strong>✈️ 航班</strong>去程 JX314｜13:25 抵達成田 T2<br>回程 JX315｜14:25 起飛</div>
+<div class="info"><strong>✈️ 航班</strong>去程 JX314｜台中→成田｜13:25 抵達 T2<br>回程 JX315｜成田→台中｜14:25 起飛</div>
 <div class="info"><strong>🏨 住宿</strong>東京車站周邊飯店<br>目前：待確認</div>
 <div class="info"><strong>🌸 成員</strong>3 girls</div>
 <div class="info"><strong>🚆 旅行節奏</strong>盡量直達、少轉乘<br>留時間散步、拍照、喝咖啡</div>
 </div>
 <div class="tip">💡 <b>今日旅行哲學：</b>不趕行程，讓長輩舒服、大家開心，才是這趟旅行的隱藏主線。</div>
+</section>
+
+<section class="card" id="flights">
+<h2>✈️ 航班資訊</h2>
+<p class="muted">已依目前行程確認為台中 RMQ ↔ 東京成田 NRT。即時狀態以星宇航空官方班機動態為準。</p>
+<div class="flight-grid">
+  <div class="flight">
+    <div class="label">10/26（一）｜去程</div>
+    <div class="route">台中 RMQ <span>→</span> 成田 NRT</div>
+    <div class="meta"><b>JX314</b><br>🛫 09:15 台中起飛<br>🛬 13:25 抵達成田 T2</div>
+    <div class="note">抵達後約 14:30 搭 N'EX 前往東京車站</div>
+    <a class="btn secondary flight-status" href="https://www.starlux-airlines.com/zh-TW/flight-status" target="_blank" rel="noopener">🔎 查 JX314 即時狀態</a>
+  </div>
+  <div class="flight">
+    <div class="label">10/30（五）｜回程</div>
+    <div class="route">成田 NRT <span>→</span> 台中 RMQ</div>
+    <div class="meta"><b>JX315</b><br>🛫 14:25 成田 T2 起飛<br>🛬 17:55 抵達台中</div>
+    <div class="note">11:30 搭 N'EX 前往成田 T2，預留報到時間</div>
+    <a class="btn secondary flight-status" href="https://www.starlux-airlines.com/zh-TW/flight-status" target="_blank" rel="noopener">🔎 查 JX315 即時狀態</a>
+  </div>
+</div>
+<div class="flight-live" id="flightLive">
+  <strong>🟢 即時航班功能</strong>
+  <div id="flightLiveText" class="muted">正在判斷官方即時查詢是否已進入可查日期…</div>
+</div>
+<div class="tip">🍁 <b>航班小提醒：</b>星宇官方班機動態會隨航班狀況更新；網站上的預定時間不是即時起飛時間。</div>
 </section>
 
 <section class="card" id="days">
@@ -157,6 +183,22 @@ document.querySelectorAll('[data-pack]').forEach((x,i)=>{x.checked=localStorage.
 
 const wmap={0:['☀️','晴朗'],1:['🌤️','大致晴朗'],2:['⛅','局部多雲'],3:['☁️','多雲'],45:['🌫️','霧'],48:['🌫️','霧'],51:['🌦️','毛毛雨'],53:['🌦️','毛毛雨'],55:['🌧️','細雨'],61:['🌧️','小雨'],63:['🌧️','中雨'],65:['🌧️','大雨'],71:['🌨️','小雪'],73:['🌨️','中雪'],75:['❄️','大雪'],80:['🌦️','陣雨'],81:['🌦️','陣雨'],82:['⛈️','強陣雨'],95:['⛈️','雷雨'],96:['⛈️','雷雨伴冰雹'],99:['⛈️','雷雨伴冰雹']};
 async function weather(){try{const api='https://api.open-meteo.com/v1/forecast?latitude=35.6762&longitude=139.6503&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=16';let r=await fetch(api,{cache:'no-store',mode:'cors'});if(!r.ok)throw 0;let d=await r.json(),q=wmap[d.current.weather_code]||['🌤️','天氣'];document.getElementById('weatherNow').innerHTML='<div class="weather-icon">'+q[0]+'</div><div><b>東京目前 '+Math.round(d.current.temperature_2m)+'°C</b><br>'+q[1]+'｜體感 '+Math.round(d.current.apparent_temperature)+'°C<br><small>風速 '+Math.round(d.current.wind_speed_10m)+' km/h</small></div>';let g=document.getElementById('weatherGrid');g.innerHTML='';['2026-10-26','2026-10-27','2026-10-28','2026-10-29','2026-10-30'].forEach((date,i)=>{let k=d.daily.time.indexOf(date),el=document.createElement('div');el.className='weather-day';if(k<0)el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi">🍁</div><div>尚未進入預報</div>';else{let z=wmap[d.daily.weather_code[k]]||['🌤️','天氣'];el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi">'+z[0]+'</div><div>'+z[1]+'</div><b>'+Math.round(d.daily.temperature_2m_max[k])+'°/'+Math.round(d.daily.temperature_2m_min[k])+'°</b><br><small>雨 '+(d.daily.precipitation_probability_max[k]??'--')+'%</small>'}g.appendChild(el)});document.getElementById('weatherNote').textContent='東京即時資料已更新｜'+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});}catch(e){document.getElementById('weatherNow').textContent='⚠️ 暫時無法取得天氣，請確認網路後重新整理。';document.getElementById('weatherNote').textContent='天氣服務連線失敗';}}weather();
+
+// 航班即時查詢提示：星宇官方班機動態可查未來約一個月內的航班狀況；在開放前，網站不假造狀態。
+(function(){
+  const box=document.getElementById('flightLiveText');
+  if(!box) return;
+  const now=new Date();
+  const flights=[new Date('2026-10-26T09:15:00+08:00'),new Date('2026-10-30T14:25:00+09:00')];
+  const openDates=flights.map(d=>new Date(d.getTime()-30*24*60*60*1000));
+  const next=openDates.find(d=>now<d);
+  if(next){
+    const days=Math.ceil((next-now)/86400000);
+    box.textContent='目前尚未進入官方即時航班查詢期；約 '+days+' 天後可開始留意班機動態。按上方按鈕可直接前往星宇官方查詢。';
+  }else{
+    box.textContent='已進入航班動態關注期。出發前請按上方按鈕，以星宇航空官方班機動態為準。';
+  }
+})();
 
 if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script>
