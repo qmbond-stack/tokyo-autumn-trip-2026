@@ -1,9 +1,1 @@
-{
-  "name":"2026 東京楓旅行手帳",
-  "short_name":"2026 東京楓",
-  "start_url":"./",
-  "display":"standalone",
-  "background_color":"#fffaf1",
-  "theme_color":"#e7a9b3",
-  "icons":[]
-}
+{"name":"2026 東京楓旅行手帳","short_name":"2026 東京楓","start_url":"./","display":"standalone","background_color":"#fffaf1","theme_color":"#e7a9b3","icons":[]}
