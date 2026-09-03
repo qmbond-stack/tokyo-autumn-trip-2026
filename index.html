@@ -235,6 +235,10 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 <h2>🎒 出發前打包</h2>
 <div class="progress"><div class="bar" id="packBar"></div></div><div class="muted" id="packPct">0% 完成</div>
 <label><input type="checkbox" data-pack>護照／證件</label><label><input type="checkbox" data-pack>藥品與常備用品</label><label><input type="checkbox" data-pack>充電器與行動電源</label><label><input type="checkbox" data-pack>薄外套與雨具</label><label><input type="checkbox" data-pack>交通／門票／餐廳預約資料</label>
+<div class="tip" style="margin-top:14px"><b>🔎 出入境違禁品快速辨識</b><br><small>輸入或貼上商品名稱、成分或品項，例如「牛肉乾」「抹茶」「水果」「藥品」。系統會做初步分類，最後請以日本／台灣官方規定與現場檢疫、海關判定為準。</small></div>
+<div class="tool-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><input id="banItem" placeholder="輸入想帶回／帶入的物品" style="flex:1;min-width:220px"><button class="btn" type="button" id="checkBan">🔎 開始辨識</button></div>
+<div id="banResult" class="tip" style="display:none;margin-top:10px"></div>
+<div class="trip-links" style="margin-top:8px"><a target="_blank" rel="noopener" href="https://www.customs.go.jp/english/summary/passenger.htm">🇯🇵 日本海關規定</a><a target="_blank" rel="noopener" href="https://www.maff.go.jp/aqs/tetuzuki/product/aq2.html">🥩 日本動物檢疫</a><a target="_blank" rel="noopener" href="https://www.maff.go.jp/pps/j/trip/keikouhin.html">🌱 日本植物檢疫</a><a target="_blank" rel="noopener" href="https://web.customs.gov.tw/">🇹🇼 台灣海關</a></div>
 </section>
 
 <section class="card">
@@ -262,6 +266,15 @@ function renderEx(){const l=document.getElementById('exList');l.innerHTML='';let
 const notes=document.getElementById('notes');notes.value=localStorage.getItem('tokyoNotesV6')||'';document.getElementById('saveNotes').onclick=()=>{localStorage.setItem('tokyoNotesV6',notes.value);document.getElementById('noteSaved').textContent='已儲存 ✓';setTimeout(()=>document.getElementById('noteSaved').textContent='',1600)};
 
 document.querySelectorAll('[data-pack]').forEach((x,i)=>{x.checked=localStorage.getItem('packV6_'+i)==='1';x.onchange=()=>{localStorage.setItem('packV6_'+i,x.checked?'1':'0');renderPack()}});function renderPack(){let a=[...document.querySelectorAll('[data-pack]')],n=a.filter(x=>x.checked).length,p=Math.round(n/a.length*100);document.getElementById('packBar').style.width=p+'%';document.getElementById('packPct').textContent=p+'% 完成'}renderPack();
+// 出入境物品初步辨識：以關鍵字提示高風險類別，不取代海關／檢疫正式判定。
+const banRules=[
+ {keys:['肉乾','牛肉乾','豬肉乾','雞肉乾','香腸','火腿','培根','生火腿','臘肉','salami','ham','sausage','jerky','餃子','肉包','漢堡','肉鬆'],level:'高風險／原則上不可直接帶入日本',msg:'🥩 肉類或含肉製品：日本對旅客攜入管制非常嚴格，多數情況禁止，真空包裝、熟製、免稅店購買也不代表可以攜入。',url:'https://www.maff.go.jp/aqs/tetuzuki/product/aq2.html'},
+ {keys:['水果','蘋果','芒果','香蕉','橘子','柑橘','荔枝','蔬菜','種子','種苗','盆栽','鮮花','花束','植物'],level:'高風險／需植物檢疫確認',msg:'🌱 植物、蔬果、種子等：可能涉及植物檢疫，少量伴手禮也可能受規範。先查官方規定，不要直接放進行李。',url:'https://www.maff.go.jp/pps/j/trip/keikouhin.html'},
+ {keys:['毒品','大麻','cannabis','麻薬','安非他命','mdma','槍','子彈','手榴彈','炸藥','仿冒','盜版'],level:'禁止攜入',msg:'⛔ 涉及日本海關明列的禁止攜入物品，請勿攜帶。',url:'https://www.customs.go.jp/english/summary/passenger.htm'},
+ {keys:['藥','藥品','處方藥','感冒藥','止痛藥','安眠藥','supplement','保健品'],level:'需個別確認',msg:'💊 藥品／保健品不能只看「是不是藥」判斷，成分、數量與日本法規可能影響是否可攜入。請先查官方規定。',url:'https://www.mhlw.go.jp/english/policy/health-medical/pharmaceuticals/01.html'}
+];
+function checkBan(){const input=document.getElementById('banItem'),box=document.getElementById('banResult'),v=input.value.trim().toLowerCase();if(!v){box.style.display='block';box.innerHTML='請先輸入物品名稱或成分。';return}let hit=banRules.find(r=>r.keys.some(k=>v.includes(k.toLowerCase())));box.style.display='block';if(hit){box.innerHTML='<b>'+hit.level+'</b><br>'+hit.msg+'<br><a target="_blank" rel="noopener" href="'+hit.url+'">🔗 查看官方規定</a>'}else{box.innerHTML='<b>🟡 暫未辨識到高風險關鍵字</b><br>這不代表一定可以攜帶。食品、動植物、藥品、仿冒品及其他受管制物品仍可能有個別限制，建議再查官方規定。'}}
+document.getElementById('checkBan').onclick=checkBan;document.getElementById('banItem').addEventListener('keydown',e=>{if(e.key==='Enter')checkBan()});
 
 const defaultDays=[
 {no:'Day 1',date:'10/26（一）',title:'抵達東京・丸之內夜景',badge:'✈️ Welcome!',items:[['13:25','🛬 抵達成田機場 T2（JX314）','入境、領行李，保持悠閒節奏'],['14:30',"🚆 N'EX 前往東京車站",'安排舒適座位，減少轉乘'],['16:30','🏨 飯店 Check-in','東京車站周邊'],['18:30','🌃 丸之內大樓／新丸大樓高層景觀餐廳','俯瞰東京車站，舒服收尾第一天']]},
