@@ -42,6 +42,9 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 .status-dot{color:#55a36b}
 @media(max-width:620px){.nex-grid{grid-template-columns:1fr}}
 .nav{flex-wrap:wrap}.nav button{white-space:nowrap}.btn{display:inline-block;text-decoration:none;box-sizing:border-box}.mapgrid a{box-sizing:border-box}
+
+.translate-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.translate-box{padding:14px;border:1px solid var(--line);border-radius:20px;background:#fff}.translate-box h3{margin:0 0 5px}.phrase-list{display:grid;gap:7px;margin-top:9px}.phrase{border:1px solid #ead8d1;background:#fff8f5;border-radius:14px;padding:10px;text-align:left}.phrase b{display:block;font-size:16px}.phrase small{display:block;color:#777;margin-top:2px}.translate-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.translate-actions a{flex:1;min-width:140px;text-align:center;text-decoration:none}.name-card{margin-top:10px;padding:18px;border-radius:18px;background:#fff4ef;border:1px dashed #d9a69c;text-align:center}.name-card .jp{font-size:25px;font-weight:900;letter-spacing:.04em}.name-card .zh{font-size:14px;color:#777;margin-top:3px}.translate-note{padding:10px 12px;background:#f4f7f1;border-radius:15px;margin-top:10px;border:1px solid #dbe7d6;font-size:13px}
+@media(max-width:620px){.translate-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -59,7 +62,7 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 </header>
 
 <nav class="nav" id="nav">
-<button class="active" data-target="overview">🌸總覽</button><button data-target="flights">✈️航班</button><button data-target="days">🗓️五日</button><button data-target="weather">🌦️天氣</button><button data-target="tools">💴工具</button><button data-target="maps">🗺️地圖</button><button data-target="food">🍽️美食</button><button data-target="vjw">🛂VJW</button><button data-target="pack">🎒打包</button>
+<button class="active" data-target="overview">🌸總覽</button><button data-target="flights">✈️航班</button><button data-target="days">🗓️五日</button><button data-target="weather">🌦️天氣</button><button data-target="tools">💴工具</button><button data-target="maps">🗺️地圖</button><button data-target="food">🍽️美食</button><button data-target="translate">🗣️翻譯</button><button data-target="vjw">🛂VJW</button><button data-target="pack">🎒打包</button>
 </nav>
 
 <section class="card" id="overview">
@@ -171,6 +174,49 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 </div>
 </section>
 
+
+<section class="card" id="translate">
+<h2>🗣️ 旅日即時翻譯小幫手</h2>
+<p class="muted">吃飯、問路、看菜單、看商品都能從這裡快速處理。日本現場需要真正的即時翻譯時，下面的 Google 翻譯／Lens 入口可直接開啟相機或語音功能。</p>
+<div class="translate-actions">
+<a class="btn secondary" href="https://translate.google.com/?sl=ja&tl=zh-TW&op=translate" target="_blank" rel="noopener">🎙️ 開 Google 翻譯</a>
+<a class="btn" href="https://lens.google.com/" target="_blank" rel="noopener">📷 Google Lens 看菜單／商品</a>
+</div>
+<div class="translate-grid" style="margin-top:10px">
+<div class="translate-box">
+<h3>🍱 溝通點餐</h3>
+<div class="phrase-list">
+<button class="phrase" data-jp="すみません、これを一つお願いします。"><b>請給我一份這個</b><small>すみません、これを一つお願いします。</small></button>
+<button class="phrase" data-jp="おすすめは何ですか？"><b>請問推薦什麼？</b><small>おすすめは何ですか？</small></button>
+<button class="phrase" data-jp="これは何が入っていますか？"><b>這裡面有什麼？</b><small>これは何が入っていますか？</small></button>
+<button class="phrase" data-jp="お会計をお願いします。"><b>麻煩結帳</b><small>お会計をお願いします。</small></button>
+</div></div>
+<div class="translate-box">
+<h3>🧭 問路／交通</h3>
+<div class="phrase-list">
+<button class="phrase" data-jp="東京駅はどこですか？"><b>東京車站在哪裡？</b><small>東京駅はどこですか？</small></button>
+<button class="phrase" data-jp="この場所までどう行けばいいですか？"><b>請問怎麼走到這裡？</b><small>この場所までどう行けばいいですか？</small></button>
+<button class="phrase" data-jp="駅はどちらですか？"><b>車站往哪裡走？</b><small>駅はどちらですか？</small></button>
+<button class="phrase" data-jp="ここから一番近い入口はどこですか？"><b>最近的入口在哪裡？</b><small>ここから一番近い入口はどこですか？</small></button>
+</div></div>
+<div class="translate-box">
+<h3>🛍️ 商品介紹</h3>
+<div class="phrase-list">
+<button class="phrase" data-jp="これは何ですか？"><b>這是什麼？</b><small>これは何ですか？</small></button>
+<button class="phrase" data-jp="おすすめの商品ですか？"><b>這是推薦商品嗎？</b><small>おすすめの商品ですか？</small></button>
+<button class="phrase" data-jp="これは日本製ですか？"><b>這是日本製的嗎？</b><small>これは日本製ですか？</small></button>
+<button class="phrase" data-jp="免税できますか？"><b>可以免稅嗎？</b><small>免税できますか？</small></button>
+</div></div>
+<div class="translate-box">
+<h3>🏷️ 餐點名牌</h3>
+<p class="muted">把想吃的餐點直接秀給店員，也可以按一下讓手機念日文。</p>
+<div class="name-card" id="nameCard"><div class="jp" id="nameJP">おまかせします</div><div class="zh" id="nameZH">請店家推薦</div></div>
+<div class="translate-actions"><button class="btn secondary" type="button" data-card="おまかせします|請店家推薦">🍽️ 推薦餐</button><button class="btn" type="button" data-card="これを一つお願いします|請給我一份這個">☝️ 這個一份</button><button class="btn ghost" type="button" id="speakJP">🔊 唸給店員聽</button></div>
+</div>
+</div>
+<div class="translate-note">💡 <b>使用方式：</b>固定句子可直接點一下播放日文；菜單、包裝或商品說明，點「Google Lens」用相機辨識；需要雙向即時對話時，點「Google 翻譯」使用語音／翻譯功能。這樣一個入口就把吃飯、問路、購物三件事包起來。</div>
+</section>
+
 <section class="card" id="maps">
 <h2>🗺️ 景點地圖快速入口</h2>
 <div class="mapgrid">
@@ -253,6 +299,13 @@ async function weather(){try{const api='https://api.open-meteo.com/v1/forecast?l
     box.textContent='已進入航班動態關注期。出發前請按上方按鈕，以星宇航空官方班機動態為準。';
   }
 })();
+
+
+// 翻譯小幫手：固定日文句子可直接朗讀，餐點名牌可切換並秀給店員。
+function speakJapanese(text){try{const u=new SpeechSynthesisUtterance(text);u.lang='ja-JP';u.rate=.88;window.speechSynthesis.cancel();window.speechSynthesis.speak(u)}catch(e){}}
+document.querySelectorAll('.phrase').forEach(b=>b.addEventListener('click',()=>{speakJapanese(b.dataset.jp);const old=b.innerHTML;b.innerHTML=old+'<small>🔊 已播放日文</small>';setTimeout(()=>b.innerHTML=old,1400)}));
+document.querySelectorAll('[data-card]').forEach(b=>b.addEventListener('click',()=>{const [jp,zh]=b.dataset.card.split('|');document.getElementById('nameJP').textContent=jp;document.getElementById('nameZH').textContent=zh}));
+document.getElementById('speakJP').onclick=()=>speakJapanese(document.getElementById('nameJP').textContent);
 
 if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script>
