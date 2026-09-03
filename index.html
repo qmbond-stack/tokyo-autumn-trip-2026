@@ -8,26 +8,51 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="2026 東京楓">
 <link rel="manifest" href="manifest.webmanifest">
-<title>🍁 2026 東京楓｜五天四夜旅行手帳</title>
+<title>2026 東京楓｜五天四夜旅行手帳</title>
 <style>
 :root{--ink:#4f4544;--muted:#827473;--paper:#fffaf4;--rose:#d97786;--rose2:#f4cdd0;--peach:#e9ad86;--line:#e9d5ca;--shadow:0 10px 26px rgba(112,73,63,.09)}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:70px}body{margin:0;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif;background:#f7eee7;line-height:1.65}body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.15;background-image:radial-gradient(rgba(122,84,71,.28) .45px,transparent .55px),radial-gradient(rgba(217,119,134,.12) .4px,transparent .55px);background-size:11px 11px,17px 17px;mix-blend-mode:multiply;z-index:0}
 button,input,textarea{font:inherit}button{cursor:pointer}.app{max-width:900px;margin:auto;padding:0 12px 96px;position:relative;z-index:1}.nav{position:sticky;top:0;z-index:30;margin:0 -12px 12px;padding:9px 12px;background:rgba(255,249,243,.92);backdrop-filter:blur(10px);border-bottom:1px solid #eadbd1;display:flex;gap:7px;overflow:auto;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}.nav button{white-space:nowrap;border:1px solid var(--line);background:#fffaf5;color:#665957;border-radius:999px;padding:8px 13px;box-shadow:0 2px 0 rgba(130,83,71,.04)}.nav button.active{background:#f5d8da;color:#9f5361;border-color:#eabfc4}
 .hero{margin:10px 0 14px;border:1px solid #dfcfc3;border-radius:30px;overflow:hidden;background:var(--paper);box-shadow:var(--shadow)}.hero img{display:block;width:100%;height:auto;max-height:410px;object-fit:cover}.hero-body{padding:15px 18px 19px;text-align:center;background:linear-gradient(180deg,#fffaf6,#fff5ee)}.eyebrow{display:inline-block;padding:5px 12px;border-radius:999px;background:#f9e3e2;color:#9b5960;font-size:13px;border:1px solid #efd0d0}.hero h1{font-family:Georgia,"Noto Serif TC","Songti TC",serif;font-size:31px;line-height:1.25;margin:10px 0 4px;color:#704b45}.subtitle{margin:0 0 14px;color:#766b69}.count{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.count div{background:#fffdf9;border:1px solid var(--line);border-radius:18px;padding:8px 3px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)}.count b{display:block;font-size:22px;color:#554745}.count small{font-size:11px;color:#8a7773}
 .quick{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:0 0 12px}.quick a{display:block;text-align:center;padding:10px 8px;border:1px solid #ead7cd;border-radius:17px;background:#fffaf5;color:#6c5955;text-decoration:none}.quick a b{display:block;color:#a35d65;font-size:14px}
-section.card{margin:12px 0;padding:18px;border:1px solid var(--line);border-radius:25px;background:linear-gradient(145deg,#fffdf9,#fff8f1);box-shadow:var(--shadow);position:relative;overflow:hidden}section.card:after{content:"🍁";position:absolute;right:14px;top:10px;opacity:.14;font-size:28px;transform:rotate(-12deg)}section.card h2{margin:0 0 6px;font-family:Georgia,"Noto Serif TC","Songti TC",serif;font-size:23px;color:#684b47}.muted{color:var(--muted);font-size:13px}.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.info{padding:13px;border:1px solid #eedbd1;border-radius:18px;background:rgba(255,255,255,.58)}.info strong{display:block;color:#8b5952;margin-bottom:3px}.tip{margin-top:10px;padding:12px 14px;border-radius:17px;background:linear-gradient(90deg,#fff0ee,#fff8ef);border:1px solid #efd8cf;color:#6f5d59}
+section.card{margin:12px 0;padding:18px;border:1px solid var(--line);border-radius:25px;background:linear-gradient(145deg,#fffdf9,#fff8f1);box-shadow:var(--shadow);position:relative;overflow:hidden}section.card:after{content:"<svg class="sketch-icon" aria-hidden="true"><use href="#i-leaf"></use></svg>";position:absolute;right:14px;top:10px;opacity:.14;font-size:28px;transform:rotate(-12deg)}section.card h2{margin:0 0 6px;font-family:Georgia,"Noto Serif TC","Songti TC",serif;font-size:23px;color:#684b47}.muted{color:var(--muted);font-size:13px}.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.info{padding:13px;border:1px solid #eedbd1;border-radius:18px;background:rgba(255,255,255,.58)}.info strong{display:block;color:#8b5952;margin-bottom:3px}.tip{margin-top:10px;padding:12px 14px;border-radius:17px;background:linear-gradient(90deg,#fff0ee,#fff8ef);border:1px solid #efd8cf;color:#6f5d59}
 .flight-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.flight{border:1px solid #e9d5ca;border-radius:20px;padding:15px;background:#fffaf5;box-shadow:0 5px 14px rgba(113,76,66,.05)}.label{font-weight:700;color:#955d57}.route{font-size:18px;font-weight:700;margin:7px 0;color:#4f4544}.route span{color:#c57b81;padding:0 6px}.meta{line-height:1.8}.note{margin-top:10px;padding:10px 11px;border-radius:14px;background:#fff0ed;color:#756462;font-size:13px}.btn{display:inline-block;border:1px solid #dfa7ae;background:#df7f8d;color:#fff;border-radius:999px;padding:9px 13px;margin-top:10px;text-decoration:none}.btn.secondary{background:#fff7f2;color:#a15d66}.flight-live,.nex-live{margin-top:13px;padding:13px;border-radius:18px;background:#fff8f2;border:1px dashed #e4c8bd}.nex-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:10px}.nex-card{padding:12px;border:1px solid #ecd8ce;border-radius:16px;background:#fffdf9}.nex-card strong{display:block;color:#a35f62;margin-top:4px}.nex-card small{display:block;color:#7b6b6d;margin-top:4px}.nex-status{margin:10px 0;padding:11px 12px;border-radius:13px;background:#fffdf9;line-height:1.6}.status-dot{color:#55a36b}
 .day{padding:14px 0;border-bottom:1px dashed #dfcfc5}.day:last-child{border-bottom:0}.day-head{display:flex;justify-content:space-between;gap:8px;align-items:center}.day h3{margin:0;color:#704b45;font-size:17px}.badge{font-size:12px;background:#f8e3df;color:#9c5b61;padding:5px 9px;border-radius:999px;border:1px solid #edd0ca}.item{display:grid;grid-template-columns:62px 1fr;gap:10px;padding:10px 0}.time{color:#b4616b;font-weight:700}.item-title{font-weight:700}.item small{color:#81716e}
 .weather{background:linear-gradient(145deg,#fff0f2,#fff6e8)!important}.weather-now{display:flex;align-items:center;gap:12px;padding:12px;border-radius:18px;background:#ffffffaa;margin-bottom:10px}.weather-icon{font-size:44px}.weather-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.weather-day{background:#fffdf8;border:1px solid var(--line);border-radius:15px;padding:9px;text-align:center;font-size:12px}.weather-day .wi{font-size:25px}.weather-note{font-size:12px;color:#6d7475}.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tool{padding:14px;border:1px solid #ead7cd;border-radius:19px;background:#fffaf5}.tool h3{margin-top:0;color:#80534d}.tool input,.tool textarea{width:100%;padding:10px;border:1px solid #e6d2c9;border-radius:12px;background:#fffdf9;margin:5px 0}.tool textarea{min-height:130px;resize:vertical}.fx-result{font-size:22px;font-weight:800;color:#9d5a61;margin-top:8px}.expense-list{list-style:none;padding:0;margin:10px 0}.expense-list li{display:flex;justify-content:space-between;gap:7px;padding:7px 0;border-bottom:1px dashed #ead7cd;font-size:13px}.del{border:0;background:none;color:#b56c73}.mapgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.mapgrid a{padding:12px;border:1px solid #ead7cd;border-radius:16px;background:#fffaf5;color:#6c5955;text-decoration:none}.pack label{display:block;padding:9px 0;border-bottom:1px dashed #ead7cd}.progress{height:10px;background:#f1dfd7;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#e28b96,#e9b07f);border-radius:999px}.footer{text-align:center;padding:18px 8px;color:#8a7470;font-size:13px}
 @media(max-width:700px){.app{padding:0 9px 88px}.hero{margin:7px 0 10px;border-radius:25px}.hero img{max-height:none}.hero h1{font-size:28px}.info-grid,.flight-grid,.tools{grid-template-columns:1fr}.nex-grid{grid-template-columns:1fr}.weather-grid{grid-template-columns:repeat(2,1fr)}.mapgrid{grid-template-columns:repeat(2,1fr)}.quick{grid-template-columns:repeat(2,1fr)}.count b{font-size:19px}.item{grid-template-columns:54px 1fr}section.card{padding:15px;border-radius:22px}}
+
+.sketch-icon{width:1.18em;height:1.18em;display:inline-block;vertical-align:-.18em;margin-right:.22em;stroke:currentColor;fill:none;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}.sketch-icon.small{width:1em;height:1em}.nav .sketch-icon{color:#a35d65}.quick .sketch-icon{width:1.35em;height:1.35em;vertical-align:-.28em}.item-title .sketch-icon{color:#a35d65}.flight .sketch-icon,.nex-live .sketch-icon{color:#a35d65}.tool h3 .sketch-icon{color:#9d5a61}.tip .sketch-icon{color:#b56c73}.section-icon{width:1.05em;height:1.05em;vertical-align:-.15em;color:#a35d65}
 </style>
 </head>
-<body>
+<body><svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden"><defs>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 4C11 4 5 7 5 14c0 3 2 5 5 5 7 0 10-6 10-15Z"/><path d="M4 20c4-5 8-8 13-11"/></symbol>
+<symbol id="i-flower" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.2"/><path d="M12 9c-4-1-5-5-2-6 2-1 3 2 2 6ZM15 11c1-4 5-5 6-2 1 2-2 3-6 2ZM14 14c4-1 6 2 4 4-2 2-4-1-4-4ZM11 15c1 4-2 6-4 4-2-2 1-4 4-4ZM9 12c-4 1-6-2-4-4 2-2 4 1 4 4Z"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 9h18"/><path d="M7 13h3M14 13h3M7 17h3"/></symbol>
+<symbol id="i-plane" viewBox="0 0 24 24"><path d="M2 14l20-7-7 6 4 5-2 1-5-4-4 3-2-1 3-5-5-1Z"/></symbol>
+<symbol id="i-train" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="15" rx="3"/><path d="M8 18l-3 3M16 18l3 3M8 8h8M8 12h2M14 12h2"/><circle cx="9" cy="15" r="1"/><circle cx="15" cy="15" r="1"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18h11a4 4 0 0 0 .4-8A6 6 0 0 0 7 8a5 5 0 0 0 0 10Z"/><path d="M17 4v2M21 7l-1.4 1.4M13 7l1.4 1.4"/></symbol>
+<symbol id="i-wallet" viewBox="0 0 24 24"><path d="M4 7V5a2 2 0 0 1 2-2h13v17H6a2 2 0 0 1-2-2V7Z"/><path d="M4 7h16v4h-5a2 2 0 0 0 0 4h5v5"/><circle cx="15" cy="13" r=".8"/></symbol>
+<symbol id="i-bag" viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="14" rx="2"/><path d="M8 7V5a4 4 0 0 1 8 0v2M8 12h8"/></symbol>
+<symbol id="i-note" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v5h4M9 12h6M9 16h6"/><path d="M3 18l2-1 1 2-2 1z"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M3 5l6-2 6 2 6-2v16l-6 2-6-2-6 2z"/><path d="M9 3v16M15 5v16"/><path d="M16 9c0 2-3 4-3 4s-3-2-3-4a3 3 0 1 1 6 0Z"/><circle cx="13" cy="9" r="1"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 17h12l-1.5-2V10a4.5 4.5 0 0 0-9 0v5Z"/><path d="M10 20h4"/></symbol>
+<symbol id="i-hotel" viewBox="0 0 24 24"><path d="M5 21V4h14v17M3 21h18M8 8h2M14 8h2M8 12h2M14 12h2M10 21v-4h4v4"/></symbol>
+<symbol id="i-light" viewBox="0 0 24 24"><path d="M8 15h8M9 18h6M10 21h4"/><path d="M8 15a6 6 0 1 1 8 0"/><path d="M12 2v2M4 6l2 1M20 6l-2 1"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h4l1.5-2h5L16 8h4v11H4Z"/><circle cx="12" cy="13.5" r="3.5"/></symbol>
+<symbol id="i-food" viewBox="0 0 24 24"><path d="M6 3v8M4 3v5M8 3v5M6 8v13M17 3c-2 3-2 6 0 8v10M20 3v18"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M16 16l5 5"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="9" r="2.2"/></symbol>
+<symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h12l3 3v15H5z"/><path d="M8 3v6h8V3M8 15h8v6H8z"/></symbol>
+<symbol id="i-shop" viewBox="0 0 24 24"><path d="M4 9h16l-1 12H5Z"/><path d="M6 9l2-5h8l2 5M8 13h8"/></symbol>
+<symbol id="i-night" viewBox="0 0 24 24"><path d="M18 15a7 7 0 0 1-9-9 8 8 0 1 0 9 9Z"/><path d="M18 4v2M21 7h-2"/></symbol>
+<symbol id="i-route" viewBox="0 0 24 24"><path d="M5 19c4 0 4-6 8-6s4-8 6-8"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="5" r="2"/></symbol>
+<symbol id="i-passport" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M9 10h6M12 7v6M8 17h8"/></symbol>
+</defs></svg>
 <div class="app">
 <header class="hero">
   <img src="tokyo-autumn.png" alt="2026 東京楓秋日旅行手帳插畫">
   <div class="hero-body">
-    <span class="eyebrow">🍁 2026 東京楓・3 girls 秋日小旅行</span>
+    <span class="eyebrow"><svg class="sketch-icon" aria-hidden="true"><use href="#i-leaf"></use></svg> 2026 東京楓・3 girls 秋日小旅行</span>
     <h1>2026 東京楓<br>5 天 4 夜旅行手帳</h1>
     <p class="subtitle">10/26（一）～ 10/30（五）｜一起把東京走成一頁頁的回憶</p>
     <div class="count" aria-label="出發倒數">
@@ -37,39 +62,39 @@ section.card{margin:12px 0;padding:18px;border:1px solid var(--line);border-radi
 </header>
 
 <nav class="nav" id="nav">
-<button class="active" data-target="overview">🌸總覽</button><button data-target="days">🗓️五日</button><button data-target="flights">✈️交通</button><button data-target="weather">🌦️天氣</button><button data-target="tools">💴旅費</button><button data-target="maps">🧺更多</button>
+<button class="active" data-target="overview"><svg class="sketch-icon" aria-hidden="true"><use href="#i-flower"></use></svg>總覽</button><button data-target="days"><svg class="sketch-icon" aria-hidden="true"><use href="#i-calendar"></use></svg>五日</button><button data-target="flights"><svg class="sketch-icon" aria-hidden="true"><use href="#i-plane"></use></svg>交通</button><button data-target="weather"><svg class="sketch-icon" aria-hidden="true"><use href="#i-cloud"></use></svg>天氣</button><button data-target="tools"><svg class="sketch-icon" aria-hidden="true"><use href="#i-wallet"></use></svg>旅費</button><button data-target="vjw"><svg class="sketch-icon" aria-hidden="true"><use href="#i-passport"></use></svg>VJW</button><button data-target="maps"><svg class="sketch-icon" aria-hidden="true"><use href="#i-bag"></use></svg>更多</button>
 </nav>
 
-<div class="quick" aria-label="快速入口"><a href="#flights"><b>✈️ 交通</b>航班＋N’EX</a><a href="#days"><b>🗓️ 五日</b>完整行程</a><a href="#weather"><b>🌦️ 天氣</b>東京預報</a><a href="#tools"><b>💴 旅費</b>換算＋記帳</a></div>
+<div class="quick" aria-label="快速入口"><a href="#flights"><b><svg class="sketch-icon" aria-hidden="true"><use href="#i-plane"></use></svg> 交通</b>航班＋N’EX</a><a href="#days"><b><svg class="sketch-icon" aria-hidden="true"><use href="#i-calendar"></use></svg> 五日</b>完整行程</a><a href="#weather"><b><svg class="sketch-icon" aria-hidden="true"><use href="#i-cloud"></use></svg> 天氣</b>東京預報</a><a href="#tools"><b><svg class="sketch-icon" aria-hidden="true"><use href="#i-wallet"></use></svg> 旅費</b>換算＋記帳</a></div>
 
 <section class="card" id="overview">
-<h2>🌸 旅程小檔案</h2>
+<h2><svg class="sketch-icon" aria-hidden="true"><use href="#i-flower"></use></svg> 旅程小檔案</h2>
 <div class="info-grid">
-<div class="info"><strong>✈️ 航班</strong>去程 JX314｜台中→成田｜13:25 抵達 T2<br>回程 JX315｜成田→台中｜14:25 起飛</div>
-<div class="info"><strong>🏨 住宿</strong>東京車站周邊飯店<br>目前：待確認</div>
-<div class="info"><strong>🌸 成員</strong>3 girls</div>
-<div class="info"><strong>🚆 旅行節奏</strong>盡量直達、少轉乘<br>留時間散步、拍照、喝咖啡</div>
+<div class="info"><strong><svg class="sketch-icon" aria-hidden="true"><use href="#i-plane"></use></svg> 航班</strong>去程 JX314｜台中→成田｜13:25 抵達 T2<br>回程 JX315｜成田→台中｜14:25 起飛</div>
+<div class="info"><strong><svg class="sketch-icon" aria-hidden="true"><use href="#i-hotel"></use></svg> 住宿</strong>東京車站周邊飯店<br>目前：待確認</div>
+<div class="info"><strong><svg class="sketch-icon" aria-hidden="true"><use href="#i-flower"></use></svg> 成員</strong>3 girls</div>
+<div class="info"><strong><svg class="sketch-icon" aria-hidden="true"><use href="#i-train"></use></svg> 旅行節奏</strong>盡量直達、少轉乘<br>留時間散步、拍照、喝咖啡</div>
 </div>
-<div class="tip">💡 <b>今日旅行哲學：</b>不趕行程，讓大家舒服、大家開心，才是這趟旅行的隱藏主線。</div>
+<div class="tip"><svg class="sketch-icon" aria-hidden="true"><use href="#i-light"></use></svg> <b>今日旅行哲學：</b>不趕行程，讓大家舒服、大家開心，才是這趟旅行的隱藏主線。</div>
 </section>
 
 <section class="card" id="flights">
-<h2>✈️ 航班資訊</h2>
+<h2><svg class="sketch-icon" aria-hidden="true"><use href="#i-plane"></use></svg> 航班資訊</h2>
 <p class="muted">已依目前行程確認為台中 RMQ ↔ 東京成田 NRT。即時狀態以星宇航空官方班機動態為準。</p>
 <div class="flight-grid">
   <div class="flight">
     <div class="label">10/26（一）｜去程</div>
     <div class="route">台中 RMQ <span>→</span> 成田 NRT</div>
-    <div class="meta"><b>JX314</b><br>🛫 09:15 台中起飛<br>🛬 13:25 抵達成田 T2</div>
+    <div class="meta"><b>JX314</b><br><svg class="sketch-icon" aria-hidden="true"><use href="#i-plane"></use></svg> 09:15 台中起飛<br><svg class="sketch-icon" aria-hidden="true"><use href="#i-plane"></use></svg> 13:25 抵達成田 T2</div>
     <div class="note">抵達後約 14:30 搭 N'EX 前往東京車站</div>
-    <a class="btn secondary flight-status" href="https://www.starlux-airlines.com/zh-TW/flight-status" target="_blank" rel="noopener">🔎 查 JX314 即時狀態</a>
+    <a class="btn secondary flight-status" href="https://www.starlux-airlines.com/zh-TW/flight-status" target="_blank" rel="noopener"><svg class="sketch-icon" aria-hidden="true"><use href="#i-search"></use></svg> 查 JX314 即時狀態</a>
   </div>
   <div class="flight">
     <div class="label">10/30（五）｜回程</div>
     <div class="route">成田 NRT <span>→</span> 台中 RMQ</div>
-    <div class="meta"><b>JX315</b><br>🛫 14:25 成田 T2 起飛<br>🛬 17:55 抵達台中</div>
+    <div class="meta"><b>JX315</b><br><svg class="sketch-icon" aria-hidden="true"><use href="#i-plane"></use></svg> 14:25 成田 T2 起飛<br><svg class="sketch-icon" aria-hidden="true"><use href="#i-plane"></use></svg> 17:55 抵達台中</div>
     <div class="note">11:30 搭 N'EX 前往成田 T2，預留報到時間</div>
-    <a class="btn secondary flight-status" href="https://www.starlux-airlines.com/zh-TW/flight-status" target="_blank" rel="noopener">🔎 查 JX315 即時狀態</a>
+    <a class="btn secondary flight-status" href="https://www.starlux-airlines.com/zh-TW/flight-status" target="_blank" rel="noopener"><svg class="sketch-icon" aria-hidden="true"><use href="#i-search"></use></svg> 查 JX315 即時狀態</a>
   </div>
 </div>
 <div class="flight-live" id="flightLive">
@@ -78,7 +103,7 @@ section.card{margin:12px 0;padding:18px;border:1px solid var(--line);border-radi
 </div>
 
 <div class="nex-live" id="nexLive">
-  <div class="label">🚆 N'EX 成田特快｜官方運行資訊</div>
+  <div class="label"><svg class="sketch-icon" aria-hidden="true"><use href="#i-train"></use></svg> N'EX 成田特快｜官方運行資訊</div>
   <div class="route">成田 NRT ↔ 東京</div>
   <div class="nex-grid">
     <div class="nex-card">
@@ -98,18 +123,18 @@ section.card{margin:12px 0;padding:18px;border:1px solid var(--line);border-radi
     <span class="status-dot">●</span> <b>官方即時運行狀態</b>
     <div class="muted">JR 東日本會公告 N'EX 的延誤、運休等運行資訊。官方頁面不會自動更新，請按下方按鈕查看最新狀態。</div>
   </div>
-  <a class="btn secondary" href="https://traininfo.jreast.co.jp/train_info/express.aspx?group=nex" target="_blank" rel="noopener">🔎 查 N'EX 即時運行狀態</a>
+  <a class="btn secondary" href="https://traininfo.jreast.co.jp/train_info/express.aspx?group=nex" target="_blank" rel="noopener"><svg class="sketch-icon" aria-hidden="true"><use href="#i-search"></use></svg> 查 N'EX 即時運行狀態</a>
 </div>
-<div class="tip">🍁 <b>航班小提醒：</b>星宇官方班機動態會隨航班狀況更新；網站上的預定時間不是即時起飛時間。</div>
+<div class="tip"><svg class="sketch-icon" aria-hidden="true"><use href="#i-leaf"></use></svg> <b>航班小提醒：</b>星宇官方班機動態會隨航班狀況更新；網站上的預定時間不是即時起飛時間。</div>
 </section>
 
 <section class="card" id="days">
-<h2>🗓️ 五日手繪行程</h2>
-<div class="day"><div class="day-head"><h3>Day 1｜10/26（一）抵達東京・丸之內夜景</h3><span class="badge">✈️ Welcome!</span></div>
-<div class="item"><div class="time">13:25</div><div><div class="item-title">🛬 抵達成田機場 T2（JX314）</div><small>入境、領行李，保持悠閒節奏</small></div></div>
-<div class="item"><div class="time">14:30</div><div><div class="item-title">🚆 N'EX 前往東京車站</div><small>安排舒適座位，減少轉乘</small></div></div>
-<div class="item"><div class="time">16:30</div><div><div class="item-title">🏨 飯店 Check-in</div><small>東京車站周邊</small></div></div>
-<div class="item"><div class="time">18:30</div><div><div class="item-title">🌃 丸之內大樓／新丸大樓高層景觀餐廳</div><small>俯瞰東京車站，舒服收尾第一天</small></div></div></div>
+<h2><svg class="sketch-icon" aria-hidden="true"><use href="#i-calendar"></use></svg> 五日手繪行程</h2>
+<div class="day"><div class="day-head"><h3>Day 1｜10/26（一）抵達東京・丸之內夜景</h3><span class="badge"><svg class="sketch-icon" aria-hidden="true"><use href="#i-plane"></use></svg> Welcome!</span></div>
+<div class="item"><div class="time">13:25</div><div><div class="item-title"><svg class="sketch-icon" aria-hidden="true"><use href="#i-plane"></use></svg> 抵達成田機場 T2（JX314）</div><small>入境、領行李，保持悠閒節奏</small></div></div>
+<div class="item"><div class="time">14:30</div><div><div class="item-title"><svg class="sketch-icon" aria-hidden="true"><use href="#i-train"></use></svg> N'EX 前往東京車站</div><small>安排舒適座位，減少轉乘</small></div></div>
+<div class="item"><div class="time">16:30</div><div><div class="item-title"><svg class="sketch-icon" aria-hidden="true"><use href="#i-hotel"></use></svg> 飯店 Check-in</div><small>東京車站周邊</small></div></div>
+<div class="item"><div class="time">18:30</div><div><div class="item-title"><svg class="sketch-icon" aria-hidden="true"><use href="#i-night"></use></svg> 丸之內大樓／新丸大樓高層景觀餐廳</div><small>俯瞰東京車站，舒服收尾第一天</small></div></div></div>
 
 <div class="day"><div class="day-head"><h3>Day 2｜10/27（二）皇居・KITTE</h3><span class="badge">🏰 悠閒散策</span></div>
 <div class="item"><div class="time">10:00</div><div><div class="item-title">🌳 皇居外苑與二重橋</div><small>大道散步，慢慢欣賞皇居秋色</small></div></div>
@@ -120,24 +145,24 @@ section.card{margin:12px 0;padding:18px;border:1px solid var(--line);border-radi
 <div class="day"><div class="day-head"><h3>Day 3｜10/28（三）高輪庭園・SHIBUYA SKY</h3><span class="badge">🌇 今日高光</span></div>
 <div class="item"><div class="time">09:30</div><div><div class="item-title">🍃 高輪庭園</div><small>高輪王子大飯店內，綠意與秋色</small></div></div>
 <div class="item"><div class="time">12:00</div><div><div class="item-title">🍵 品川／高輪靜謐和食</div></div></div>
-<div class="item"><div class="time">14:30</div><div><div class="item-title">🌇 SHIBUYA SKY</div><small>晴天可遠眺富士山與夕陽，建議提前購票</small></div></div>
+<div class="item"><div class="time">14:30</div><div><div class="item-title"><svg class="sketch-icon" aria-hidden="true"><use href="#i-pin"></use></svg> SHIBUYA SKY</div><small>晴天可遠眺富士山與夕陽，建議提前購票</small></div></div>
 <div class="item"><div class="time">18:00</div><div><div class="item-title">🥩 敘敘苑燒肉豪華晚宴</div><small>建議提前預約，挑選喜歡的座位與用餐時段</small></div></div></div>
 
 <div class="day"><div class="day-head"><h3>Day 4｜10/29（四）Costco 大採購</h3><span class="badge">🛒 Shopping!</span></div>
 <div class="item"><div class="time">10:00</div><div><div class="item-title">🛒 Costco 幕張店／川崎店</div><small>建議包車／計程車，購物更輕鬆</small></div></div>
-<div class="item"><div class="time">16:30</div><div><div class="item-title">🛍️ 返回飯店休息</div><small>整理戰利品，慢慢來</small></div></div>
+<div class="item"><div class="time">16:30</div><div><div class="item-title"><svg class="sketch-icon" aria-hidden="true"><use href="#i-shop"></use></svg> 返回飯店休息</div><small>整理戰利品，慢慢來</small></div></div>
 <div class="item"><div class="time">19:00</div><div><div class="item-title">🍲 壽喜燒／涮涮鍋慶功宴</div></div></div></div>
 
 <div class="day"><div class="day-head"><h3>Day 5｜10/30（五）伴手禮・返台</h3><span class="badge">🎁 滿載而歸</span></div>
 <div class="item"><div class="time">09:30</div><div><div class="item-title">🎁 東京車站一番街</div><small>最後補貨：銘菓與伴手禮</small></div></div>
-<div class="item"><div class="time">11:30</div><div><div class="item-title">🚆 N'EX 前往成田機場 T2</div><small>預留充足時間，舒服回家</small></div></div>
-<div class="item"><div class="time">14:25</div><div><div class="item-title">🛫 JX315 起飛</div><small>東京五日，平安返台</small></div></div></div>
+<div class="item"><div class="time">11:30</div><div><div class="item-title"><svg class="sketch-icon" aria-hidden="true"><use href="#i-train"></use></svg> N'EX 前往成田機場 T2</div><small>預留充足時間，舒服回家</small></div></div>
+<div class="item"><div class="time">14:25</div><div><div class="item-title"><svg class="sketch-icon" aria-hidden="true"><use href="#i-plane"></use></svg> JX315 起飛</div><small>東京五日，平安返台</small></div></div></div>
 </section>
 
 <section class="card weather" id="weather">
-<h2>🌦️ 東京天氣小站</h2>
+<h2><svg class="sketch-icon" aria-hidden="true"><use href="#i-cloud"></use></svg> 東京天氣小站</h2>
 <p class="weather-note" id="weatherNote">正在取得東京即時資料…</p>
-<div class="weather-now" id="weatherNow">🌤️ 載入中…</div>
+<div class="weather-now" id="weatherNow"><svg class="sketch-icon" aria-hidden="true"><use href="#i-cloud"></use></svg> 載入中…</div>
 <div class="weather-grid" id="weatherGrid"></div>
 <p class="weather-note">※ 10/26～10/30 距離現在超過 16 天時，逐日預報尚未發布，App 會顯示「尚未進入預報範圍」，不會拿季節平均冒充真正預報。接近出發日期後重新開啟即可更新。</p>
 </section>
@@ -145,38 +170,45 @@ section.card{margin:12px 0;padding:18px;border:1px solid var(--line);border-radi
 <section class="card" id="tools">
 <h2>🧰 旅途中會真的用到的小工具</h2>
 <div class="tools">
-<div class="tool"><h3>💴 日圓 → 台幣</h3><input id="jpy" type="number" inputmode="decimal" placeholder="例如 10000"><label class="muted">1 日圓 ≈ 台幣</label><input id="rate" type="number" step="0.001" value="0.205"><button class="btn secondary" id="fx">立即換算</button><div class="fx-result" id="twd">NT$ 0</div><small class="muted">匯率可自行調整，屬參考值。</small></div>
+<div class="tool"><h3><svg class="sketch-icon" aria-hidden="true"><use href="#i-wallet"></use></svg> 日圓 → 台幣</h3><input id="jpy" type="number" inputmode="decimal" placeholder="例如 10000"><label class="muted">1 日圓 ≈ 台幣</label><input id="rate" type="number" step="0.001" value="0.205"><button class="btn secondary" id="fx">立即換算</button><div class="fx-result" id="twd">NT$ 0</div><small class="muted">匯率可自行調整，屬參考值。</small></div>
 <div class="tool"><h3>🧾 東京旅費記帳</h3><input id="exName" placeholder="項目，例如：晚餐"><input id="exAmount" type="number" inputmode="numeric" placeholder="日圓金額"><button class="btn" id="addEx">＋加入</button><div style="margin-top:8px">目前合計：<b id="exTotal">¥0</b></div><ul class="expense-list" id="exList"></ul></div>
-<div class="tool"><h3>📝 我的旅行備註</h3><textarea id="notes" placeholder="例如：10/28 SHIBUYA SKY 門票、集合時間…"></textarea><button class="btn ghost" id="saveNotes">💾 儲存備註</button> <small id="noteSaved" class="muted"></small></div>
+<div class="tool"><h3><svg class="sketch-icon" aria-hidden="true"><use href="#i-note"></use></svg> 我的旅行備註</h3><textarea id="notes" placeholder="例如：10/28 SHIBUYA SKY 門票、集合時間…"></textarea><button class="btn ghost" id="saveNotes"><svg class="sketch-icon" aria-hidden="true"><use href="#i-save"></use></svg> 儲存備註</button> <small id="noteSaved" class="muted"></small></div>
 </div>
 </section>
 
+<section class="card" id="vjw">
+<h2><svg class="sketch-icon" aria-hidden="true"><use href="#i-passport"></use></svg> Visit Japan Web</h2>
+<div class="tip"><b>🇯🇵 入境前小準備</b><br>建議出發前先完成 Visit Japan Web 登錄，入境日本時可直接使用已完成的資料。
+</div>
+<a class="btn" href="https://www.vjw.digital.go.jp/" target="_blank" rel="noopener">開啟 VJW 官方網站 ↗</a>
+</section>
+
 <section class="card" id="maps">
-<h2>🗺️ 景點地圖快速入口</h2>
+<h2><svg class="sketch-icon" aria-hidden="true"><use href="#i-map"></use></svg> 景點地圖快速入口</h2>
 <div class="mapgrid">
-<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Tokyo+Station">📍 東京車站</a>
-<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Imperial+Palace+Tokyo">🏰 皇居</a>
-<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=KITTE+Tokyo">🌿 KITTE</a>
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Tokyo+Station"><svg class="sketch-icon" aria-hidden="true"><use href="#i-pin"></use></svg> 東京車站</a>
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Imperial+Palace+Tokyo"><svg class="sketch-icon" aria-hidden="true"><use href="#i-pin"></use></svg> 皇居</a>
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=KITTE+Tokyo"><svg class="sketch-icon" aria-hidden="true"><use href="#i-leaf"></use></svg> KITTE</a>
 <a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=SHIBUYA+SKY">🌇 SHIBUYA SKY</a>
-<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Costco+Makuhari">🛒 Costco 幕張</a>
-<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Narita+International+Airport+Terminal+2">✈️ 成田 T2</a>
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Costco+Makuhari"><svg class="sketch-icon" aria-hidden="true"><use href="#i-shop"></use></svg> Costco 幕張</a>
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Narita+International+Airport+Terminal+2"><svg class="sketch-icon" aria-hidden="true"><use href="#i-plane"></use></svg> 成田 T2</a>
 </div>
 </section>
 
 <section class="card pack" id="pack">
-<h2>🎒 出發前打包</h2>
+<h2><svg class="sketch-icon" aria-hidden="true"><use href="#i-bag"></use></svg> 出發前打包</h2>
 <div class="progress"><div class="bar" id="packBar"></div></div><div class="muted" id="packPct">0% 完成</div>
 <label><input type="checkbox" data-pack>護照／證件</label><label><input type="checkbox" data-pack>藥品與常備用品</label><label><input type="checkbox" data-pack>充電器與行動電源</label><label><input type="checkbox" data-pack>薄外套與雨具</label><label><input type="checkbox" data-pack>交通／門票／餐廳預約資料</label>
 </section>
 
 <section class="card">
-<h2>💡 四個旅行小提醒</h2>
+<h2><svg class="sketch-icon" aria-hidden="true"><use href="#i-light"></use></svg> 四個旅行小提醒</h2>
 <div class="tip">① 東京車站地下較複雜，優先尋找「丸之內地下中央口」與直達電梯。</div>
 <div class="tip">② SHIBUYA SKY 建議提前預約想看的時段，尤其夕陽時段。</div>
 <div class="tip">③ 敘敘苑熱門分店建議提早預約，夕陽後的晚餐時段尤其熱門。</div>
 <div class="tip">④ Costco 建議提前安排交通，採買後直接回飯店整理戰利品。</div>
 </section>
-<div class="footer">🍁 2026 東京楓旅行手帳 V6.4R｜3 girls，一起慢慢走，剛剛好。<br><span class="muted">天氣採東京即時資料；出發日期進入預報範圍後會自動顯示逐日預報。</span></div>
+<div class="footer"><svg class="sketch-icon" aria-hidden="true"><use href="#i-leaf"></use></svg> 2026 東京楓旅行手帳 V6.4R｜3 girls，一起慢慢走，剛剛好。<br><span class="muted">天氣採東京即時資料；出發日期進入預報範圍後會自動顯示逐日預報。</span></div>
 </div>
 
 <script>
@@ -195,8 +227,8 @@ const notes=document.getElementById('notes');notes.value=localStorage.getItem('t
 
 document.querySelectorAll('[data-pack]').forEach((x,i)=>{x.checked=localStorage.getItem('packV6_'+i)==='1';x.onchange=()=>{localStorage.setItem('packV6_'+i,x.checked?'1':'0');renderPack()}});function renderPack(){let a=[...document.querySelectorAll('[data-pack]')],n=a.filter(x=>x.checked).length,p=Math.round(n/a.length*100);document.getElementById('packBar').style.width=p+'%';document.getElementById('packPct').textContent=p+'% 完成'}renderPack();
 
-const wmap={0:['☀️','晴朗'],1:['🌤️','大致晴朗'],2:['⛅','局部多雲'],3:['☁️','多雲'],45:['🌫️','霧'],48:['🌫️','霧'],51:['🌦️','毛毛雨'],53:['🌦️','毛毛雨'],55:['🌧️','細雨'],61:['🌧️','小雨'],63:['🌧️','中雨'],65:['🌧️','大雨'],71:['🌨️','小雪'],73:['🌨️','中雪'],75:['❄️','大雪'],80:['🌦️','陣雨'],81:['🌦️','陣雨'],82:['⛈️','強陣雨'],95:['⛈️','雷雨'],96:['⛈️','雷雨伴冰雹'],99:['⛈️','雷雨伴冰雹']};
-async function weather(){try{const api='https://api.open-meteo.com/v1/forecast?latitude=35.6762&longitude=139.6503&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=16';let r=await fetch(api,{cache:'no-store',mode:'cors'});if(!r.ok)throw 0;let d=await r.json(),q=wmap[d.current.weather_code]||['🌤️','天氣'];document.getElementById('weatherNow').innerHTML='<div class="weather-icon">'+q[0]+'</div><div><b>東京目前 '+Math.round(d.current.temperature_2m)+'°C</b><br>'+q[1]+'｜體感 '+Math.round(d.current.apparent_temperature)+'°C<br><small>風速 '+Math.round(d.current.wind_speed_10m)+' km/h</small></div>';let g=document.getElementById('weatherGrid');g.innerHTML='';['2026-10-26','2026-10-27','2026-10-28','2026-10-29','2026-10-30'].forEach((date,i)=>{let k=d.daily.time.indexOf(date),el=document.createElement('div');el.className='weather-day';if(k<0)el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi">🍁</div><div>尚未進入預報</div>';else{let z=wmap[d.daily.weather_code[k]]||['🌤️','天氣'];el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi">'+z[0]+'</div><div>'+z[1]+'</div><b>'+Math.round(d.daily.temperature_2m_max[k])+'°/'+Math.round(d.daily.temperature_2m_min[k])+'°</b><br><small>雨 '+(d.daily.precipitation_probability_max[k]??'--')+'%</small>'}g.appendChild(el)});document.getElementById('weatherNote').textContent='東京即時資料已更新｜'+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});}catch(e){document.getElementById('weatherNow').textContent='⚠️ 暫時無法取得天氣，請確認網路後重新整理。';document.getElementById('weatherNote').textContent='天氣服務連線失敗';}}weather();
+const wmap={0:['','晴朗'],1:['','大致晴朗'],2:['','局部多雲'],3:['','多雲'],45:['','霧'],48:['','霧'],51:['','毛毛雨'],53:['','毛毛雨'],55:['','細雨'],61:['','小雨'],63:['','中雨'],65:['','大雨'],71:['','小雪'],73:['','中雪'],75:['','大雪'],80:['','陣雨'],81:['','陣雨'],82:['','強陣雨'],95:['','雷雨'],96:['','雷雨伴冰雹'],99:['','雷雨伴冰雹']};
+async function weather(){try{const api='https://api.open-meteo.com/v1/forecast?latitude=35.6762&longitude=139.6503&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=16';let r=await fetch(api,{cache:'no-store',mode:'cors'});if(!r.ok)throw 0;let d=await r.json(),q=wmap[d.current.weather_code]||['<svg class="sketch-icon" aria-hidden="true"><use href="#i-cloud"></use></svg>','天氣'];document.getElementById('weatherNow').innerHTML='<div class="weather-icon">'+q[0]+'</div><div><b>東京目前 '+Math.round(d.current.temperature_2m)+'°C</b><br>'+q[1]+'｜體感 '+Math.round(d.current.apparent_temperature)+'°C<br><small>風速 '+Math.round(d.current.wind_speed_10m)+' km/h</small></div>';let g=document.getElementById('weatherGrid');g.innerHTML='';['2026-10-26','2026-10-27','2026-10-28','2026-10-29','2026-10-30'].forEach((date,i)=>{let k=d.daily.time.indexOf(date),el=document.createElement('div');el.className='weather-day';if(k<0)el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi"><svg class="sketch-icon" aria-hidden="true"><use href="#i-leaf"></use></svg></div><div>尚未進入預報</div>';else{let z=wmap[d.daily.weather_code[k]]||['<svg class="sketch-icon" aria-hidden="true"><use href="#i-cloud"></use></svg>','天氣'];el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi">'+z[0]+'</div><div>'+z[1]+'</div><b>'+Math.round(d.daily.temperature_2m_max[k])+'°/'+Math.round(d.daily.temperature_2m_min[k])+'°</b><br><small>雨 '+(d.daily.precipitation_probability_max[k]??'--')+'%</small>'}g.appendChild(el)});document.getElementById('weatherNote').textContent='東京即時資料已更新｜'+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});}catch(e){document.getElementById('weatherNow').textContent='⚠️ 暫時無法取得天氣，請確認網路後重新整理。';document.getElementById('weatherNote').textContent='天氣服務連線失敗';}}weather();
 
 // 航班即時查詢提示：星宇官方班機動態可查未來約一個月內的航班狀況；在開放前，網站不假造狀態。
 (function(){
