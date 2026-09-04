@@ -54,6 +54,25 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 
 .trip-links{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.trip-links a{display:inline-flex;align-items:center;gap:4px;padding:5px 9px;border-radius:999px;background:#fff7f8;border:1px solid #ead5d8;color:#6d4d52;text-decoration:none;font-size:12px}.trip-links a:hover{background:#f9edef}.trip-links a.primary{background:#f8e9ec}.collapsed .day-head{min-height:48px}.collapsed .day-head h3{font-size:15px;margin:0;font-weight:700}
 </style>
+<style id="v17-cleanup">
+/* V17: 五日一致的資訊分層與明確日與日斷點 */
+.day{margin-bottom:42px !important;padding-bottom:18px !important;}
+.day + .day{margin-top:0 !important;padding-top:20px !important;border-top:1px solid #eadfd8 !important;}
+.day-head{margin-bottom:12px !important;}
+.day-map-wrap{margin-bottom:14px !important;}
+.item{padding:11px 0 !important;}
+.item-hint{display:none !important;}
+.item-info-drawer{display:none !important;}
+.item.expanded .item-info-drawer{display:block !important;}
+.item:last-child{padding-bottom:12px !important;}
+@media(max-width:620px){
+  .day{margin-bottom:38px !important;padding:12px 10px 18px !important;}
+  .day + .day{margin-top:0 !important;padding-top:22px !important;}
+  .day-head{margin-bottom:11px !important;}
+  .day-map-wrap{margin-bottom:14px !important;}
+  .item{padding:12px 0 !important;}
+}
+</style>
 </head>
 <body>
 <div class="app">
