@@ -363,33 +363,36 @@ function initDayMap(di){
  const el=document.getElementById('day-map-'+di); if(!el) return;
  const places=dayMapPlaces(di); if(!places.length) return;
  const start=dayMapStart(di), focus=dayMapFocus(di);
- const w=900,h=112;
+ const w=900,h=112,padX=34,padY=22;
  const nodes=(start?[start]:[]).concat(places);
- const left=28,right=28,usable=w-left-right;
- const step=nodes.length>1?usable/(nodes.length-1):0;
- const pts=nodes.map((p,i)=>{
-   const x=left+i*step;
-   const y=i===0?72:(i%2?47:66);
-   return {x,y,name:p[2],start:i===0&&!!start,seq:start?i:i+1};
- });
+ const lons=nodes.map(p=>p[1]), lats=nodes.map(p=>p[0]);
+ let minLon=Math.min(...lons),maxLon=Math.max(...lons),minLat=Math.min(...lats),maxLat=Math.max(...lats);
+ const lonPad=Math.max((maxLon-minLon)*0.10,0.0025),latPad=Math.max((maxLat-minLat)*0.18,0.0025);
+ minLon-=lonPad; maxLon+=lonPad; minLat-=latPad; maxLat+=latPad;
+ const lonSpan=Math.max(maxLon-minLon,0.001),latSpan=Math.max(maxLat-minLat,0.001);
+ const project=(p)=>({x:padX+(p[1]-minLon)/lonSpan*(w-padX*2),y:h-padY-(p[0]-minLat)/latSpan*(h-padY*2)});
+ const pts=nodes.map((p,i)=>{const q=project(p);return {x:q.x,y:q.y,name:p[2],start:i===0&&!!start,seq:start?i:i+1,lat:p[0],lon:p[1]}});
  const route=pts.map(p=>p.x.toFixed(1)+','+p.y.toFixed(1)).join(' ');
  const bg=`<rect class="route-bg" x="0" y="0" width="${w}" height="${h}" rx="14"/>`;
- const wash=`<path class="route-area" d="M0 84 C180 70 300 92 470 78 C650 64 760 88 900 72 V112 H0 Z" opacity=".48"/>`;
+ const water=`<path class="route-water" d="M0 0 H${w} V18 C760 12 690 30 610 23 C500 14 440 30 360 22 C250 12 130 32 0 22 Z" opacity=".55"/>`;
+ const road1=`<path class="route-grid" d="M0 88 C180 66 300 104 450 76 C590 52 720 86 900 56"/>`;
+ const road2=`<path class="route-grid" d="M70 112 C130 78 155 38 220 0 M520 112 C555 72 610 42 670 0 M760 112 C790 78 835 44 900 28"/>`;
+ const area=`<path class="route-area" d="M0 92 C150 76 260 102 410 88 C560 72 710 98 900 76 V112 H0 Z" opacity=".35"/>`;
  const dots=pts.map((p,i)=>{
    if(p.start){
-     return `<g><circle class="start-dot" cx="${p.x}" cy="${p.y}" r="10"/><text class="route-num" x="${p.x}" y="${p.y+1}" font-size="10">⌂</text><text class="route-label" x="${p.x}" y="94" text-anchor="middle">出發</text></g>`;
+     return `<g><circle class="start-dot" cx="${p.x}" cy="${p.y}" r="9"/><text class="route-num" x="${p.x}" y="${p.y+1}" font-size="9">⌂</text><text class="route-label" x="${p.x}" y="${Math.max(14,p.y-14)}" text-anchor="middle">出發</text></g>`;
    }
    const first=p.seq===1, r=first?22:10;
    const ring=first?`<circle class="first-ring" cx="${p.x}" cy="${p.y}" r="28"/>`:'';
    const icon=routeIcon(p.name);
-   const labelY=p.y<58?18:102;
+   const labelY=p.y<52?Math.min(h-5,p.y+35):Math.max(12,p.y-20);
    return `<g><a href="${mapsUrl(p.name)}" target="_blank" rel="noopener"><title>${esc(p.name)} · 開啟地圖</title>${ring}<circle class="route-dot${first?' first-dot':''}" cx="${p.x}" cy="${p.y}" r="${r}"/><text class="route-num${first?' first-num':''}" x="${p.x}" y="${p.y+1}">${p.seq}</text><text class="route-label" x="${p.x}" y="${labelY}" text-anchor="middle">${esc(icon)} ${esc(shortPlace(p.name))}</text></a></g>`;
  }).join('');
  const chips=places.map((p,i)=>`<a href="${mapsUrl(p[2])}" target="_blank" rel="noopener"><b>${i+1}</b>${esc(shortPlace(p[2]))}</a>`).join('');
- el.innerHTML=`<svg class="simple-route-map" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(focus[0])} 當日簡易路線圖">${bg}${wash}<polyline class="route-line-soft" points="${route}"/><polyline class="route-line" points="${route}"/>${dots}</svg>`;
+ el.innerHTML=`<svg class="simple-route-map" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(focus[0])} 當日地理相對位置圖">${bg}${water}${road1}${road2}${area}<polyline class="route-line-soft" points="${route}"/><polyline class="route-line" points="${route}"/>${dots}</svg>`;
  wrap.querySelector('.day-map-start').textContent='出發 · '+(start?start[2]:'');
  wrap.querySelector('.route-map-footer')?.remove();
- wrap.insertAdjacentHTML('beforeend',`<div class="route-map-footer"><span>① 第一站放大 · 路線為行程順序</span><a href="${mapsUrl(focus[0])}" target="_blank" rel="noopener">開啟地圖 ↗</a></div>`);
+ wrap.insertAdjacentHTML('beforeend',`<div class="route-map-footer"><span>① 第一站放大 · 位置依實際地理座標</span><a href="${mapsUrl(focus[0])}" target="_blank" rel="noopener">開啟地圖 ↗</a></div>`);
  const old=wrap.nextElementSibling;
  const legend=document.createElement('div');legend.className='route-legend';legend.innerHTML=chips;
  if(old && old.classList.contains('route-legend')) old.replaceWith(legend); else wrap.after(legend);
