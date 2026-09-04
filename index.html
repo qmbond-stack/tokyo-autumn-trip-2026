@@ -74,6 +74,9 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 }
 </style>
 
+<style id="souvenir-style">
+.souvenir-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.souvenir-panel{border:1px solid var(--line);border-radius:20px;background:#fff;padding:12px}.souvenir-panel h3{margin:0 0 5px;font-size:17px}.souvenir-item{padding:10px 0;border-bottom:1px dashed #dfd3c6}.souvenir-item:last-child{border-bottom:0}.souvenir-item label{display:block;font-size:15px}.souvenir-item input{width:auto;margin-right:5px}.souvenir-item span,.souvenir-item small{display:block;color:#777;font-size:12px;margin-left:25px}.souvenir-item small{margin-top:2px;color:#9a777b}.souvenirs .tip{margin-top:12px}@media(max-width:620px){.souvenir-grid{grid-template-columns:1fr}.souvenir-panel h3{font-size:16px}}
+</style>
 <style id="v22-tabs-final">
 /* V22: 五日真正分頁。一次只呈現目前選中的一天。 */
 .day-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:12px 0 16px;padding:5px;background:#fff8f5;border:1px solid #ead9d3;border-radius:18px;position:sticky;top:8px;z-index:5;box-shadow:0 5px 16px rgba(120,82,78,.06)}
@@ -113,7 +116,7 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 </header>
 
 <nav class="nav" id="nav">
-<button class="active" data-target="overview">🌸總覽</button><button data-target="flights">✈️航班</button><button data-target="days">🗓️五日</button><button data-target="weather">🌦️天氣</button><button data-target="tools">💴工具</button><button data-target="maps">🗺️地圖</button><button data-target="food">🍽️美食</button><button data-target="translate">🗣️翻譯</button><button data-target="vjw">🛂VJW</button><button data-target="pack">🎒打包</button>
+<button class="active" data-target="overview">🌸總覽</button><button data-target="flights">✈️航班</button><button data-target="days">🗓️五日</button><button data-target="weather">🌦️天氣</button><button data-target="tools">💴工具</button><button data-target="maps">🗺️地圖</button><button data-target="food">🍽️美食</button><button data-target="souvenirs">🎁伴手禮</button><button data-target="translate">🗣️翻譯</button><button data-target="vjw">🛂VJW</button><button data-target="pack">🎒打包</button>
 </nav>
 
 <section class="card" id="overview">
@@ -201,6 +204,31 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 </div>
 </section>
 
+
+<section class="card souvenirs" id="souvenirs">
+<h2>🎁 東京伴手禮｜吃的 × 用的</h2>
+<p class="muted">把伴手禮獨立成一區，買東西時不用在五日行程裡翻來翻去。建議 Day 2、Day 5 集中採買，Day 4 Costco 則負責大型、家庭型戰利品。</p>
+<div class="souvenir-grid">
+  <div class="souvenir-panel">
+    <h3>🍪 吃的｜帶回家最容易成功</h3>
+    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="tokyobanana"> <b>東京ばな奈</b></label><span>經典東京伴手禮，適合分送；常見於東京站、機場。</span><small>推薦度：★★★★★｜注意賞味期限</small></div>
+    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="pressbutter"> <b>PRESS BUTTER SAND</b></label><span>奶油夾心餅乾，外盒好看、方便分裝。</span><small>推薦度：★★★★★｜熱門品項可優先買</small></div>
+    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="cheesefactory"> <b>東京牛奶起司工房</b></label><span>起司餅乾類，鹹甜口味都適合辦公室分享。</span><small>推薦度：★★★★☆｜記得留意保存方式</small></div>
+    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="baumkuchen"> <b>ねんりん家 年輪蛋糕</b></label><span>日式年輪蛋糕，適合家人一起吃。</span><small>推薦度：★★★★☆｜體積較大，別買太早</small></div>
+    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="chocolate"> <b>N.Y.C.SAND／巧克力甜點</b></label><span>適合送親友，但熱門時段可能需要排隊。</span><small>推薦度：★★★★☆｜Day 5 再補貨較安心</small></div>
+  </div>
+  <div class="souvenir-panel">
+    <h3>🧺 用的｜買了真的會用</h3>
+    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="towel"> <b>今治毛巾／日本手巾</b></label><span>輕、好帶、實用度高，長輩也容易用得到。</span><small>推薦度：★★★★★｜可按家人喜好挑顏色</small></div>
+    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="handkerchief"> <b>日本手帕／小方巾</b></label><span>體積小、價格帶多，適合當作多人份小禮物。</span><small>推薦度：★★★★★｜最適合大量分送</small></div>
+    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="stationery"> <b>日本文具</b></label><span>鋼筆、筆記本、貼紙、便利貼等，實用又不占行李。</span><small>推薦度：★★★★☆｜文具控可直接開支線任務</small></div>
+    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="chopsticks"> <b>筷子／小餐具／生活雜貨</b></label><span>適合買一兩組有日本特色的家用品，避免買到太多易碎品。</span><small>推薦度：★★★★☆｜行李箱記得包好</small></div>
+    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="fragrance"> <b>香氛／浴室小物</b></label><span>香氛袋、入浴劑、護手霜等，適合做小份量伴手禮。</span><small>推薦度：★★★★☆｜液體類注意攜帶規定</small></div>
+  </div>
+</div>
+<div class="tip"><b>🛍️ 採買策略</b><br>① Day 2 東京站／丸之內：先買想送人的熱門甜點。<br>② Day 4 Costco：集中處理大包裝、家庭分享品。<br>③ Day 5 押上／東京站：補缺額，最後再買需要賞味期限的新鮮甜點。<br>④ 甜點不要一次買滿，否則行李箱會在東京站開始懷疑人生。</div>
+<div class="tip"><b>🧳 行李分區法</b><br>🎁 食品：集中放一側並保留購買收據／外盒。<br>🧺 小物：用衣物包住易碎品。<br>💧 液體／凝膠：另外裝袋，搭機時依託運與隨身行李規定處理。<br>⚠️ 肉類、部分植物與生鮮食品不要看到「伴手禮」三個字就直接塞進箱子，先用下方的出入境辨識工具確認。</div>
+</section>
 
 <section class="card" id="translate">
 <h2>🗣️ 旅日即時翻譯小幫手</h2>
@@ -303,6 +331,9 @@ function tick(){let d=trip-new Date();if(d<0)d=0;document.getElementById('cdD').
 const tabs=document.querySelectorAll('.nav button');tabs.forEach(b=>b.onclick=()=>document.getElementById(b.dataset.target).scrollIntoView({behavior:'smooth',block:'start'}));
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){tabs.forEach(b=>b.classList.toggle('active',b.dataset.target===e.target.id))}}),{rootMargin:'-25% 0px -65% 0px'});document.querySelectorAll('section.card[id]').forEach(s=>obs.observe(s));
 
+
+// 伴手禮勾選清單：獨立保存，方便採買時逐項確認。
+document.querySelectorAll('[data-souvenir]').forEach((x)=>{const k='souvenirV1_'+x.dataset.souvenir;x.checked=localStorage.getItem(k)==='1';x.onchange=()=>localStorage.setItem(k,x.checked?'1':'0')});
 function fx(){const j=+document.getElementById('jpy').value||0,r=+document.getElementById('rate').value||0;document.getElementById('twd').textContent='NT$ '+Math.round(j*r).toLocaleString()}document.getElementById('fx').onclick=fx;document.getElementById('jpy').oninput=fx;document.getElementById('rate').oninput=fx;
 
 let expenses=JSON.parse(localStorage.getItem('tokyoExpensesV6')||'[]');
