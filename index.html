@@ -76,7 +76,7 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 <h2>🌸 旅程小檔案</h2>
 <div class="info-grid">
 <div class="info"><strong>✈️ 航班</strong>去程 JX314｜台中→成田｜13:25 抵達 T2<br>回程 JX315｜成田→台中｜14:25 起飛</div>
-<div class="info"><strong>🏨 住宿</strong>東京車站周邊飯店<br>目前：待確認</div>
+<div class="info"><strong>🏨 住宿</strong>京成里士滿飯店東京押上<br>Keisei Richmond Hotel Tokyo Oshiage｜全程 4 晚</div>
 <div class="info"><strong>🌸 成員</strong>3 girls</div>
 <div class="info"><strong>🚆 旅行節奏</strong>盡量直達、少轉乘<br>留時間散步、拍照、喝咖啡</div>
 </div>
@@ -277,12 +277,12 @@ function checkBan(){const input=document.getElementById('banItem'),box=document.
 document.getElementById('checkBan').onclick=checkBan;document.getElementById('banItem').addEventListener('keydown',e=>{if(e.key==='Enter')checkBan()});
 
 const defaultDays=[
-{no:'Day 1',date:'10/26（一）',title:'抵達東京・丸之內夜景',badge:'✈️ Welcome!',items:[['13:25','🛬 抵達成田機場 T2（JX314）','入境、領行李，保持悠閒節奏'],['14:30',"🚆 N'EX 前往東京車站",'安排舒適座位，減少轉乘'],['16:30','🏨 飯店 Check-in','東京車站周邊'],['18:30','🌃 丸之內大樓／新丸大樓高層景觀餐廳','俯瞰東京車站，舒服收尾第一天']]},
-{no:'Day 2',date:'10/27（二）',title:'皇居・KITTE',badge:'🏰 悠閒散策',items:[['10:00','🌳 皇居外苑與二重橋','大道散步，慢慢欣賞皇居秋色'],['12:30','🍱 大丸百貨高層午餐','設施完整，安心用餐'],['14:30','🌿 KITTE 大樓屋頂庭園','平視東京車站'],['18:00','🍶 和食／居酒屋，悠閒吃晚餐','']]},
-{no:'Day 3',date:'10/28（三）',title:'高輪庭園・SHIBUYA SKY',badge:'🌇 今日高光',items:[['09:30','🍃 高輪庭園','高輪王子大飯店內，綠意與秋色'],['12:00','🍵 品川／高輪靜謐和食',''],['14:30','🌇 SHIBUYA SKY','晴天可遠眺富士山與夕陽，建議提前購票'],['18:00','🥩 敘敘苑燒肉豪華晚宴','建議提前預約，挑選喜歡的座位與用餐時段']]},
-{no:'Day 4',date:'10/29（四）',title:'Costco 大採購',badge:'🛒 Shopping!',items:[['10:00','🛒 Costco 幕張店／川崎店','建議包車／計程車，購物更輕鬆'],['16:30','🛍️ 返回飯店休息','整理戰利品，慢慢來'],['19:00','🍲 壽喜燒／涮涮鍋慶功宴','']]},
-{no:'Day 5',date:'10/30（五）',title:'伴手禮・返台',badge:'🎁 滿載而歸',items:[['09:30','🎁 東京車站一番街','最後補貨：銘菓與伴手禮'],['11:30',"🚆 N'EX 前往成田機場 T2",'預留充足時間，舒服回家'],['14:25','🛫 JX315 起飛','東京五日，平安返台']]}
-];
+{no:'Day 1',date:'10/26（一）',title:'抵達東京・丸之內夜景與晚餐',badge:'✈️ Welcome!',items:[['13:25','🛬 抵達成田機場 T2（JX314）','入境、領行李'],['14:30',"🚆 N'EX 前往東京車站",'成田→東京；再轉地鐵前往押上飯店'],['16:30','🏨 京成里士滿飯店東京押上 Check-in','放行李、稍作休息'],['17:45','🚆 押上 → 大手町／東京站','半藏門線，往丸之內移動'],['18:30','🌃 丸之內夜景散步','東京站丸之內站舍 → 丸之內仲通 → KITTE'],['19:00','🍽️ The INNOCENT CARVERY 新丸大樓店','高樓層和牛燒肉＋東京站景；第一晚不再跨區'],['21:00','🍵 HIGASHIYA man Marunouchi','若還有胃，茶與和菓子作為第一晚收尾']]},
+{no:'Day 2',date:'10/27（二）',title:'皇居・東京站深度散策',badge:'🏰 悠閒散策',items:[['08:00','🍳 飯店早餐','以飯店早餐為主，減少早晨轉乘'],['09:15','🚆 押上 → 大手町','半藏門線'],['10:00','🌳 皇居東御苑・二重橋','秋色散策，保留充裕步行時間'],['12:15','🍣 Manten Sushi Marunouchi','丸之內人氣壽司，午餐建議預約'],['14:00','🌿 KITTE Marunouchi 屋頂庭園','東京站正面景觀'],['15:00','☕ HIGASHIYA man Marunouchi','茶＋和菓子，安排正式咖啡甜點休息'],['16:00','🛍️ 丸之內仲通・東京站・GRANSTA','伴手禮、甜點、百貨慢逛'],['18:00','🍲 Sukiyaki Jyuniten 丸之內店','和牛壽喜燒／涮涮鍋，第二晚好好吃一頓'],['20:00','🚆 東京站／大手町 → 押上','返回飯店休息']]},
+{no:'Day 3',date:'10/28（三）',title:'高輪庭園・高輪 Gateway・SHIBUYA SKY',badge:'🌇 今日高光',items:[['08:00','🍳 飯店早餐',''],['09:00','🚆 押上 → 高輪台／高輪 Gateway','依即時路況選擇最順轉乘'],['09:30','🍃 高輪庭園','今日主軸：庭園＋高輪歷史散策'],['11:00','⛩️ 泉岳寺','赤穗浪士相關歷史，與高輪庭園串成一線'],['12:00','🍱 Takanawa Soregashi','NEWoMan 高輪 28F；午餐兼看高輪景色'],['13:30','☕ BLUE BOTTLE COFFEE 高輪咖啡','專業咖啡＋利耶日鬆餅，安排休息'],['14:15','🏙️ Takanawa Gateway City','新舊高輪對照散策'],['15:45','🚆 高輪 Gateway → 澀谷','前往 SHIBUYA SKY'],['17:00','🌇 SHIBUYA SKY','鎖定夕陽前後時段；建議提前購票'],['19:00','🥩 叙々苑 渋谷店','東京燒肉晚餐；建議提前預約'],['21:00','🚆 澀谷 → 押上','回飯店']]},
+{no:'Day 4',date:'10/29（四）',title:'Costco 幕張・幕張海濱',badge:'🛒 Shopping!',items:[['08:00','🍳 飯店早餐',''],['09:00','🚆 押上 → Costco 幕張','以幕張店為本日主軸，較適合從押上往返'],['10:00','🛒 Costco Wholesale Makuhari','採買主行程；會員購物'],['12:30','🍕 Costco Food Court','簡單午餐，不另繞路'],['13:30','🌊 幕張海濱公園／幕張海濱','天氣好散步；若下雨改逛商場'],['15:00','🍰 Pâtisserie SATSUKI','Hotel New Otani Makuhari 甜點，作為下午茶備案'],['16:00','🚆 幕張 → 押上','帶著戰利品回飯店'],['17:00','🏨 飯店休息・整理戰利品','洗澡、整理行李，保留體力'],['19:00','🍲 壽喜燒／涮涮鍋','建議在押上／錦糸町一帶選店，晚餐後直接回飯店']]},
+{no:'Day 5',date:'10/30（五）',title:'押上最後採買・N’EX・返台',badge:'🎁 滿載而歸',items:[['07:30','🍳 飯店早餐',''],['08:30','🧳 Check-out／行李寄放','先完成退房，保留最後採買時間'],['09:00','🗼 東京晴空塔・東京Solamachi','飯店步行圈最後伴手禮；不再跨區'],['10:00','🏨 回飯店取行李','確認護照、票券、戰利品'],['10:30','🚆 押上 → 東京車站','往東京站搭 N’EX'],['11:30',"🚆 N'EX 前往成田機場 T2",'預留機場作業緩衝'],['12:30','✈️ 成田 T2・午餐／最後伴手禮','畸零時間用於免稅、咖啡、整理行李'],['14:25','🛫 JX315 起飛','NRT T2 → RMQ']]}
+]
 const dayKey='tokyoDaysV6_3';
 function cloneDays(x){return JSON.parse(JSON.stringify(x))}
 let savedDays;try{savedDays=JSON.parse(localStorage.getItem(dayKey)||'null')}catch(e){savedDays=null}
