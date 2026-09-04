@@ -73,6 +73,30 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
   .item{padding:12px 0 !important;}
 }
 </style>
+
+<style id="v22-tabs-final">
+/* V22: 五日真正分頁。一次只呈現目前選中的一天。 */
+.day-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:12px 0 16px;padding:5px;background:#fff8f5;border:1px solid #ead9d3;border-radius:18px;position:sticky;top:8px;z-index:5;box-shadow:0 5px 16px rgba(120,82,78,.06)}
+.day-tab{appearance:none;border:1px solid #ead9d3;background:#fffdf9;color:#725d60;border-radius:13px;padding:9px 5px;min-width:0;font:inherit;font-weight:800;line-height:1.15;cursor:pointer;transition:.18s ease}
+.day-tab small{display:block;font-size:10px;font-weight:600;margin-top:3px;opacity:.72}
+.day-tab:hover{background:#fff0ed;transform:translateY(-1px)}
+.day-tab[aria-selected="true"]{background:#e7a3b3;color:#fff;border-color:#e7a3b3;box-shadow:0 4px 10px rgba(180,105,125,.18)}
+#dayList>.day{display:none !important;margin:0 !important}
+#dayList>.day.day-active{display:block !important}
+#dayList>.day.day-active.collapsed{padding:0 !important}
+#dayList>.day.day-active .day-head{cursor:default}
+@media(max-width:620px){
+ .day-tabs{gap:5px;padding:4px;margin:10px 0 13px;top:4px}
+ .day-tab{padding:8px 2px;border-radius:12px;font-size:12px}
+ .day-tab small{font-size:9px}
+}
+/* Day 2: 放大核心區域，標籤錯開並用引導線回到實際座標。 */
+#day-map-wrap-1 .day-map{height:300px !important}
+.day2-leader{fill:none;stroke:#c98392;stroke-width:1.6;stroke-dasharray:3 3;opacity:.82}
+.day2-label-box{fill:#fffdf8;stroke:#ead9d3;stroke-width:1}
+.day2-label{font-size:12px;fill:#684e55;font-weight:700}
+@media(max-width:620px){#day-map-wrap-1 .day-map{height:285px !important}.day2-label{font-size:11px}}
+</style>
 </head>
 <body>
 <div class="app">
@@ -155,7 +179,8 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 
 <section class="card" id="days">
 <h2>🗓️ 五日手繪行程</h2>
-<p class="edit-hint">💡 每一天都可以單獨收折；點「✏️ 編輯」可修改時間、行程與備註，內容會保存在這台裝置上。</p>
+<p class="edit-hint">💡 先選一天查看完整行程；點「✏️ 編輯」可修改時間、行程與備註，內容會保存在這台裝置上。</p>
+<div class="day-tabs" id="dayTabs" role="tablist" aria-label="五日行程分頁"></div>
 <div id="dayList"></div>
 </section>
 
@@ -416,14 +441,12 @@ function initDayMap(di){
  const places=dayMapPlaces(di); if(!places.length) return;
  const start=dayMapStart(di), focus=dayMapFocus(di);
  const w=900,h=320,padX=38,padY=30;
- let nodes;
- let minLon,maxLon,minLat,maxLat;
+ let nodes, minLon,maxLon,minLat,maxLat;
  if(di===1){
-   /* Day 2 的地圖以皇居～東京站～丸之內為主體，押上只作出發端點，避免把整張地圖拉成東京全區。 */
-   const core=places.slice(0,places.length);
-   const coreLons=core.map(p=>p[1]),coreLats=core.map(p=>p[0]);
-   minLon=Math.min(...coreLons)-0.0028; maxLon=Math.max(...coreLons)+0.0030;
-   minLat=Math.min(...coreLats)-0.0022; maxLat=Math.max(...coreLats)+0.0022;
+   const core=places;
+   const lons=core.map(p=>p[1]),lats=core.map(p=>p[0]);
+   minLon=Math.min(...lons)-0.0038; maxLon=Math.max(...lons)+0.0040;
+   minLat=Math.min(...lats)-0.0028; maxLat=Math.max(...lats)+0.0028;
    nodes=core;
  }else{
    nodes=(start?[start]:[]).concat(places);
@@ -436,10 +459,8 @@ function initDayMap(di){
  const lonSpan=Math.max(maxLon-minLon,0.001),latSpan=Math.max(maxLat-minLat,0.001);
  const project=(p)=>({x:padX+(p[1]-minLon)/lonSpan*(w-padX*2),y:h-padY-(p[0]-minLat)/latSpan*(h-padY*2)});
  const corePts=places.map((p,i)=>{const q=project(p);return {x:q.x,y:q.y,name:p[2],seq:i+1,lat:p[0],lon:p[1]};});
- let routePts=corePts;
- let startPt=null;
+ let routePts=corePts, startPt=null;
  if(di===1 && start){
-   /* 出發地放在右側邊界，以虛線接入東京站，保留「今日從哪裡開始」而不犧牲核心地圖尺度。 */
    startPt={x:850,y:255,name:start[2],start:true};
    const tokyo=corePts[1];
    routePts=[startPt,tokyo,...corePts.slice(2)];
@@ -453,28 +474,66 @@ function initDayMap(di){
  const roads=mapRoads(di,project,w,h);
  const compass=`<g class="map-compass"><text x="845" y="28">N</text><path d="M845 35 L837 55 L845 50 L853 55 Z"/></g>`;
  const scale=`<g class="map-scale"><line x1="690" y1="282" x2="825" y2="282"/><line x1="690" y1="277" x2="690" y2="287"/><line x1="825" y1="277" x2="825" y2="287"/><text x="706" y="270">約 500 m</text></g>`;
- const dots=corePts.map(p=>{
-   const first=p.seq===1,r=first?28:15,ring=first?`<circle class="map-first-ring" cx="${p.x}" cy="${p.y}" r="39"/>`:'';
-   const labelX=p.x>700?p.x-18:p.x+18,anchor=p.x>700?'end':'start';
-   return `<g><a href="${mapsUrl(p.name)}" target="_blank" rel="noopener"><title>${esc(p.name)} · 開啟地圖</title>${ring}<circle class="map-pin" cx="${p.x}" cy="${p.y}" r="${r}"/><text class="map-num ${first?'big':''}" x="${p.x}" y="${p.y+1}">${p.seq}</text><text class="map-label" text-anchor="${anchor}" x="${labelX}" y="${p.y-14}">${esc(shortPlace(p.name))}</text></a></g>`;
- }).join('');
+ let dots='',day2Leaders='';
+ if(di===1){
+   /* 地理座標上的點完全不移動，只移動文字框。 */
+   const offsets=[
+     {dx:30,dy:-30,anchor:'start'},
+     {dx:28,dy:30,anchor:'start'},
+     {dx:-155,dy:-34,anchor:'end'},
+     {dx:-150,dy:34,anchor:'end'},
+     {dx:95,dy:-48,anchor:'start'},
+     {dx:110,dy:42,anchor:'start'}
+   ];
+   dots=corePts.map((p,i)=>{
+     const first=p.seq===1,r=first?27:15,ring=first?`<circle class="map-first-ring" cx="${p.x}" cy="${p.y}" r="39"/>`:'';
+     const o=offsets[i]||{dx:22,dy:-18,anchor:'start'};
+     const lx=p.x+o.dx,ly=p.y+o.dy;
+     const safeX=Math.max(18,Math.min(w-18,lx)),safeY=Math.max(20,Math.min(h-20,ly));
+     const text=esc(shortPlace(p.name));
+     const width=Math.max(74,text.length*12+18);
+     const rectX=o.anchor==='end'?safeX-width:safeX-4;
+     const textX=o.anchor==='end'?safeX-9:safeX+7;
+     const rectY=safeY-16;
+     day2Leaders+=`<line class="day2-leader" x1="${p.x}" y1="${p.y}" x2="${safeX}" y2="${safeY}"/>`;
+     return `<g><a href="${mapsUrl(p.name)}" target="_blank" rel="noopener"><title>${esc(p.name)} · 開啟地圖</title>${ring}<circle class="map-pin" cx="${p.x}" cy="${p.y}" r="${r}"/><text class="map-num ${first?'big':''}" x="${p.x}" y="${p.y+1}">${p.seq}</text><rect class="day2-label-box" x="${rectX}" y="${rectY}" width="${width}" height="24" rx="8"/><text class="day2-label" text-anchor="${o.anchor}" x="${textX}" y="${safeY+4}">${text}</text></a></g>`;
+   }).join('');
+ }else{
+   dots=corePts.map(p=>{
+     const first=p.seq===1,r=first?28:15,ring=first?`<circle class="map-first-ring" cx="${p.x}" cy="${p.y}" r="39"/>`:'';
+     const labelX=p.x>700?p.x-18:p.x+18,anchor=p.x>700?'end':'start';
+     return `<g><a href="${mapsUrl(p.name)}" target="_blank" rel="noopener"><title>${esc(p.name)} · 開啟地圖</title>${ring}<circle class="map-pin" cx="${p.x}" cy="${p.y}" r="${r}"/><text class="map-num ${first?'big':''}" x="${p.x}" y="${p.y+1}">${p.seq}</text><text class="map-label" text-anchor="${anchor}" x="${labelX}" y="${p.y-14}">${esc(shortPlace(p.name))}</text></a></g>`;
+   }).join('');
+ }
  const startMarkup=startPt?`<g><circle class="map-start" cx="${startPt.x}" cy="${startPt.y}" r="12"/><text class="map-start-text" x="${startPt.x}" y="${startPt.y+4}">⌂</text><text class="map-label start-label" text-anchor="end" x="${startPt.x-17}" y="${startPt.y-13}">出發・押上飯店</text></g>`:'';
  const routeSoft=`<polyline class="map-route-soft" points="${route}"/>`;
  const routeMain=`<polyline class="map-route" points="${route}"/>`;
  const departConnector=di===1?`<line class="map-depart-line" x1="850" y1="255" x2="${corePts[1].x}" y2="${corePts[1].y}"/>`:'';
- el.innerHTML=`<svg class="real-route-map" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(focus[0])} 當日地理相對位置圖">${bg}${water}${roads}${departConnector}${routeSoft}${routeMain}${dots}${startMarkup}${compass}${scale}</svg>`;
+ el.innerHTML=`<svg class="real-route-map" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(focus[0])} 當日地理相對位置圖">${bg}${water}${roads}${departConnector}${routeSoft}${routeMain}${di===1?day2Leaders:''}${dots}${startMarkup}${compass}${scale}</svg>`;
  wrap.querySelector('.day-map-start').textContent='出發 · '+(start?start[2]:'');
  const old=wrap.nextElementSibling;
  const legend=document.createElement('div');legend.className='route-legend';
  legend.innerHTML=places.map((p,i)=>`<a href="${mapsUrl(p[2])}" target="_blank" rel="noopener"><b>${i+1}</b><span>${esc(shortPlace(p[2]))}</span></a>`).join('')+`<a class="map-open" href="${mapsUrl(focus[0])}" target="_blank" rel="noopener">📍 在 Google Maps 開啟 ↗</a>`;
  if(old&&old.classList.contains('route-legend'))old.replaceWith(legend);else wrap.after(legend);
 }
+function renderDayTabs(){
+ const tabs=document.getElementById('dayTabs'); if(!tabs) return;
+ const active=Number(localStorage.getItem('tokyoActiveDayV22')||0);
+ tabs.innerHTML=tripDays.map((d,i)=>`<button type="button" class="day-tab" role="tab" aria-selected="${i===active?'true':'false'}" aria-controls="day-panel-${i}" data-day-tab="${i}">${esc(d.no.replace('Day ', 'D'))}<small>${esc(d.date)}</small></button>`).join('');
+ tabs.querySelectorAll('.day-tab').forEach(btn=>btn.onclick=()=>{
+   const i=Number(btn.dataset.dayTab); localStorage.setItem('tokyoActiveDayV22',String(i)); renderDays();
+ });
+}
 function renderDays(){
  const root=document.getElementById('dayList');
  root.innerHTML='';
+ let active=Number(localStorage.getItem('tokyoActiveDayV22')||0);
+ if(!Number.isInteger(active)||active<0||active>=tripDays.length)active=0;
+ renderDayTabs();
  tripDays.forEach((d,di)=>{
   const article=document.createElement('article');
-  article.className='day'+(collapsedDays[di]?' collapsed':'');
+  article.id='day-panel-'+di;
+  article.className='day'+(di===active?' day-active':'')+(collapsedDays[di]?' collapsed':'');
   article.dataset.day=di;
   const head=collapsedDays[di]
    ? `<div class="day-head collapsed-head"><button type="button" class="day-toggle" aria-label="展開 ${esc(d.no)}">▸</button><h3>${esc(d.no)} | ${esc(d.date)}</h3></div>`
@@ -502,7 +561,7 @@ function renderDays(){
    titleBtn.onkeydown=(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();toggleInfo()}};
    items.appendChild(row);
   });
-  const toggleDay=()=>{collapsedDays[di]=true;localStorage.setItem('tokyoCollapsedDaysV6',JSON.stringify(collapsedDays));renderDays()};
+  const toggleDay=()=>{collapsedDays[di]=!collapsedDays[di];localStorage.setItem('tokyoCollapsedDaysV6',JSON.stringify(collapsedDays));renderDays()};
   article.querySelector('.day-toggle').onclick=toggleDay;
   article.querySelector('.day-head').onclick=(e)=>{if(e.target.closest('.edit-day')||e.target.closest('.day-toggle')||e.target.closest('a'))return;toggleDay()};
   const editBtn=article.querySelector('.edit-day');
