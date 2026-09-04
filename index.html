@@ -474,3 +474,26 @@ if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.se
   .item{padding:12px 0}
 }
 </style>
+
+<style>
+/* V18: 真正的每日分區與行程資訊抽屜 */
+#dayList{padding-top:2px}
+#dayList>.day{margin:0 0 34px !important;padding:14px 12px 18px !important;border-left-width:4px;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:0 22px 22px 0;background:rgba(255,253,248,.88);box-shadow:0 6px 18px rgba(120,82,78,.055)}
+#dayList>.day+.day{margin-top:34px !important}
+#dayList>.day:last-child{margin-bottom:12px !important}
+.day-head{min-height:42px;margin-bottom:10px;padding:0 2px}
+.day-map-wrap{margin:0 0 14px}
+.item{padding:13px 2px}
+.item-hint{display:none !important}
+.item-info-drawer{display:none !important}
+.item.expanded .item-info-drawer{display:block !important}
+.item.expanded .item-title::after{content:'  · 收起';font-size:10px;font-weight:500;color:#a18384}
+.route-map-footer{display:none !important}
+@media(max-width:620px){
+ #dayList>.day{margin-bottom:30px !important;padding:12px 10px 16px !important}
+ #dayList>.day+.day{margin-top:30px !important}
+ .day-head{margin-bottom:10px}
+ .day-map-wrap{margin-bottom:14px}
+ .item{padding:13px 0}
+}
+</style>
