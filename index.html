@@ -347,13 +347,13 @@ function dayMapStart(di){
 function dayMapPlaces(di){
  const places={
   0:[
-   [35.6814,139.7658,'🚆 東京車站'],[35.6860,139.7630,'🌃 丸之內仲通'],[35.6802,139.7647,'🛍️ KITTE／GRANSTA'],[35.6814,139.7658,'🍽️ The INNOCENT CARVERY'],[35.6815,139.7651,'☕ HIGASHIYA man']
+   [35.6814,139.7658,'🚆 東京車站'],[35.6860,139.7630,'🌃 丸之內仲通'],[35.6802,139.7647,'🛍️ KITTE／GRANSTA'],[35.6814,139.7650,'🍽️ The INNOCENT CARVERY'],[35.6815,139.7651,'☕ HIGASHIYA man']
   ],
   1:[
-   [35.6852,139.7528,'🌳 皇居東御苑'],[35.6814,139.7658,'🚆 東京車站'],[35.6781,139.7645,'🍣 Manten Sushi'],[35.6802,139.7647,'🌿 KITTE'],[35.6815,139.7651,'☕ HIGASHIYA'],[35.6816,139.7654,'🍲 Sukiyaki Jyuniten']
+   [35.6852,139.7528,'🌳 皇居東御苑'],[35.6814,139.7658,'🚆 東京車站'],[35.6819,139.7702,'🍣 Manten Sushi Marunouchi'],[35.6800,139.7647,'🌿 KITTE Marunouchi'],[35.6815,139.7651,'☕ HIGASHIYA man'],[35.6820,139.7658,'🍲 Sukiyaki Jyuniten']
   ],
   2:[
-   [35.6359,139.7345,'🍃 高輪庭園'],[35.6395,139.7357,'⛩️ 泉岳寺'],[35.6335,139.7352,'🍱 Takanawa Soregashi'],[35.6339,139.7340,'☕ BLUE BOTTLE 高輪'],[35.6330,139.7350,'🏙️ 高輪 Gateway'],[35.6595,139.7005,'🌇 SHIBUYA SKY'],[35.6610,139.6987,'🥩 叙々苑']
+   [35.6359,139.7345,'🍃 高輪庭園'],[35.6383,139.7341,'⛩️ 泉岳寺'],[35.6353,139.7401,'🍱 Takanawa Soregashi'],[35.6352,139.7396,'☕ BLUE BOTTLE 高輪'],[35.6353,139.7399,'🏙️ 高輪 Gateway'],[35.6580,139.7016,'🌇 SHIBUYA SKY'],[35.6610,139.6987,'🥩 叙々苑']
   ],
   3:[
    [35.6487,140.0357,'🛒 Costco 幕張'],[35.6459,140.0350,'🌊 幕張海濱'],[35.6462,140.0390,'🍰 SATSUKI']
@@ -365,54 +365,72 @@ function dayMapPlaces(di){
  return (places[di]||[]).filter((p,i,a)=>i===a.findIndex(q=>q[0]===p[0]&&q[1]===p[1]));
 }
 function dayMapFocus(di){
- const f={0:['東京站・丸之內',35.6818,139.7650],1:['皇居・東京站',35.6830,139.7590],2:['高輪・品川',35.6380,139.7338],3:['幕張海濱',35.6470,140.0360],4:['押上・東京站',35.6800,139.8000]};
+ const f={0:['成田 → 押上 → 東京站',35.6814,139.7658],1:['皇居・東京站・丸之內',35.6830,139.7605],2:['高輪・泉岳寺・高輪 Gateway',35.6380,139.7365],3:['幕張・海濱・幕張豐砂',35.6470,140.0360],4:['押上 → 東京站 → 成田',35.7100,139.8100]};
  return f[di]||['今日路線',35.6814,139.7658];
 }
 function shortPlace(name){return name.replace(/^[^\u4e00-\u9fffA-Za-z0-9]+/,'').replace(/（.*?）/g,'').replace(/／.*/,'').trim().slice(0,12)}
-function routeIcon(name){
- const n=name.toLowerCase();
- if(n.includes('餐')||n.includes('sushi')||n.includes('sukiyaki')||n.includes('叙々苑')) return '🍽️';
- if(n.includes('咖')||n.includes('higashiya')||n.includes('satsuki')) return '☕';
- if(n.includes('costco')||n.includes('gransta')||n.includes('kitte')) return '🛍️';
- if(n.includes('飯店')) return '🏨';
- return '●';
+function mapRoads(di,project,w,h){
+ const road=(pts,cls='map-road')=>`<polyline class="${cls}" points="${pts.map(project).map(p=>p.x.toFixed(1)+','+p.y.toFixed(1)).join(' ')}"/>`;
+ const features=[];
+ if(di===1){
+  features.push(`<path class="map-palace" d="M70 35 C130 12 250 14 330 44 L360 92 C300 118 185 116 95 91 Z"/>`);
+  features.push(`<path class="map-moat" d="M55 48 C145 18 250 20 345 52 C370 61 392 74 420 92"/>`);
+  features.push(`<text class="map-area-label" x="155" y="66">皇居</text>`);
+  features.push(`<text class="map-area-label" x="95" y="102">二重橋</text>`);
+  const roads=[[[35.686,139.748],[35.681,139.754],[35.676,139.760],[35.672,139.767]],[[35.689,139.757],[35.684,139.761],[35.680,139.766],[35.675,139.772]],[[35.691,139.766],[35.685,139.768],[35.680,139.769],[35.674,139.770]],[[35.684,139.750],[35.683,139.758],[35.681,139.767],[35.680,139.776]],[[35.678,139.752],[35.679,139.760],[35.681,139.768],[35.685,139.777]]];
+  roads.forEach(r=>features.push(road(r)));
+  features.push(`<text class="map-street" x="505" y="62">丸之內仲通</text><text class="map-street" x="640" y="125">行幸通り</text><text class="map-street" x="740" y="52">大手町</text>`);
+ }else if(di===2){
+  features.push(`<path class="map-park" d="M80 42 C140 22 235 30 285 58 C270 92 210 105 120 92 Z"/>`);
+  features.push(`<path class="map-rail" d="M300 8 L315 112 M328 8 L343 112 M355 8 L370 112"/>`);
+  features.push(`<text class="map-area-label" x="120" y="67">高輪庭園</text><text class="map-area-label" x="300" y="24">高輪 Gateway</text>`);
+  const roads=[[[35.646,139.729],[35.642,139.733],[35.638,139.735],[35.634,139.739]],[[35.642,139.728],[35.637,139.731],[35.632,139.735],[35.628,139.740]],[[35.649,139.738],[35.643,139.739],[35.637,139.740],[35.631,139.741]],[[35.640,139.744],[35.636,139.739],[35.632,139.734]]];
+  roads.forEach(r=>features.push(road(r)));
+  features.push(`<path class="map-long-route" d="M390 80 C470 75 550 55 620 48 C700 40 770 44 850 28"/>`);
+  features.push(`<circle class="map-inset" cx="825" cy="28" r="20"/><text class="map-inset-label" x="808" y="32">澀谷</text>`);
+ }else if(di===3){
+  features.push(`<path class="map-sea" d="M0 0 H900 V34 C790 42 690 25 570 34 C450 42 340 22 210 35 C120 43 60 36 0 45 Z"/>`);
+  features.push(`<path class="map-park" d="M20 50 C150 42 270 50 390 46 L390 108 L20 108 Z"/>`);
+  features.push(`<text class="map-area-label" x="40" y="72">幕張海濱公園</text><text class="map-area-label" x="560" y="28">幕張豐砂</text>`);
+  const roads=[[[35.654,140.030],[35.650,140.034],[35.647,140.036],[35.643,140.039]],[[35.654,140.042],[35.650,140.040],[35.646,140.038],[35.642,140.035]],[[35.650,140.026],[35.648,140.034],[35.648,140.041],[35.648,140.047]],[[35.642,140.028],[35.644,140.035],[35.646,140.042]]];
+  roads.forEach(r=>features.push(road(r)));
+ }else if(di===0||di===4){
+  features.push(`<path class="map-rail" d="M40 82 C220 74 380 70 540 60 C700 50 810 38 870 28"/>`);
+  features.push(`<path class="map-road-light" d="M45 94 C220 90 360 86 520 76 C690 65 790 55 865 44"/>`);
+  features.push(`<text class="map-area-label" x="70" y="62">押上</text><text class="map-area-label" x="390" y="53">東京</text><text class="map-area-label" x="790" y="20">成田</text>`);
+ }
+ return features.join('');
 }
 function initDayMap(di){
  const wrap=document.getElementById('day-map-wrap-'+di); if(!wrap) return;
  const el=document.getElementById('day-map-'+di); if(!el) return;
  const places=dayMapPlaces(di); if(!places.length) return;
  const start=dayMapStart(di), focus=dayMapFocus(di);
- const w=900,h=112,padX=34,padY=22;
+ const w=900,h=210,padX=40,padY=28;
  const nodes=(start?[start]:[]).concat(places);
  const lons=nodes.map(p=>p[1]), lats=nodes.map(p=>p[0]);
  let minLon=Math.min(...lons),maxLon=Math.max(...lons),minLat=Math.min(...lats),maxLat=Math.max(...lats);
- const lonPad=Math.max((maxLon-minLon)*0.10,0.0025),latPad=Math.max((maxLat-minLat)*0.18,0.0025);
+ let lonPad=Math.max((maxLon-minLon)*0.13,0.004),latPad=Math.max((maxLat-minLat)*0.22,0.0025);
+ if(di===2){lonPad=Math.max(lonPad,0.006);latPad=Math.max(latPad,0.004)}
  minLon-=lonPad; maxLon+=lonPad; minLat-=latPad; maxLat+=latPad;
  const lonSpan=Math.max(maxLon-minLon,0.001),latSpan=Math.max(maxLat-minLat,0.001);
- const project=(p)=>({x:padX+(p[1]-minLon)/lonSpan*(w-padX*2),y:h-padY-(p[0]-minLat)/latSpan*(h-padY*2)});
+ const projectCoord=(p)=>({x:padX+(p[1]-minLon)/lonSpan*(w-padX*2),y:h-padY-(p[0]-minLat)/latSpan*(h-padY*2)});
+ const project=(p)=>projectCoord(p);
  const pts=nodes.map((p,i)=>{const q=project(p);return {x:q.x,y:q.y,name:p[2],start:i===0&&!!start,seq:start?i:i+1,lat:p[0],lon:p[1]}});
  const route=pts.map(p=>p.x.toFixed(1)+','+p.y.toFixed(1)).join(' ');
- const bg=`<rect class="route-bg" x="0" y="0" width="${w}" height="${h}" rx="14"/>`;
- const water=`<path class="route-water" d="M0 0 H${w} V18 C760 12 690 30 610 23 C500 14 440 30 360 22 C250 12 130 32 0 22 Z" opacity=".55"/>`;
- const road1=`<path class="route-grid" d="M0 88 C180 66 300 104 450 76 C590 52 720 86 900 56"/>`;
- const road2=`<path class="route-grid" d="M70 112 C130 78 155 38 220 0 M520 112 C555 72 610 42 670 0 M760 112 C790 78 835 44 900 28"/>`;
- const area=`<path class="route-area" d="M0 92 C150 76 260 102 410 88 C560 72 710 98 900 76 V112 H0 Z" opacity=".35"/>`;
- const dots=pts.map((p,i)=>{
-   if(p.start){
-     return `<g><circle class="start-dot" cx="${p.x}" cy="${p.y}" r="8"/><text class="route-num" x="${p.x}" y="${p.y+1}" font-size="8">⌂</text></g>`;
-   }
-   const first=p.seq===1, r=first?22:9;
-   const ring=first?`<circle class="first-ring" cx="${p.x}" cy="${p.y}" r="29"/>`:'';
-   return `<g><a href="${mapsUrl(p.name)}" target="_blank" rel="noopener"><title>${esc(p.name)} · 開啟地圖</title>${ring}<circle class="route-dot${first?' first-dot':''}" cx="${p.x}" cy="${p.y}" r="${r}"/><text class="route-num${first?' first-num':''}" x="${p.x}" y="${p.y+1}">${p.seq}</text></a></g>`;
+ const bg=`<rect class="map-paper" x="0" y="0" width="${w}" height="${h}" rx="18"/>`;
+ const water=di===1?`<path class="map-river" d="M720 0 C750 40 730 78 760 118 C785 150 780 185 805 210 H900 V0 Z"/>`:'';
+ const roads=mapRoads(di,projectCoord,w,h);
+ const compass=`<g class="map-compass"><text x="855" y="24">N</text><path d="M855 30 L849 46 L855 42 L861 46 Z"/></g>`; const scale=`<g class="map-scale"><line x1="730" y1="188" x2="830" y2="188"/><line x1="730" y1="184" x2="730" y2="192"/><line x1="830" y1="184" x2="830" y2="192"/><text x="748" y="180">約 500 m</text></g>`; const dots=pts.map(p=>{
+   if(p.start)return `<g><circle class="map-start" cx="${p.x}" cy="${p.y}" r="10"/><text class="map-start-text" x="${p.x}" y="${p.y+3}">⌂</text><text class="map-label" x="${p.x+14}" y="${p.y-9}">出發</text></g>`;
+   const first=p.seq===1,r=first?25:12,ring=first?`<circle class="map-first-ring" cx="${p.x}" cy="${p.y}" r="34"/>`:'';
+   return `<g><a href="${mapsUrl(p.name)}" target="_blank" rel="noopener"><title>${esc(p.name)} · 開啟地圖</title>${ring}<circle class="map-pin" cx="${p.x}" cy="${p.y}" r="${r}"/><text class="map-num ${first?'big':''}" x="${p.x}" y="${p.y+1}">${p.seq}</text><text class="map-label" x="${p.x+15}" y="${p.y-10}">${esc(shortPlace(p.name))}</text></a></g>`;
  }).join('');
- const chips=places.map((p,i)=>`<a href="${mapsUrl(p[2])}" target="_blank" rel="noopener"><b>${i+1}</b>${esc(shortPlace(p[2]))}</a>`).join('');
- el.innerHTML=`<svg class="simple-route-map" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(focus[0])} 當日地理相對位置圖">${bg}${water}${road1}${road2}${area}<polyline class="route-line-soft" points="${route}"/><polyline class="route-line" points="${route}"/>${dots}</svg>`;
+ el.innerHTML=`<svg class="real-route-map" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(focus[0])} 當日地理相對位置圖">${bg}${water}${roads}${compass}${scale}<polyline class="map-route-soft" points="${route}"/><polyline class="map-route" points="${route}"/>${dots}</svg>`;
  wrap.querySelector('.day-map-start').textContent='出發 · '+(start?start[2]:'');
- wrap.querySelector('.route-map-footer')?.remove();
- wrap.insertAdjacentHTML('beforeend',`<div class="route-map-footer"><span>① 第一站放大 · 點位依實際地理位置</span><a href="${mapsUrl(focus[0])}" target="_blank" rel="noopener">開啟地圖 ↗</a></div>`);
  const old=wrap.nextElementSibling;
- const legend=document.createElement('div');legend.className='route-legend';legend.innerHTML=chips;
- if(old && old.classList.contains('route-legend')) old.replaceWith(legend); else wrap.after(legend);
+ const legend=document.createElement('div');legend.className='route-legend';legend.innerHTML=places.map((p,i)=>`<a href="${mapsUrl(p[2])}" target="_blank" rel="noopener"><b>${i+1}</b>${esc(shortPlace(p[2]))}</a>`).join('')+`<a class="map-open" href="${mapsUrl(focus[0])}" target="_blank" rel="noopener">📍 在 Google Maps 開啟 ↗</a>`;
+ if(old&&old.classList.contains('route-legend'))old.replaceWith(legend);else wrap.after(legend);
 }
 function renderDays(){
  const root=document.getElementById('dayList');
@@ -489,6 +507,37 @@ if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.se
 </script>
 </body></html>
 <style>
+<style id="v20-map-ui">
+/* V20: 真實地理相對位置地圖卡，視覺參考為旅行手帳式區域地圖 */
+.day-route-card{margin:12px 12px 10px!important;padding:10px!important;border:1px solid #ead9d3!important;border-radius:22px!important;background:#fffaf6!important;box-shadow:0 5px 18px rgba(110,76,76,.055)!important}
+.day-route-head{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;margin:0 3px 8px!important}
+.day-route-head strong{font-size:14px!important;letter-spacing:.02em}
+.day-map-start{font-size:10px!important;background:#fff!important;border-color:#ead9d3!important}
+.day-map{height:166px!important;border-radius:17px!important;border:1px solid #eadfd8!important;overflow:hidden!important;background:#fbf8f2!important}
+.real-route-map{width:100%;height:100%;display:block}
+.map-paper{fill:#fbf8f2}
+.map-river{fill:#e8f2f1;opacity:.82}
+.map-palace{fill:#eef2e8;stroke:#d8e2d0;stroke-width:2}
+.map-park{fill:#eaf2e4;stroke:#d9e4d2;stroke-width:1.5}
+.map-moat{fill:none;stroke:#d8ebe8;stroke-width:10;opacity:.9}
+.map-rail{fill:none;stroke:#d8d0cc;stroke-width:6;opacity:.8}
+.map-road{fill:none;stroke:#ddd5d0;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.map-road-light{fill:none;stroke:#eee4de;stroke-width:7;stroke-linecap:round}
+.map-long-route{fill:none;stroke:#d6c2c5;stroke-width:2;stroke-dasharray:5 5}
+.map-sea{fill:#e8f2f2;opacity:.9}
+.map-area-label{font-size:12px;fill:#8f9b8e;font-weight:700}
+.map-street{font-size:11px;fill:#a29490}
+.map-inset{fill:#f3dfe3;stroke:#c78390;stroke-width:2}.map-inset-label{font-size:9px;fill:#76545b;font-weight:800}
+.map-route{fill:none;stroke:#c98292;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.map-route-soft{fill:none;stroke:#fff9f5;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;opacity:.95}
+.map-pin{fill:#fffdf8;stroke:#c87888;stroke-width:3}
+.map-start{fill:#f2e4d5;stroke:#9d8068;stroke-width:2.5}.map-start-text{font-size:9px;fill:#8c6b59;text-anchor:middle;font-weight:800}
+.map-first-ring{fill:#f5dce1;opacity:.65}.map-num{font-size:11px;font-weight:900;fill:#684e55;text-anchor:middle;dominant-baseline:middle}.map-num.big{font-size:18px}.map-compass text{font-size:11px;fill:#6c5a5d;font-weight:900;text-anchor:middle}.map-compass path{fill:#6c5a5d}.map-scale line{stroke:#8f7b77;stroke-width:2}.map-scale text{font-size:9px;fill:#8f7b77}.map-label{font-size:11px;fill:#66575a;font-weight:800;paint-order:stroke;stroke:#fffaf6;stroke-width:4px;stroke-linejoin:round}
+.route-legend{display:flex!important;gap:6px!important;flex-wrap:wrap!important;margin:8px 12px 2px!important}
+.route-legend a{font-size:10px!important;padding:4px 7px!important;background:#fffdf9!important}
+.route-legend b{width:18px!important;height:18px!important;background:#f2dce0!important}.route-legend .map-open{background:#fff3f3!important;border-color:#e7c6cb!important;font-weight:700}
+@media(max-width:620px){.day-route-card{margin:10px 9px 8px!important;padding:9px!important}.day-map{height:156px!important}.route-legend{margin-left:10px!important;margin-right:10px!important}.route-legend a{font-size:9px!important;padding:3px 6px!important}.map-label{font-size:10px}}
+</style>
 /* V19: 真正的五日分區結構，地圖為摘要，時間軸為主角 */
 #dayList{display:block;padding:2px 0 20px}
 #dayList>.day{position:relative;margin:0 0 30px !important;padding:0 !important;border:1px solid var(--line) !important;border-left:4px solid var(--blue) !important;border-radius:0 24px 24px 24px !important;background:rgba(255,253,248,.96) !important;box-shadow:0 8px 22px rgba(120,82,78,.07) !important;overflow:hidden}
