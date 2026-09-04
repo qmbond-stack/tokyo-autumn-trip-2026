@@ -74,9 +74,7 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 }
 </style>
 
-<style id="souvenir-style">
-.souvenir-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.souvenir-panel{border:1px solid var(--line);border-radius:20px;background:#fff;padding:12px}.souvenir-panel h3{margin:0 0 5px;font-size:17px}.souvenir-item{padding:10px 0;border-bottom:1px dashed #dfd3c6}.souvenir-item:last-child{border-bottom:0}.souvenir-item label{display:block;font-size:15px}.souvenir-item input{width:auto;margin-right:5px}.souvenir-item span,.souvenir-item small{display:block;color:#777;font-size:12px;margin-left:25px}.souvenir-item small{margin-top:2px;color:#9a777b}.souvenirs .tip{margin-top:12px}@media(max-width:620px){.souvenir-grid{grid-template-columns:1fr}.souvenir-panel h3{font-size:16px}}
-</style>
+
 
 <style id="shopping-style">
 .shopping-tabs{display:flex;gap:7px;overflow:auto;padding:4px;margin:10px 0;border:1px solid var(--line);border-radius:16px;background:#fff8f5}
@@ -300,42 +298,19 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 <div class="tool-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><input id="banItem" placeholder="輸入想帶回／帶入的物品" style="flex:1;min-width:220px"><button class="btn" type="button" id="checkBan">🔎 開始辨識</button></div>
 <div id="banResult" class="tip" style="display:none;margin-top:10px"></div>
 <div class="trip-links" style="margin-top:8px"><a target="_blank" rel="noopener" href="https://www.customs.go.jp/english/summary/passenger.htm">🇯🇵 日本海關規定</a><a target="_blank" rel="noopener" href="https://www.maff.go.jp/aqs/tetuzuki/product/aq2.html">🥩 日本動物檢疫</a><a target="_blank" rel="noopener" href="https://www.maff.go.jp/pps/j/trip/keikouhin.html">🌱 日本植物檢疫</a><a target="_blank" rel="noopener" href="https://web.customs.gov.tw/">🇹🇼 台灣海關</a></div>
-<div class="souvenirs" id="souvenirs" style="margin-top:18px;padding-top:18px;border-top:2px dashed #ead7d7;">
-<h2>🎁 伴手禮採買｜吃的 × 用的</h2>
-<p class="muted">出入境檢驗看完後，直接接著整理「可以買什麼、怎麼帶、哪一天買」。建議 Day 2、Day 5 集中採買，Day 4 Costco 則負責大型、家庭型戰利品。</p>
-<div class="souvenir-grid">
-  <div class="souvenir-panel">
-    <h3>🍪 吃的｜帶回家最容易成功</h3>
-    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="tokyobanana"> <b>東京ばな奈</b></label><span>經典東京伴手禮，適合分送；常見於東京站、機場。</span><small>推薦度：★★★★★｜注意賞味期限</small></div>
-    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="pressbutter"> <b>PRESS BUTTER SAND</b></label><span>奶油夾心餅乾，外盒好看、方便分裝。</span><small>推薦度：★★★★★｜熱門品項可優先買</small></div>
-    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="cheesefactory"> <b>東京牛奶起司工房</b></label><span>起司餅乾類，鹹甜口味都適合辦公室分享。</span><small>推薦度：★★★★☆｜記得留意保存方式</small></div>
-    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="baumkuchen"> <b>ねんりん家 年輪蛋糕</b></label><span>日式年輪蛋糕，適合家人一起吃。</span><small>推薦度：★★★★☆｜體積較大，別買太早</small></div>
-    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="chocolate"> <b>N.Y.C.SAND／巧克力甜點</b></label><span>適合送親友，但熱門時段可能需要排隊。</span><small>推薦度：★★★★☆｜Day 5 再補貨較安心</small></div>
-  </div>
-  <div class="souvenir-panel">
-    <h3>🧺 用的｜買了真的會用</h3>
-    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="towel"> <b>今治毛巾／日本手巾</b></label><span>輕、好帶、實用度高，長輩也容易用得到。</span><small>推薦度：★★★★★｜可按家人喜好挑顏色</small></div>
-    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="handkerchief"> <b>日本手帕／小方巾</b></label><span>體積小、價格帶多，適合當作多人份小禮物。</span><small>推薦度：★★★★★｜最適合大量分送</small></div>
-    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="stationery"> <b>日本文具</b></label><span>鋼筆、筆記本、貼紙、便利貼等，實用又不占行李。</span><small>推薦度：★★★★☆｜文具控可直接開支線任務</small></div>
-    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="chopsticks"> <b>筷子／小餐具／生活雜貨</b></label><span>適合買一兩組有日本特色的家用品，避免買到太多易碎品。</span><small>推薦度：★★★★☆｜行李箱記得包好</small></div>
-    <div class="souvenir-item"><label><input type="checkbox" data-souvenir="fragrance"> <b>香氛／浴室小物</b></label><span>香氛袋、入浴劑、護手霜等，適合做小份量伴手禮。</span><small>推薦度：★★★★☆｜液體類注意攜帶規定</small></div>
-  </div>
-</div>
-<div class="tip"><b>🛍️ 採買策略</b><br>① Day 2 東京站／丸之內：先買想送人的熱門甜點。<br>② Day 4 Costco：集中處理大包裝、家庭分享品。<br>③ Day 5 押上／東京站：補缺額，最後再買需要賞味期限的新鮮甜點。<br>④ 甜點不要一次買滿，否則行李箱會在東京站開始懷疑人生。</div>
-
 <div class="shopping-zone" id="shoppingZone" style="margin-top:18px;padding-top:18px;border-top:2px dashed #ead7d7;">
-<h2>🛍️ 日本採買清單｜超商夯品 × 吃的 × 穿的 × 用的 × 玩的</h2>
-<p class="muted">可自由新增、修改與勾選。商品可綁定品牌／商品頁，買到後直接帶入旅費記帳。條碼掃描支援裝置原生 BarcodeDetector，若瀏覽器不支援就輸入 JAN／EAN 條碼號碼。</p>
+<h2>🛍️ 日本採買清單｜超商 × 吃 × 穿 × 用 × 玩 × 伴手禮</h2>
+<p class="muted">可自由新增、修改、勾選；伴手禮也統一收進這裡。商品可綁定品牌／商品頁，買到後直接帶入旅費記帳。</p>
 <div class="shopping-tabs" id="shoppingTabs" role="tablist" aria-label="採買分類"></div>
 <div class="shopping-tools">
 <input id="shoppingSearch" placeholder="搜尋商品、品牌、店家…">
 <select id="shoppingBrand"><option value="">全部品牌</option></select>
 </div>
 <div class="barcode-panel">
-<b>📷 刷條碼 → 查商品 → 記帳</b>
-<div class="barcode-row" style="margin-top:8px"><input id="barcodeInput" inputmode="numeric" placeholder="輸入 JAN／EAN，例如 4901234567890"><button class="btn secondary" type="button" id="scanBarcode">📷 掃描</button><button class="btn ghost" type="button" id="lookupBarcode">🔎 查詢</button></div>
+<b>📷 條碼掃描 → 商品資料 → 記帳</b>
+<div class="barcode-row" style="margin-top:8px"><input id="barcodeInput" inputmode="numeric" autocomplete="off" placeholder="輸入 JAN／EAN，例如 4901234567890"><button class="btn secondary" type="button" id="scanBarcode">📷 開啟掃描</button><button class="btn ghost" type="button" id="lookupBarcode">🔎 查詢</button></div>
 <video id="barcodeVideo" class="barcode-video" playsinline muted></video>
-<div class="scan-status" id="barcodeStatus">掃到條碼後會自動帶入商品資料；食品優先嘗試 Open Food Facts，其他商品則提供條碼搜尋。</div>
+<div class="scan-status" id="barcodeStatus">掃描器使用 ZXing，相容性比 iPhone Safari 原生 BarcodeDetector 更好。第一次使用請允許相機；也可直接輸入條碼。</div>
 </div>
 <div id="shoppingList" style="margin-top:10px"></div>
 <div class="shopping-card" style="margin-top:10px">
@@ -371,7 +346,7 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 </div>
 <div class="tip"><b>🧾 與旅費記帳連動</b><br>商品卡按「加入記帳」會把「品牌／商品 × 數量 × 單價」直接送進下方的東京旅費記帳；同一商品買多件會自動算總額。條碼本身只作商品辨識與搜尋，不會把個資上傳。</div>
 </div>
-<div class="tip"><b>🧳 行李分區法</b><br>🎁 食品：集中放一側並保留購買收據／外盒。<br>🧺 小物：用衣物包住易碎品。<br>💧 液體／凝膠：另外裝袋，搭機時依託運與隨身行李規定處理。<br>⚠️ 肉類、部分植物與生鮮食品不要看到「伴手禮」三個字就直接塞進箱子，先用下方的出入境辨識工具確認。</div>
+<div class="tip"><b>🧳 行李分區法</b><br>🎁 食品：集中放一側並保留購買收據／外盒。<br>🧺 小物：用衣物包住易碎品。<br>💧 液體／凝膠：另外裝袋，搭機時依託運與隨身行李規定處理。<br>⚠️ 肉類、部分植物與生鮮食品不要直接塞進箱子，先用上方的出入境辨識工具確認。</div>
 </div>
 </section>
 
@@ -385,6 +360,7 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 <div class="footer">🍁 2026 東京楓旅行手帳 V6.3｜3 girls，一起慢慢走，剛剛好。<br><span class="muted">天氣採東京即時資料；出發日期進入預報範圍後會自動顯示逐日預報。</span></div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@zxing/browser@0.1.5/umd/zxing-browser.min.js"></script>
 <script>
 const trip=new Date('2026-10-26T00:00:00+08:00');
 function tick(){let d=trip-new Date();if(d<0)d=0;document.getElementById('cdD').textContent=Math.floor(d/864e5);document.getElementById('cdH').textContent=String(Math.floor(d%864e5/36e5)).padStart(2,'0');document.getElementById('cdM').textContent=String(Math.floor(d%36e5/6e4)).padStart(2,'0');document.getElementById('cdS').textContent=String(Math.floor(d%6e4/1e3)).padStart(2,'0')}tick();setInterval(tick,1000);
@@ -393,8 +369,6 @@ const tabs=document.querySelectorAll('.nav button');tabs.forEach(b=>b.onclick=()
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){tabs.forEach(b=>b.classList.toggle('active',b.dataset.target===e.target.id))}}),{rootMargin:'-25% 0px -65% 0px'});document.querySelectorAll('section.card[id]').forEach(s=>obs.observe(s));
 
 
-// 伴手禮勾選清單：獨立保存，方便採買時逐項確認。
-document.querySelectorAll('[data-souvenir]').forEach((x)=>{const k='souvenirV1_'+x.dataset.souvenir;x.checked=localStorage.getItem(k)==='1';x.onchange=()=>localStorage.setItem(k,x.checked?'1':'0')});
 function fx(){const j=+document.getElementById('jpy').value||0,r=+document.getElementById('rate').value||0;document.getElementById('twd').textContent='NT$ '+Math.round(j*r).toLocaleString()}document.getElementById('fx').onclick=fx;document.getElementById('jpy').oninput=fx;document.getElementById('rate').oninput=fx;
 
 let expenses=JSON.parse(localStorage.getItem('tokyoExpensesV6')||'[]');
@@ -708,7 +682,34 @@ async function weather(){try{const api='https://api.open-meteo.com/v1/forecast?l
  $('addShoppingItem').onclick=()=>{const name=$('newShopName').value.trim();if(!name){alert('請先輸入商品名稱');return}items.unshift({id:'custom-'+Date.now(),cat:$('newShopCategory').value,brand:$('newShopBrand').value.trim(),name,price:+$('newShopPrice').value||0,qty:Math.max(1,+$('newShopQty').value||1),store:$('newShopStore').value.trim(),barcode:$('newShopBarcode').value.trim(),url:$('newShopUrl').value.trim(),note:$('newShopNote').value.trim(),bought:false});save();['newShopName','newShopBrand','newShopPrice','newShopStore','newShopBarcode','newShopUrl','newShopNote'].forEach(id=>$(id).value='');$('newShopQty').value=1;render()};
  async function lookup(code){code=(code||$('barcodeInput').value).replace(/\D/g,'');if(!code){$('barcodeStatus').textContent='請輸入或掃描 JAN／EAN 條碼。';return} $('barcodeInput').value=code;$('barcodeStatus').textContent='正在查詢條碼商品…';try{const r=await fetch('https://world.openfoodfacts.org/api/v2/product/'+encodeURIComponent(code)+'.json',{cache:'no-store'});const d=await r.json();const p=d.product||{};const name=p.product_name_zh_tw||p.product_name_ja||p.product_name||'';if(name){$('newShopName').value=name;$('newShopBrand').value=p.brands||'';$('newShopCategory').value='吃的';$('newShopBarcode').value=code;$('barcodeStatus').textContent='✅ 找到食品資料：'+name+'。價格與店家請自行填寫。'}else{$('barcodeStatus').innerHTML='🟡 找不到公開商品資料。<a target="_blank" rel="noopener" href="https://www.google.com/search?q='+encodeURIComponent(code)+'">用 Google 搜尋此條碼</a>'}}catch(e){$('barcodeStatus').innerHTML='🟡 查詢服務暫時不可用。<a target="_blank" rel="noopener" href="https://www.google.com/search?q='+encodeURIComponent(code)+'">用 Google 搜尋此條碼</a>'}}
  $('lookupBarcode').onclick=()=>lookup();
- $('scanBarcode').onclick=async()=>{const video=$('barcodeVideo');if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;video.style.display='none';$('scanBarcode').textContent='📷 掃描';return}if(!('BarcodeDetector' in window)){ $('barcodeStatus').textContent='此瀏覽器目前不支援原生條碼掃描，請改用上方輸入框貼上 JAN／EAN 條碼。';return}try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}}});video.srcObject=stream;video.style.display='block';await video.play();$('scanBarcode').textContent='⏹️ 停止';$('barcodeStatus').textContent='請把條碼放進畫面中央…';const formats=await BarcodeDetector.getSupportedFormats();const detector=new BarcodeDetector({formats:formats.filter(f=>['ean_13','ean_8','upc_a','upc_e','code_128','itf'].includes(f))});const loop=async()=>{if(!stream)return;try{const codes=await detector.detect(video);if(codes.length){const code=codes[0].rawValue;stream.getTracks().forEach(t=>t.stop());stream=null;video.style.display='none';$('scanBarcode').textContent='📷 掃描';await lookup(code);return}}catch(e){}requestAnimationFrame(loop)};loop()}catch(e){$('barcodeStatus').textContent='無法開啟相機，請確認相機權限，或直接輸入條碼。'}};
+ $('lookupBarcode').onclick=()=>lookup();
+ let codeReader=null;
+ $('scanBarcode').onclick=async()=>{
+   const video=$('barcodeVideo');
+   if(codeReader){try{codeReader.reset()}catch(e){}codeReader=null;video.style.display='none';$('scanBarcode').textContent='📷 開啟掃描';$('barcodeStatus').textContent='掃描已停止。';return}
+   if(!window.ZXing || !ZXing.BrowserMultiFormatReader){$('barcodeStatus').textContent='掃描器元件尚未載入，請稍候再試；也可以直接輸入 JAN／EAN。';return}
+   if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){$('barcodeStatus').textContent='此環境無法使用相機，請直接輸入 JAN／EAN 條碼。';return}
+   try{
+     codeReader=new ZXing.BrowserMultiFormatReader();
+     video.style.display='block';
+     $('scanBarcode').textContent='⏹️ 停止掃描';
+     $('barcodeStatus').textContent='請允許相機權限，將 JAN／EAN 條碼放在框內，保持手機穩定。';
+     const devices=await ZXing.BrowserCodeReader.listVideoInputDevices();
+     const back=devices.find(d=>/back|rear|environment|後置/i.test(d.label))||devices[devices.length-1];
+     const deviceId=back&&back.deviceId?back.deviceId:undefined;
+     codeReader.decodeFromVideoDevice(deviceId,video,(result,err)=>{
+       if(result){
+         const code=result.getText().replace(/\D/g,'');
+         if(code){
+           try{codeReader.reset()}catch(e){} codeReader=null; video.style.display='none'; $('scanBarcode').textContent='📷 開啟掃描'; lookup(code);
+         }
+       }
+     });
+   }catch(e){
+     try{if(codeReader)codeReader.reset()}catch(x){} codeReader=null; video.style.display='none'; $('scanBarcode').textContent='📷 開啟掃描';
+     $('barcodeStatus').textContent='無法開啟相機。請在瀏覽器允許相機權限，或直接輸入 JAN／EAN。';
+   }
+ };
  render();
 })();
 
