@@ -121,6 +121,21 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 .shopping-center-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:8px 0}
 @media(max-width:620px){.shopping-center-tabs{grid-template-columns:repeat(3,1fr);top:56px}.shopping-summary{grid-template-columns:repeat(3,1fr)}.shopping-center-actions{grid-template-columns:1fr}}
 </style>
+
+<style id="shopping-v3">
+.shopping-center-tabs{position:static!important;display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:7px!important;margin:12px 0 10px!important;padding:5px!important}
+.shopping-center-tab{min-height:42px;font-size:12px!important}
+.shopping-controls{display:grid;grid-template-columns:1fr 150px;gap:8px;margin:8px 0}
+.shopping-brand-menu{display:flex;gap:6px;overflow:auto;padding:4px 0 8px;scrollbar-width:none}
+.shopping-brand-menu::-webkit-scrollbar{display:none}
+.shopping-brand-btn{flex:0 0 auto;border:1px solid #ead9d3;background:#fff;border-radius:999px;padding:6px 10px;color:#725d60;font-size:11px;font-weight:800}
+.shopping-brand-btn.active{background:#f4d9de;border-color:#dfb3bc}
+.hot-box{margin:10px 0 12px;padding:12px;border:1px solid #ead9d3;border-radius:18px;background:linear-gradient(145deg,#fffaf7,#fff4f1)}
+.hot-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}.hot-head strong{font-size:14px}.hot-head small{color:#8a7678;font-size:10px}
+.hot-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.hot-item{border:1px solid #eadfd8;border-radius:14px;background:#fff;padding:9px}.hot-item b{display:block;font-size:13px;line-height:1.35}.hot-item small{display:block;color:#7c6c6e;margin-top:3px;line-height:1.4}.hot-item .hot-action{margin-top:7px;display:flex;gap:5px;align-items:center}.hot-item .hot-action button{border:1px solid #e2c6c9;background:#fff6f7;color:#76565c;border-radius:9px;padding:5px 7px;font-size:10px}.hot-tag{display:inline-block;background:#f8e5e8;border-radius:999px;padding:2px 6px;font-size:9px;color:#805f65;margin-bottom:4px}
+.barcode-panel{margin-top:10px}.barcode-row{display:grid;grid-template-columns:1fr auto;gap:7px}.barcode-row input{min-width:0}.scan-status a{color:#8a5f68}
+@media(max-width:620px){.shopping-controls{grid-template-columns:1fr}.hot-grid{grid-template-columns:1fr}.shopping-center-tabs{grid-template-columns:repeat(3,1fr)!important}}
+</style>
 </head>
 <body>
 <div class="app">
@@ -310,9 +325,9 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 <div class="tool-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><input id="banItem" placeholder="輸入想帶回／帶入的物品" style="flex:1;min-width:220px"><button class="btn" type="button" id="checkBan">🔎 開始辨識</button></div>
 <div id="banResult" class="tip" style="display:none;margin-top:10px"></div>
 <div class="trip-links" style="margin-top:8px"><a target="_blank" rel="noopener" href="https://www.customs.go.jp/english/summary/passenger.htm">🇯🇵 日本海關規定</a><a target="_blank" rel="noopener" href="https://www.maff.go.jp/aqs/tetuzuki/product/aq2.html">🥩 日本動物檢疫</a><a target="_blank" rel="noopener" href="https://www.maff.go.jp/pps/j/trip/keikouhin.html">🌱 日本植物檢疫</a><a target="_blank" rel="noopener" href="https://web.customs.gov.tw/">🇹🇼 台灣海關</a></div>
-<div class="shopping-zone" id="shoppingZone" style="margin-top:18px;padding-top:18px;border-top:2px dashed #ead7d7;">
-<h2>🛍️ 日本採買清單｜超商 × 吃 × 穿 × 用 × 玩 × 伴手禮</h2>
-<p class="muted">可自由新增、修改、勾選；伴手禮也統一收進這裡。商品可綁定品牌／商品頁，買到後直接帶入旅費記帳。</p>
+<div class="shopping-zone" id="shoppingZone">
+<h2>🛍️ 日本採買中心</h2>
+<p class="muted">一頁管理「想買什麼、哪個品牌、最近紅什麼、買了沒有」。伴手禮直接放進「吃的」，不再另開清單。</p>
 <div class="shopping-summary"><div class="shopping-stat"><b id="shopCount">0</b><small>全部品項</small></div><div class="shopping-stat"><b id="shopBought">0</b><small>已買</small></div><div class="shopping-stat"><b id="shopTotal">¥0</b><small>預估總額</small></div></div>
 <div class="shopping-center-tabs" id="shoppingCenterTabs" role="tablist" aria-label="日本採買中心分類">
 <button class="shopping-center-tab active" data-center="all" type="button">🛍️ 全部</button>
@@ -322,21 +337,25 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 <button class="shopping-center-tab" data-center="use" type="button">🧺 用的</button>
 <button class="shopping-center-tab" data-center="play" type="button">🎮 玩的</button>
 </div>
-<div class="shopping-pane active" id="shoppingPane-all">
-<div class="shopping-tools"><input id="shoppingSearch" placeholder="搜尋商品、品牌、店家…"><select id="shoppingBrand"><option value="">全部品牌</option></select></div>
+
+<div class="shopping-controls"><input id="shoppingSearch" placeholder="搜尋商品、品牌、店家…"><select id="shoppingBrand"><option value="">全部品牌</option></select></div>
+<div class="shopping-brand-menu" id="shoppingBrandMenu" aria-label="品牌快速選單"></div>
+<div id="shoppingHot" class="hot-box"></div>
 <div id="shoppingList" style="margin-top:10px"></div>
+
+<div class="barcode-panel">
+  <b>🏷️ 條碼查商品</b>
+  <div class="muted">取消不穩定的相機掃描，改用 JAN／EAN 數字查詢。食品資料若查得到，會直接帶入新增表單。</div>
+  <div class="barcode-row"><input id="barcodeInput" inputmode="numeric" autocomplete="off" placeholder="輸入 8／12／13 位 JAN／EAN 條碼"><button class="btn secondary" type="button" id="lookupBarcode">🔎 查商品</button></div>
+  <div id="barcodeStatus" class="scan-status">也可以直接用 Google Lens 拍商品，再把條碼數字貼到這裡。</div>
 </div>
-<div class="shopping-pane" id="shoppingPane-food"><div class="tip">🍪 <b>吃的／伴手禮</b><br>東京ばな奈、PRESS BUTTER SAND、東京牛奶起司工房等全部集中在這裡。買了直接勾選，不再另外維護「伴手禮清單」。</div></div>
-<div class="shopping-pane" id="shoppingPane-convenience"><div class="tip">🏪 <b>超商夯品</b><br>7-Eleven、FamilyMart、LAWSON 的季節限定品，適合 Day 5 最後補貨。</div></div>
-<div class="shopping-pane" id="shoppingPane-wear"><div class="tip">👕 <b>穿的</b><br>鞋、衣服、帽子與配件集中管理，尺寸／顏色可寫在備註。</div></div>
-<div class="shopping-pane" id="shoppingPane-use"><div class="tip">🧺 <b>用的</b><br>無印、LOFT、今治毛巾等生活用品，輕量、實用優先。</div></div>
-<div class="shopping-pane" id="shoppingPane-play"><div class="tip">🎮 <b>玩的</b><br>Pokemon、Nintendo 與其他限定周邊，看到喜歡的先記，不必當場決定。</div></div>
+
 <div class="shopping-card" style="margin-top:10px">
-<div class="shopping-card-head"><div><h4>✏️ 新增採買</h4><div class="shopping-brand">只有真的需要時才展開填寫</div></div></div>
+<div class="shopping-card-head"><div><h4>✏️ 新增採買</h4><div class="shopping-brand">手動加入願望清單／現場看到想買的東西</div></div></div>
 <div class="shopping-form"><input id="newShopName" placeholder="商品名稱"><input id="newShopBrand" placeholder="品牌"><select id="newShopCategory"><option>超商夯品</option><option>吃的</option><option>穿的</option><option>用的</option><option>玩的</option></select><input id="newShopPrice" type="number" inputmode="numeric" placeholder="單價 ¥"><input id="newShopQty" type="number" inputmode="numeric" min="1" value="1" placeholder="數量"><input id="newShopStore" placeholder="店家"><input id="newShopBarcode" inputmode="numeric" placeholder="JAN／EAN"><input id="newShopUrl" class="full" type="url" placeholder="商品頁 URL（可留白）"><input id="newShopNote" class="full" placeholder="備註：送誰／尺寸／顏色／賞味期限"></div><button class="btn" type="button" id="addShoppingItem" style="margin-top:8px">＋ 加入採買清單</button>
 </div>
 <div class="shopping-card"><b>🔗 常用品牌／店家</b><div class="brand-links"><a target="_blank" rel="noopener" href="https://www.sej.co.jp/">7-Eleven Japan</a><a target="_blank" rel="noopener" href="https://www.family.co.jp/">FamilyMart</a><a target="_blank" rel="noopener" href="https://www.lawson.co.jp/">LAWSON</a><a target="_blank" rel="noopener" href="https://www.beams.co.jp/">BEAMS</a><a target="_blank" rel="noopener" href="https://www.muji.com/jp/ja/store">無印良品</a><a target="_blank" rel="noopener" href="https://www.loft.co.jp/">LOFT</a></div></div>
-<div class="tip"><b>🧾 與旅費記帳連動</b><br>商品卡按「加入記帳」會把「品牌／商品 × 數量 × 單價」直接送進下方的東京旅費記帳；同一商品買多件會自動算總額。條碼本身只作商品辨識與搜尋，不會把個資上傳。</div>
+<div class="tip"><b>🧾 與旅費記帳連動</b><br>商品卡按「加入記帳」會把品牌／商品 × 數量 × 單價直接送進東京旅費記帳。</div>
 </div>
 <div class="tip"><b>🧳 行李分區法</b><br>🎁 食品：集中放一側並保留購買收據／外盒。<br>🧺 小物：用衣物包住易碎品。<br>💧 液體／凝膠：另外裝袋，搭機時依託運與隨身行李規定處理。<br>⚠️ 肉類、部分植物與生鮮食品不要直接塞進箱子，先用上方的出入境辨識工具確認。</div>
 </div>
@@ -635,47 +654,81 @@ async function weather(){try{const api='https://api.open-meteo.com/v1/forecast?l
 
 
 
-// 採買清單：可編輯商品、品牌、分類、條碼與商品頁，並與旅費記帳連動。
+// 日本採買中心：分類分頁＋品牌快速選單＋近期熱門商品＋願望清單
 (function(){
  const KEY='tokyoShoppingV1';
  const defaults=[
-  ['超商夯品','7-Eleven','金之漢堡／季節限定新品',298,1,'7-Eleven Japan','','便利商店限定，看到喜歡的先拍照'],
-  ['超商夯品','FamilyMart','FamilyMart 季節甜點／限定麵包',250,1,'FamilyMart','','冷藏品注意賞味期限'],
-  ['超商夯品','LAWSON','Uchi Café 季節甜點',280,1,'LAWSON','','適合 Day 5 最後補貨'],
-  ['吃的','東京ばな奈','東京ばな奈',1200,1,'東京站／成田','','送人經典款'],
-  ['吃的','PRESS BUTTER SAND','奶油夾心餅乾',1500,1,'東京站','','熱門品先買'],
-  ['吃的','東京牛奶起司工房','起司餅乾',1500,1,'東京站／機場','','辦公室分享'],
+  ['超商夯品','7-Eleven','金之漢堡／季節限定新品',298,1,'7-Eleven Japan','','便利商店限定'],
+  ['超商夯品','FamilyMart','極旨 黒豚まん',250,1,'FamilyMart','','2026/9/1 起售，近期話題品'],
+  ['超商夯品','LAWSON','モッチュ ブルーベリー味',171,1,'LAWSON','','2026/9/1 LAWSON限定'],
+  ['吃的','東京ばな奈','東京ばな奈「見ぃつけたっ」',1200,1,'東京站／成田','','東京站近期人氣土產'],
+  ['吃的','PRESS BUTTER SAND','バターサンド〈栗〉',1500,1,'東京站／百貨','','2026/9/1 秋季更新'],
+  ['吃的','シュガーバターの木','シュガーバターサンドの木',1500,1,'東京站','','東京站人氣土產'],
+  ['穿的','UNITED ARROWS','半袖ニット／初秋單品',15000,1,'UNITED ARROWS','','2026/9/3 秋裝推薦'],
+  ['穿的','BEAMS','秋季服飾／帽款',12000,1,'BEAMS','','東京逛街可看'],
   ['穿的','Onitsuka Tiger','Mexico 66／旅行鞋款',18000,1,'品牌店','','先記尺寸與顏色'],
-  ['穿的','BEAMS','秋季服飾／帽款',12000,1,'BEAMS','','可貼商品頁追蹤'],
-  ['穿的','UNITED ARROWS','秋季外套／配件',15000,1,'UNITED ARROWS','',''],
-  ['用的','無印良品','旅行收納／生活雜貨',3000,1,'無印良品','',''],
-  ['用的','LOFT','文具／生活雜貨',2500,1,'LOFT','',''],
-  ['用的','今治毛巾','毛巾／手巾',1800,1,'東京站／百貨','',''],
-  ['玩的','Nintendo','Switch／遊戲周邊',8000,1,'家電量販／商店','','注意電壓與版本'],
-  ['玩的','Pokemon Center','寶可夢限定周邊',3000,1,'Pokemon Center','','限定品可列入願望清單']
+  ['用的','無印良品','季節限定 秋ブレンド咖啡',790,1,'無印良品','','2026/9月上旬新商品'],
+  ['用的','無印良品','撥水 Ripstop 肩背包',3990,1,'無印良品','','2026/9月中旬預定'],
+  ['用的','LOFT','秋季文具／生活雜貨',2500,1,'LOFT','','旅行中順手逛'],
+  ['玩的','Pokemon Center','Pokémon Timeless Adventure「ねむる」系列',3000,1,'Pokemon Center','','2026/9/5 上架'],
+  ['玩的','Nintendo','Switch／遊戲周邊',8000,1,'家電量販／商店','','注意電壓與版本']
  ].map((x,i)=>({id:'seed-'+i,cat:x[0],brand:x[1],name:x[2],price:x[3],qty:x[4],store:x[5],barcode:x[6],note:x[7],url:'',bought:false}));
  let items=[];try{items=JSON.parse(localStorage.getItem(KEY)||'null')||defaults}catch(e){items=defaults}
- let activeCat='全部', stream=null;
+ let activeCat='全部';
  const $=id=>document.getElementById(id);
+ const catMap={all:'全部',food:'吃的',convenience:'超商夯品',wear:'穿的',use:'用的',play:'玩的'};
+ const catLabel={'全部':'🛍️ 全部','超商夯品':'🏪 超商','吃的':'🍪 吃的','穿的':'👕 穿的','用的':'🧺 用的','玩的':'🎮 玩的'};
+ const hot={
+  '全部':[
+   ['🍰','PRESS BUTTER SAND','バターサンド〈栗〉','吃的','2026/9/1 秋季新品更新'],
+   ['🏪','FamilyMart','極旨 黒豚まん','超商夯品','2026/9/1 新發售'],
+   ['🎮','Pokemon Center','Pokémon Timeless Adventure「ねむる」','玩的','2026/9/5 新上架'],
+   ['🧺','無印良品','秋ブレンド咖啡','用的','2026/9月上旬新商品']
+  ],
+  '吃的':[
+   ['🥇','東京ばな奈','東京ばな奈「見ぃつけたっ」','人氣土產','東京站 2026/6 月榜第1'],
+   ['🥈','シュガーバターの木','シュガーバターサンドの木','人氣土產','東京站 2026/6 月榜第2'],
+   ['🌰','PRESS BUTTER SAND','バターサンド〈栗〉','秋季話題','2026/9/1 更新販售']
+  ],
+  '超商夯品':[
+   ['🔥','FamilyMart','極旨 黒豚まん','話題新品','累計9,000萬個，2026/9/1 再販'],
+   ['🫐','LAWSON','モッチュ ブルーベリー味','限定新品','2026/9/1 LAWSON限定'],
+   ['🍙','FamilyMart','日清焼そばU.F.O. ぶっ濃い濃厚そばめし','合作新品','2026/9/1～9/7 新商品']
+  ],
+  '穿的':[
+   ['🧶','UNITED ARROWS','半袖ニット','初秋推薦','2026/9/3 官方秋服推薦'],
+   ['🧥','UNITED ARROWS','秋季外套／長袖','秋季系列','2026 Autumn Collection'],
+   ['👟','Onitsuka Tiger','Mexico 66','旅行鞋','東京逛街可列入試穿清單']
+  ],
+  '用的':[
+   ['☕','無印良品','季節のコーヒー 秋ブレンド','季節限定','2026/9月上旬'],
+   ['👜','無印良品','撥水 リップストップ ショルダーバッグ','新商品','2026/9月中旬預定'],
+   ['🧲','無印良品','ステンレス 壁につける収納 フック','新商品','2026/9月下旬預定']
+  ],
+  '玩的':[
+   ['😴','Pokemon Center','Pokémon Timeless Adventure「ねむる」','限定新品','2026/9/5 上架'],
+   ['🎮','Nintendo','Switch／遊戲周邊','常備清單','日本版／電壓與語言先確認'],
+   ['✨','Pokemon Center','限定壓克力／文具／餅乾','系列周邊','2026/9/5 起']
+  ]
+ };
  function save(){localStorage.setItem(KEY,JSON.stringify(items))}
  function esc2(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
- function cats(){return ['全部','超商夯品','吃的','穿的','用的','玩的']}
- function renderTabs(){const box=$('shoppingTabs');box.innerHTML=cats().map(c=>`<button class="shopping-tab ${c===activeCat?'active':''}" type="button" data-cat="${esc2(c)}">${c==='全部'?'🛍️ 全部':({'超商夯品':'🏪 超商夯品','吃的':'🍪 吃的','穿的':'👕 穿的','用的':'🧺 用的','玩的':'🎮 玩的'}[c])}</button>`).join('');box.querySelectorAll('button').forEach(b=>b.onclick=()=>{activeCat=b.dataset.cat;render()})}
- function renderBrands(){const sel=$('shoppingBrand'),cur=sel.value,brands=[...new Set(items.map(x=>x.brand).filter(Boolean))].sort();sel.innerHTML='<option value="">全部品牌</option>'+brands.map(b=>`<option>${esc2(b)}</option>`).join('');sel.value=brands.includes(cur)?cur:''}
- function render(){renderTabs();renderBrands();const q=$('shoppingSearch').value.trim().toLowerCase(),brand=$('shoppingBrand').value;const arr=items.filter(x=>(activeCat==='全部'||x.cat===activeCat)&&(!brand||x.brand===brand)&&(!q||[x.name,x.brand,x.store,x.note,x.barcode].join(' ').toLowerCase().includes(q)));const box=$('shoppingList');$('shopCount').textContent=items.length;$('shopBought').textContent=items.filter(x=>x.bought).length;$('shopTotal').textContent='¥'+items.reduce((s,x)=>s+(+x.price||0)*(+x.qty||1),0).toLocaleString();if(!arr.length){box.innerHTML='<div class="shopping-empty">找不到符合條件的商品。可以直接在下方新增。🌱</div>';return}box.innerHTML='<div class="shopping-grid">'+arr.map(x=>{const total=(+x.price||0)*(+x.qty||1);return `<div class="shopping-card"><div class="shopping-card-head"><div><h4>${x.bought?'✅ ':''}${esc2(x.name)}</h4><div class="shopping-brand">${esc2(x.brand||'自訂品牌')} · ${esc2(x.cat)}</div></div><span class="shopping-chip">${esc2(x.store||'未指定店家')}</span></div><div class="shopping-meta"><span class="shopping-chip">¥${(+x.price||0).toLocaleString()} × ${+x.qty||1}</span><span class="shopping-chip">合計 ¥${total.toLocaleString()}</span>${x.barcode?`<span class="shopping-chip">JAN ${esc2(x.barcode)}</span>`:''}</div>${x.note?`<div class="muted">${esc2(x.note)}</div>`:''}<div class="shopping-actions">${x.url?`<a class="btn secondary" target="_blank" rel="noopener" href="${esc2(x.url)}">🔗 商品頁</a>`:''}<button class="btn" type="button" data-buy="${x.id}">${x.bought?'↩️ 標回未買':'🛒 標記已買'}</button><button class="btn ghost" type="button" data-exp="${x.id}">🧾 加入記帳</button><button class="btn ghost" type="button" data-edit="${x.id}">✏️ 編輯</button><button class="btn ghost" type="button" data-delshop="${x.id}">🗑️</button></div></div>`}).join('')+'</div>';
+ function renderCenterTabs(){document.querySelectorAll('.shopping-center-tab').forEach(b=>{const active=catMap[b.dataset.center]===activeCat;b.classList.toggle('active',active);b.setAttribute('aria-selected',active?'true':'false')})}
+ function renderBrands(){const brands=[...new Set(items.map(x=>x.brand).filter(Boolean))].sort();const sel=$('shoppingBrand'),cur=sel.value;sel.innerHTML='<option value="">全部品牌</option>'+brands.map(b=>`<option value="${esc2(b)}">${esc2(b)}</option>`).join('');if(brands.includes(cur))sel.value=cur;else sel.value='';const menu=$('shoppingBrandMenu');menu.innerHTML=`<button class="shopping-brand-btn ${!sel.value?'active':''}" data-brand="" type="button">全部品牌</button>`+brands.map(b=>`<button class="shopping-brand-btn ${sel.value===b?'active':''}" data-brand="${esc2(b)}" type="button">${esc2(b)}</button>`).join('');menu.querySelectorAll('button').forEach(b=>b.onclick=()=>{sel.value=b.dataset.brand;render()})}
+ function renderHot(){const title=activeCat==='全部'?'本期最值得先看的 4 個':'本頁近期熱門／新品';const data=hot[activeCat]||[];$('shoppingHot').innerHTML=`<div class="hot-head"><strong>🔥 ${title}</strong><small>更新：2026/9/4</small></div><div class="hot-grid">${data.map((x,i)=>`<div class="hot-item"><span class="hot-tag">${x[0]} ${esc2(x[3])}</span><b>${esc2(x[1])}｜${esc2(x[2])}</b><small>${esc2(x[4])}</small><div class="hot-action"><button type="button" data-hot="${i}">＋加入清單</button></div></div>`).join('')}</div>`; $('shoppingHot').querySelectorAll('[data-hot]').forEach(btn=>btn.onclick=()=>{const x=data[+btn.dataset.hot];const existing=items.find(y=>y.brand===x[1]&&y.name===x[2]);if(existing){existing.bought=false}else{items.unshift({id:'hot-'+Date.now(),cat:(x[5]||activeCat==='全部'?'吃的':activeCat),brand:x[1],name:x[2],price:0,qty:1,store:'',barcode:'',note:x[4],url:'',bought:false})}save();render();btn.textContent='✓ 已加入';setTimeout(()=>btn.textContent='＋加入清單',900)})}
+ function render(){renderCenterTabs();renderBrands();renderHot();const q=$('shoppingSearch').value.trim().toLowerCase(),brand=$('shoppingBrand').value;const arr=items.filter(x=>(activeCat==='全部'||x.cat===activeCat)&&(!brand||x.brand===brand)&&(!q||[x.name,x.brand,x.store,x.note,x.barcode].join(' ').toLowerCase().includes(q)));const box=$('shoppingList');$('shopCount').textContent=items.length;$('shopBought').textContent=items.filter(x=>x.bought).length;$('shopTotal').textContent='¥'+items.reduce((s,x)=>s+(+x.price||0)*(+x.qty||1),0).toLocaleString();if(!arr.length){box.innerHTML='<div class="shopping-empty">這一頁目前沒有符合條件的品項。可以從上方「近期熱門」一鍵加入。🌱</div>';return}box.innerHTML='<div class="shopping-grid">'+arr.map(x=>{const total=(+x.price||0)*(+x.qty||1);return `<div class="shopping-card"><div class="shopping-card-head"><div><h4>${x.bought?'✅ ':''}${esc2(x.name)}</h4><div class="shopping-brand">${esc2(x.brand||'自訂品牌')} · ${esc2(x.cat)}</div></div><span class="shopping-chip">${esc2(x.store||'店家待定')}</span></div><div class="shopping-meta"><span class="shopping-chip">¥${(+x.price||0).toLocaleString()} × ${+x.qty||1}</span><span class="shopping-chip">合計 ¥${total.toLocaleString()}</span>${x.barcode?`<span class="shopping-chip">JAN ${esc2(x.barcode)}</span>`:''}</div>${x.note?`<div class="muted">${esc2(x.note)}</div>`:''}<div class="shopping-actions">${x.url?`<a class="btn secondary" target="_blank" rel="noopener" href="${esc2(x.url)}">🔗 商品頁</a>`:''}<button class="btn" type="button" data-buy="${x.id}">${x.bought?'↩️ 標回未買':'🛒 標記已買'}</button><button class="btn ghost" type="button" data-exp="${x.id}">🧾 加入記帳</button><button class="btn ghost" type="button" data-edit="${x.id}">✏️ 編輯</button><button class="btn ghost" type="button" data-delshop="${x.id}">🗑️</button></div></div>`}).join('')+'</div>';
   box.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{const x=items.find(x=>x.id===b.dataset.buy);x.bought=!x.bought;save();render()});
   box.querySelectorAll('[data-exp]').forEach(b=>b.onclick=()=>{const x=items.find(x=>x.id===b.dataset.exp);const amount=(+x.price||0)*(+x.qty||1);expenses.push({name:`${x.brand?x.brand+' ':''}${x.name} ×${+x.qty||1}`,amount});saveEx();b.textContent='✓ 已記帳';setTimeout(()=>b.textContent='🧾 加入記帳',1000)});
   box.querySelectorAll('[data-delshop]').forEach(b=>b.onclick=()=>{items=items.filter(x=>x.id!==b.dataset.delshop);save();render()});
   box.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>editItem(b.dataset.edit));
  }
  function editItem(id){const x=items.find(y=>y.id===id);if(!x)return;const n=prompt('商品名稱',x.name);if(n===null)return;const p=prompt('單價（日圓）',x.price);if(p===null)return;const q=prompt('數量',x.qty);if(q===null)return;const url=prompt('商品頁 URL（可留白）',x.url||'');if(url===null)return;x.name=n.trim()||x.name;x.price=+p||0;x.qty=Math.max(1,+q||1);x.url=url.trim();save();render()}
- let centerCat='all';
- document.querySelectorAll('.shopping-center-tab').forEach(b=>b.onclick=()=>{centerCat=b.dataset.center;document.querySelectorAll('.shopping-center-tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.shopping-pane').forEach(p=>p.classList.toggle('active',p.id==='shoppingPane-'+centerCat));if(centerCat==='all'){activeCat='全部';render()}else{activeCat=({food:'吃的',convenience:'超商夯品',wear:'穿的',use:'用的',play:'玩的'})[centerCat]||'全部';render()}});
+ document.querySelectorAll('.shopping-center-tab').forEach(b=>b.onclick=()=>{activeCat=catMap[b.dataset.center]||'全部';$('shoppingBrand').value='';$('shoppingSearch').value='';render()});
  $('shoppingSearch').oninput=render;$('shoppingBrand').onchange=render;
  $('addShoppingItem').onclick=()=>{const name=$('newShopName').value.trim();if(!name){alert('請先輸入商品名稱');return}items.unshift({id:'custom-'+Date.now(),cat:$('newShopCategory').value,brand:$('newShopBrand').value.trim(),name,price:+$('newShopPrice').value||0,qty:Math.max(1,+$('newShopQty').value||1),store:$('newShopStore').value.trim(),barcode:$('newShopBarcode').value.trim(),url:$('newShopUrl').value.trim(),note:$('newShopNote').value.trim(),bought:false});save();['newShopName','newShopBrand','newShopPrice','newShopStore','newShopBarcode','newShopUrl','newShopNote'].forEach(id=>$(id).value='');$('newShopQty').value=1;render()};
- async function lookup(code){code=(code||$('barcodeInput').value).replace(/\D/g,'');if(!code){$('barcodeStatus').textContent='請輸入或掃描 JAN／EAN 條碼。';return} $('barcodeInput').value=code;$('barcodeStatus').textContent='正在查詢條碼商品…';try{const r=await fetch('https://world.openfoodfacts.org/api/v2/product/'+encodeURIComponent(code)+'.json',{cache:'no-store'});const d=await r.json();const p=d.product||{};const name=p.product_name_zh_tw||p.product_name_ja||p.product_name||'';if(name){$('newShopName').value=name;$('newShopBrand').value=p.brands||'';$('newShopCategory').value='吃的';$('newShopBarcode').value=code;$('barcodeStatus').textContent='✅ 找到食品資料：'+name+'。價格與店家請自行填寫。'}else{$('barcodeStatus').innerHTML='🟡 找不到公開商品資料。<a target="_blank" rel="noopener" href="https://www.google.com/search?q='+encodeURIComponent(code)+'">用 Google 搜尋此條碼</a>'}}catch(e){$('barcodeStatus').innerHTML='🟡 查詢服務暫時不可用。<a target="_blank" rel="noopener" href="https://www.google.com/search?q='+encodeURIComponent(code)+'">用 Google 搜尋此條碼</a>'}}
+ async function lookup(code){code=(code||$('barcodeInput').value).replace(/\D/g,'');if(!code){$('barcodeStatus').textContent='請輸入 JAN／EAN 條碼。';return} $('barcodeInput').value=code;$('barcodeStatus').textContent='正在查詢公開商品資料…';try{const r=await fetch('https://world.openfoodfacts.org/api/v2/product/'+encodeURIComponent(code)+'.json',{cache:'no-store'});const d=await r.json();const p=d.product||{};const name=p.product_name_zh_tw||p.product_name_ja||p.product_name||'';if(name){$('newShopName').value=name;$('newShopBrand').value=p.brands||'';$('newShopCategory').value='吃的';$('newShopBarcode').value=code;$('barcodeStatus').textContent='✅ 找到：'+name+'。價格與店家請自行填寫。'}else{$('barcodeStatus').innerHTML='🟡 找不到公開資料。<a target="_blank" rel="noopener" href="https://www.google.com/search?q='+encodeURIComponent(code)+'">用 Google 搜尋此條碼</a>'}}catch(e){$('barcodeStatus').innerHTML='🟡 查詢服務暫時不可用。<a target="_blank" rel="noopener" href="https://www.google.com/search?q='+encodeURIComponent(code)+'">用 Google 搜尋此條碼</a>'}}
  $('lookupBarcode').onclick=()=>lookup();
- $('lookupBarcode').onclick=()=>lookup();
+ $('barcodeInput').addEventListener('keydown',e=>{if(e.key==='Enter')lookup()});
  render();
 })();
 
