@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#e7a9b3">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="2026 東京楓">
+<link rel="manifest" href="manifest.webmanifest">
+<title>🍁 2026 東京楓｜五天四夜旅行手帳</title>
+<style>
+:root{--ink:#51494b;--paper:#fffaf8;--cream:#fff1ed;--blue:#e7a9b3;--blue2:#f9dfe3;--orange:#e9a36f;--green:#a9c3a4;--pink:#e6b5c2;--line:#ead4ce;--shadow:0 12px 30px #8d666617}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif;background:radial-gradient(circle at 12% 8%,#ffe8ed 0 7%,transparent 25%),radial-gradient(circle at 92% 16%,#fff0df 0 6%,transparent 22%),linear-gradient(#fff8f7,#fff7f1 45%,#fffaf5);line-height:1.6}
+button,input,textarea{font:inherit}button{cursor:pointer}.app{max-width:780px;margin:auto;padding-bottom:100px}
+.hero{margin:12px;border:1px solid #dfd2c2;border-radius:30px;overflow:hidden;background:var(--paper);box-shadow:var(--shadow)}
+.hero img{display:block;width:100%;max-height:440px;object-fit:cover;object-position:center;filter:saturate(.96) contrast(.98)}
+.hero-body{padding:18px 18px 20px;text-align:center}.eyebrow{display:inline-block;padding:5px 12px;border-radius:999px;background:#fbe7ea;font-size:13px}
+h1{font-size:30px;line-height:1.25;margin:10px 0 5px}.subtitle{margin:0 0 15px;color:#6d7475}
+.count{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.count div{background:#fff;border:1px solid var(--line);border-radius:17px;padding:8px 3px}.count b{display:block;font-size:22px}.count small{font-size:11px}
+.nav{position:sticky;top:0;z-index:20;padding:8px 10px;background:#fffaf1eF;backdrop-filter:blur(12px);display:flex;gap:7px;overflow:auto;border-bottom:1px solid #eadfd0}.nav button{white-space:nowrap;border:1px solid var(--line);background:#fffdf9;border-radius:999px;padding:8px 12px;color:var(--ink)}.nav button.active{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 4px 12px #d88d9b33}
+section.card{margin:12px;padding:17px;border:1px solid var(--line);border-radius:26px;background:#fffdf8;box-shadow:var(--shadow)}section.card h2{margin:0 0 5px;font-size:22px}.muted{color:#777;font-size:13px}
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.info{background:var(--cream);border-radius:17px;padding:12px}.info strong{display:block}
+.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.tool{padding:14px;border:1px solid var(--line);border-radius:20px;background:#fff}
+input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-radius:12px;padding:9px;margin:4px 0 7px}textarea{min-height:90px;resize:vertical}.btn{border:0;border-radius:12px;padding:9px 12px;background:var(--orange);color:#fff}.btn.secondary{background:var(--blue)}.btn.ghost{background:#f2eee7;color:var(--ink)}
+.fx-result{font-size:22px;font-weight:800;margin-top:5px}.expense-list{list-style:none;margin:8px 0;padding:0}.expense-list li{display:flex;gap:8px;align-items:center;border-bottom:1px dashed #dfd3c6;padding:7px 0}.expense-list li span:first-child{flex:1}.del{border:0;background:#f3e7e2;border-radius:9px;padding:3px 8px}
+.day{border-left:5px solid var(--blue);padding-left:14px;margin:15px 0 24px}.day:nth-child(2){border-color:var(--orange)}.day:nth-child(3){border-color:var(--green)}.day:nth-child(4){border-color:var(--pink)}.day:nth-child(5){border-color:#9fa9cf}
+.day-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:12px 0 14px;padding:4px}.day-tabs button{min-width:0;border:1px solid var(--line);background:#fffdf9;color:var(--ink);border-radius:15px;padding:9px 4px;font-weight:800;font-size:12px;line-height:1.25}.day-tabs button span{display:block;font-size:10px;font-weight:600;color:#927d7d;margin-top:2px}.day-tabs button.active{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 5px 13px #d88d9b33}.day-tabs button.active span{color:#fff}.day-tabs button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}.day.tab-hidden{display:none}
+@media(max-width:520px){.day-tabs{gap:5px}.day-tabs button{padding:8px 2px;font-size:11px}.day-tabs button span{font-size:9px}}
+.day-head{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.day-map-wrap{margin:4px 0 8px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,#fffaf7,#fdf7f1);padding:9px;box-shadow:0 5px 14px #8d66660a}.day-map-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 2px 8px}.day-map-top strong{font-size:13px}.day-map-start{font-size:10px;color:#8b7374;background:#fff;border:1px solid #ead9d3;border-radius:999px;padding:4px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62%}.day-map{height:100px;border-radius:15px;overflow:hidden;border:1px solid #eadfd8;background:#fbf8f4;position:relative}.day-map-note{font-size:10px;color:#8f7b77;margin:0 2px 8px}.simple-route-map{width:100%;height:100%;display:block}.route-bg{fill:#fbf8f4}.route-water{fill:#eaf3f2}.route-park{fill:#edf3ea}.route-area{fill:#f7eee9;stroke:#eadbd4;stroke-width:1}.route-grid{fill:none;stroke:#eee4de;stroke-width:1}.route-line{fill:none;stroke:#c98392;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}.route-line-soft{fill:none;stroke:#d9b0b7;stroke-width:2;stroke-linecap:round;stroke-dasharray:5 6}.route-dot{fill:#fffdf8;stroke:#b96f82;stroke-width:2.5}.start-dot{fill:#f4e7d8;stroke:#9b7b62;stroke-width:2.5}.first-dot{stroke-width:3}.first-ring{fill:#f9e1e5;opacity:.75}.first-num{font-size:18px}.route-num{font-size:11px;font-weight:800;fill:#684e55;text-anchor:middle;dominant-baseline:middle}.route-label{font-size:10px;fill:#6d5a5d;font-weight:600}.route-mini{font-size:8.5px;fill:#9a8582}.route-area-label{font-size:9px;fill:#b09a95}.route-map-footer{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:7px 2px 0;font-size:9.5px;color:#8a7375}.route-map-footer span{white-space:nowrap}.route-map-footer a{color:#8a5f68;text-decoration:none;background:#fff;border:1px solid #ead9d3;border-radius:999px;padding:4px 8px}.map-label-leader{stroke:#b98b92;stroke-width:1;stroke-dasharray:3 3;opacity:.7}.route-legend{display:flex;gap:5px;flex-wrap:wrap;margin:0 0 13px}.route-legend a{text-decoration:none;color:#6d595d;background:#fffdf8;border:1px solid #ead9d3;border-radius:999px;padding:4px 7px;font-size:10px}.route-legend b{display:inline-grid;place-items:center;width:17px;height:17px;border-radius:50%;background:#f2dce0;margin-right:4px}.day h3{margin:0;font-size:18px;letter-spacing:.01em}.badge{background:#eef4f2;border-radius:999px;padding:3px 8px;font-size:12px}
+.item{display:grid;grid-template-columns:62px 1fr;gap:10px;padding:12px 0;border-bottom:1px dashed #dfd3c6}.time{font-weight:800}.item-title{font-weight:700}.item small{display:block;color:#777}.check{margin-top:7px}.check label{font-size:13px}.check input{width:auto;margin-right:5px}
+.weather{background:linear-gradient(145deg,#fff0f2,#fff6e8)}.weather-now{display:flex;align-items:center;gap:12px;padding:12px;border-radius:18px;background:#ffffffaa;margin-bottom:10px}.weather-icon{font-size:44px}.weather-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.weather-day{background:#fffdf8;border:1px solid var(--line);border-radius:15px;padding:9px;text-align:center;font-size:12px}.weather-day .wi{font-size:25px}.weather-note{font-size:12px;color:#6d7475}
+.pack label{display:block;padding:8px 0;border-bottom:1px dashed #ddd1c3}.pack input{width:auto;margin-right:7px}.progress{height:10px;background:#eee5d9;border-radius:99px;overflow:hidden;margin:8px 0}.bar{height:100%;width:0;background:var(--green);transition:.25s}
+.mapgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.mapgrid a{text-decoration:none;color:var(--ink);background:#f1f6f3;border:1px solid #d8e4df;border-radius:14px;padding:10px}
+.tip{padding:10px 12px;background:#fff0e8;border-radius:15px;margin:8px 0;border:1px solid #f0d8cc}.flight-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.flight{border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,#fff,#fff4f2);padding:14px}.flight .label{font-size:12px;color:#8b7777;margin-bottom:4px}.flight .route{font-size:18px;font-weight:800;margin:4px 0 8px}.flight .route span{font-weight:500;color:#a17b7b}.flight .meta{font-size:13px;line-height:1.7}.flight .note{margin-top:8px;padding-top:8px;border-top:1px dashed #dfd3c6;color:#777;font-size:12px}.flight-status{display:inline-block;text-decoration:none;margin-top:10px;width:100%;text-align:center}.flight-live{margin-top:12px;padding:12px 14px;border-radius:17px;background:#f4f7f1;border:1px solid #dbe7d6}.flight-live strong{display:block;margin-bottom:3px}.footer{text-align:center;color:#777;font-size:12px;padding:18px}
+@media(max-width:620px){.app{width:100%}.hero{margin:8px;border-radius:25px}.hero img{max-height:380px}.tools{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}.flight-grid{grid-template-columns:1fr}.weather-grid{grid-template-columns:repeat(2,1fr)}.count b{font-size:19px}.item{grid-template-columns:58px 1fr}}
+
+.nex-live{margin-top:14px;padding:16px;border-radius:18px;background:rgba(255,248,248,.88);border:1px solid rgba(188,120,130,.18);box-shadow:0 6px 18px rgba(90,55,60,.06)}
+.nex-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.nex-card{padding:12px;border-radius:14px;background:#fff;border:1px solid rgba(188,120,130,.14);line-height:1.65}
+.nex-card strong{display:block;margin-top:4px;font-size:18px}
+.nex-card small{display:block;color:#7b6b6d;margin-top:4px}
+.nex-status{margin:10px 0;padding:11px 12px;border-radius:13px;background:#fffdf9;line-height:1.6}
+.status-dot{color:#55a36b}
+@media(max-width:620px){.nex-grid{grid-template-columns:1fr}}
+.nav{flex-wrap:wrap}.nav button{white-space:nowrap}.btn{display:inline-block;text-decoration:none;box-sizing:border-box}.mapgrid a{box-sizing:border-box}
+
+.translate-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.translate-box{padding:14px;border:1px solid var(--line);border-radius:20px;background:#fff}.translate-box h3{margin:0 0 5px}.phrase-list{display:grid;gap:7px;margin-top:9px}.phrase{border:1px solid #ead8d1;background:#fff8f5;border-radius:14px;padding:10px;text-align:left}.phrase b{display:block;font-size:16px}.phrase small{display:block;color:#777;margin-top:2px}.translate-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.translate-actions a{flex:1;min-width:140px;text-align:center;text-decoration:none}.name-card{margin-top:10px;padding:18px;border-radius:18px;background:#fff4ef;border:1px dashed #d9a69c;text-align:center}.name-card .jp{font-size:25px;font-weight:900;letter-spacing:.04em}.name-card .zh{font-size:14px;color:#777;margin-top:3px}.translate-note{padding:10px 12px;background:#f4f7f1;border-radius:15px;margin-top:10px;border:1px solid #dbe7d6;font-size:13px}
+@media(max-width:620px){.translate-grid{grid-template-columns:1fr}}
+
+.day{position:relative}.day-items{display:block}.day.collapsed .day-items{display:none}.day.collapsed{padding:8px 10px}.day.collapsed .day-head{gap:5px;min-height:30px}.day.collapsed .day-head h3{font-size:16px;font-weight:700;letter-spacing:.01em}.day.collapsed .day-toggle{font-size:17px;padding:2px 5px}.day-toggle{border:0;background:transparent;color:var(--ink);padding:4px 6px;border-radius:10px;font-size:20px;line-height:1}.day-toggle:hover{background:#fff0e8}.day-actions{display:flex;align-items:center;gap:5px;flex-shrink:0}.edit-day{border:1px solid var(--line);background:#fff8f5;color:var(--ink);border-radius:10px;padding:5px 9px;font-size:12px}.day.editing{background:#fffaf7;padding:10px 10px 10px 14px;border-radius:18px}.day.editing .item{grid-template-columns:76px 1fr;align-items:start}.day-edit-grid{display:grid;grid-template-columns:76px 1fr;gap:10px;width:100%}.day-edit-grid input,.day-edit-grid textarea{margin:0}.day-edit-grid textarea{min-height:54px}.edit-controls{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 2px}.add-item{border:1px dashed #d9b9ad;background:#fff8f5;color:var(--ink);border-radius:11px;padding:7px 10px}.save-day{border:0;background:var(--green);color:#fff;border-radius:11px;padding:7px 12px}.cancel-day{border:0;background:#f0e8e3;color:var(--ink);border-radius:11px;padding:7px 12px}.remove-item{border:0;background:#f6e5e1;color:#9a5e5e;border-radius:9px;padding:4px 7px;font-size:12px;margin-top:5px}.item.edit-row{display:grid;grid-template-columns:76px 1fr;gap:10px;padding:10px 0;border-bottom:1px dashed #dfd3c6}.item.edit-row .edit-content{display:grid;grid-template-columns:1fr 1fr;gap:6px}.item.edit-row .edit-content input:last-of-type{grid-column:1/-1}.edit-hint{font-size:12px;color:#8a7774;margin:4px 0 8px}@media(max-width:620px){.day-edit-grid,.item.edit-row{grid-template-columns:62px 1fr}.item.edit-row .edit-content{grid-template-columns:1fr}.item.edit-row .edit-content input:last-of-type{grid-column:auto}}
+
+
+.item-main{min-width:0}.item-place{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.item-title.toggle-info{cursor:pointer;display:inline-flex;align-items:center;gap:5px}.item-title.toggle-info:after{content:'⌄';font-size:13px;font-weight:500;opacity:.6;transition:.2s}.item.expanded .item-title.toggle-info:after{transform:rotate(180deg)}.item-info-drawer{display:none;margin-top:7px;padding:7px 0 1px;border-top:1px dotted #eadfd8}.item.expanded .item-info-drawer{display:block}.item-info-label{font-size:10px;color:#9a8582;margin-bottom:4px}.item-info-drawer .trip-links{margin-top:0}.item-info-drawer .trip-links a{font-size:12px}.item-hint{display:none}
+
+.trip-links{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.trip-links a{display:inline-flex;align-items:center;gap:4px;padding:5px 9px;border-radius:999px;background:#fff7f8;border:1px solid #ead5d8;color:#6d4d52;text-decoration:none;font-size:12px}.trip-links a:hover{background:#f9edef}.trip-links a.primary{background:#f8e9ec}.collapsed .day-head{min-height:48px}.collapsed .day-head h3{font-size:15px;margin:0;font-weight:700}
+</style>
+<style id="v17-cleanup">
+/* V17: 五日一致的資訊分層與明確日與日斷點 */
+.day{margin-bottom:42px !important;padding-bottom:18px !important;}
+.day + .day{margin-top:0 !important;padding-top:20px !important;border-top:1px solid #eadfd8 !important;}
+.day-head{margin-bottom:12px !important;}
+.day-map-wrap{margin-bottom:14px !important;}
+.item{padding:11px 0 !important;}
+.item-hint{display:none !important;}
+.item-info-drawer{display:none !important;}
+.item.expanded .item-info-drawer{display:block !important;}
+.item:last-child{padding-bottom:12px !important;}
+@media(max-width:620px){
+  .day{margin-bottom:38px !important;padding:12px 10px 18px !important;}
+  .day + .day{margin-top:0 !important;padding-top:22px !important;}
+  .day-head{margin-bottom:11px !important;}
+  .day-map-wrap{margin-bottom:14px !important;}
+  .item{padding:12px 0 !important;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hero">
+  <img src="tokyo-autumn.png" alt="2026 東京楓秋日旅行手帳插畫">
+  <div class="hero-body">
+    <span class="eyebrow">🍁 2026 東京楓・3 girls 秋日小旅行</span>
+    <h1>2026 東京楓<br>5 天 4 夜旅行手帳</h1>
+    <p class="subtitle">10/26（一）～ 10/30（五）｜一起把東京走成一頁頁的回憶</p>
+    <div class="count" aria-label="出發倒數">
+      <div><b id="cdD">--</b><small>天</small></div><div><b id="cdH">--</b><small>小時</small></div><div><b id="cdM">--</b><small>分鐘</small></div><div><b id="cdS">--</b><small>秒</small></div>
+    </div>
+  </div>
+</header>
+
+<nav class="nav" id="nav">
+<button class="active" data-target="overview">🌸總覽</button><button data-target="flights">✈️航班</button><button data-target="days">🗓️五日</button><button data-target="weather">🌦️天氣</button><button data-target="tools">💴工具</button><button data-target="maps">🗺️地圖</button><button data-target="food">🍽️美食</button><button data-target="translate">🗣️翻譯</button><button data-target="vjw">🛂VJW</button><button data-target="pack">🎒打包</button>
+</nav>
+
+<section class="card" id="overview">
+<h2>🌸 旅程小檔案</h2>
+<div class="info-grid">
+<div class="info"><strong>✈️ 航班</strong>去程 JX314｜台中→成田｜13:25 抵達 T2<br>回程 JX315｜成田→台中｜14:25 起飛</div>
+<div class="info"><strong>🏨 住宿</strong>京成里士滿飯店東京押上<br>Keisei Richmond Hotel Tokyo Oshiage｜全程 4 晚</div>
+<div class="info"><strong>🌸 成員</strong>3 girls</div>
+<div class="info"><strong>🚆 旅行節奏</strong>盡量直達、少轉乘<br>留時間散步、拍照、喝咖啡</div>
+</div>
+<div class="tip">💡 <b>今日旅行哲學：</b>不趕行程，讓長輩舒服、大家開心，才是這趟旅行的隱藏主線。</div>
+</section>
+
+<section class="card" id="flights">
+<h2>✈️ 航班資訊</h2>
+<p class="muted">已依目前行程確認為台中 RMQ ↔ 東京成田 NRT。即時狀態以星宇航空官方班機動態為準。</p>
+<div class="flight-grid">
+  <div class="flight">
+    <div class="label">10/26（一）｜去程</div>
+    <div class="route">台中 RMQ <span>→</span> 成田 NRT</div>
+    <div class="meta"><b>JX314</b><br>🛫 09:15 台中起飛<br>🛬 13:25 抵達成田 T2</div>
+    <div class="note">抵達後約 14:30 搭 N'EX 前往東京車站</div>
+    <a class="btn secondary flight-status" href="https://www.starlux-airlines.com/zh-TW/flight-status" target="_blank" rel="noopener">🔎 查 JX314 即時狀態</a>
+  </div>
+  <div class="flight">
+    <div class="label">10/30（五）｜回程</div>
+    <div class="route">成田 NRT <span>→</span> 台中 RMQ</div>
+    <div class="meta"><b>JX315</b><br>🛫 14:25 成田 T2 起飛<br>🛬 17:55 抵達台中</div>
+    <div class="note">11:30 搭 N'EX 前往成田 T2，預留報到時間</div>
+    <a class="btn secondary flight-status" href="https://www.starlux-airlines.com/zh-TW/flight-status" target="_blank" rel="noopener">🔎 查 JX315 即時狀態</a>
+  </div>
+</div>
+<div class="flight-live" id="flightLive">
+  <strong>🟢 航班即時查詢</strong>
+  <div id="flightLiveText" class="muted">正在判斷官方即時查詢是否已進入可查日期…</div>
+</div>
+
+<div class="nex-live" id="nexLive">
+  <div class="label">🚆 N'EX 成田特快｜官方運行資訊</div>
+  <div class="route">成田 NRT ↔ 東京</div>
+  <div class="nex-grid">
+    <div class="nex-card">
+      <b>10/26 去程</b>
+      <div>成田機場 T2 → 東京站</div>
+      <strong>預計 14:30</strong>
+      <small>抵達後視入境、領行李狀況調整</small>
+    </div>
+    <div class="nex-card">
+      <b>10/30 回程</b>
+      <div>東京站 → 成田機場 T2</div>
+      <strong>預計 11:30</strong>
+      <small>依當日列車運行狀況確認</small>
+    </div>
+  </div>
+  <div class="nex-status">
+    <span class="status-dot">●</span> <b>官方即時運行狀態</b>
+    <div class="muted">JR 東日本會公告 N'EX 的延誤、運休等運行資訊。官方頁面不會自動更新，請按下方按鈕查看最新狀態。</div>
+  </div>
+  <a class="btn secondary" href="https://traininfo.jreast.co.jp/train_info/express.aspx?group=nex" target="_blank" rel="noopener">🔎 查 N'EX 即時運行狀態</a>
+</div>
+<div class="tip">🍁 <b>航班小提醒：</b>星宇官方班機動態會隨航班狀況更新；網站上的預定時間不是即時起飛時間。</div>
+</section>
+
+<section class="card" id="days">
+<h2>🗓️ 五日手繪行程</h2>
+<p class="edit-hint">💡 每一天都可以單獨收折；點「✏️ 編輯」可修改時間、行程與備註，內容會保存在這台裝置上。</p>
+<div class="day-tabs" id="dayTabs" role="tablist" aria-label="五日行程分頁"></div>
+<div id="dayList"></div>
+</section>
+
+<section class="card weather" id="weather">
+<h2>🌦️ 東京天氣小站</h2>
+<p class="weather-note" id="weatherNote">正在取得東京即時資料…</p>
+<div class="weather-now" id="weatherNow">🌤️ 載入中…</div>
+<div class="weather-grid" id="weatherGrid"></div>
+<p class="weather-note">※ 10/26～10/30 距離現在超過 16 天時，逐日預報尚未發布，App 會顯示「尚未進入預報範圍」，不會拿季節平均冒充真正預報。接近出發日期後重新開啟即可更新。</p>
+</section>
+
+<section class="card" id="tools">
+<h2>🧰 旅途中會真的用到的小工具</h2>
+<div class="tools">
+<div class="tool"><h3>💴 日圓 → 台幣</h3><input id="jpy" type="number" inputmode="decimal" placeholder="例如 10000"><label class="muted">1 日圓 ≈ 台幣</label><input id="rate" type="number" step="0.001" value="0.205"><button class="btn secondary" id="fx">立即換算</button><div class="fx-result" id="twd">NT$ 0</div><small class="muted">匯率可自行調整，屬參考值。</small></div>
+<div class="tool"><h3>🧾 東京旅費記帳</h3><input id="exName" placeholder="項目，例如：晚餐"><input id="exAmount" type="number" inputmode="numeric" placeholder="日圓金額"><button class="btn" id="addEx">＋加入</button><div style="margin-top:8px">目前合計：<b id="exTotal">¥0</b></div><ul class="expense-list" id="exList"></ul></div>
+<div class="tool"><h3>📝 我的旅行備註</h3><textarea id="notes" placeholder="例如：10/28 SHIBUYA SKY 門票、集合時間…"></textarea><button class="btn ghost" id="saveNotes">💾 儲存備註</button> <small id="noteSaved" class="muted"></small></div>
+</div>
+</section>
+
+
+<section class="card" id="translate">
+<h2>🗣️ 旅日即時翻譯小幫手</h2>
+<p class="muted">吃飯、問路、看菜單、看商品都能從這裡快速處理。日本現場需要真正的即時翻譯時，下面的 Google 翻譯／Lens 入口可直接開啟相機或語音功能。</p>
+<div class="translate-actions">
+<a class="btn secondary" href="https://translate.google.com/?sl=ja&tl=zh-TW&op=translate" target="_blank" rel="noopener">🎙️ 開 Google 翻譯</a>
+<a class="btn" href="https://lens.google.com/" target="_blank" rel="noopener">📷 Google Lens 看菜單／商品</a>
+</div>
+<div class="translate-grid" style="margin-top:10px">
+<div class="translate-box">
+<h3>🍱 溝通點餐</h3>
+<div class="phrase-list">
+<button class="phrase" data-jp="すみません、これを一つお願いします。"><b>請給我一份這個</b><small>すみません、これを一つお願いします。</small></button>
+<button class="phrase" data-jp="おすすめは何ですか？"><b>請問推薦什麼？</b><small>おすすめは何ですか？</small></button>
+<button class="phrase" data-jp="これは何が入っていますか？"><b>這裡面有什麼？</b><small>これは何が入っていますか？</small></button>
+<button class="phrase" data-jp="お会計をお願いします。"><b>麻煩結帳</b><small>お会計をお願いします。</small></button>
+</div></div>
+<div class="translate-box">
+<h3>🧭 問路／交通</h3>
+<div class="phrase-list">
+<button class="phrase" data-jp="東京駅はどこですか？"><b>東京車站在哪裡？</b><small>東京駅はどこですか？</small></button>
+<button class="phrase" data-jp="この場所までどう行けばいいですか？"><b>請問怎麼走到這裡？</b><small>この場所までどう行けばいいですか？</small></button>
+<button class="phrase" data-jp="駅はどちらですか？"><b>車站往哪裡走？</b><small>駅はどちらですか？</small></button>
+<button class="phrase" data-jp="ここから一番近い入口はどこですか？"><b>最近的入口在哪裡？</b><small>ここから一番近い入口はどこですか？</small></button>
+</div></div>
+<div class="translate-box">
+<h3>🛍️ 商品介紹</h3>
+<div class="phrase-list">
+<button class="phrase" data-jp="これは何ですか？"><b>這是什麼？</b><small>これは何ですか？</small></button>
+<button class="phrase" data-jp="おすすめの商品ですか？"><b>這是推薦商品嗎？</b><small>おすすめの商品ですか？</small></button>
+<button class="phrase" data-jp="これは日本製ですか？"><b>這是日本製的嗎？</b><small>これは日本製ですか？</small></button>
+<button class="phrase" data-jp="免税できますか？"><b>可以免稅嗎？</b><small>免税できますか？</small></button>
+</div></div>
+<div class="translate-box">
+<h3>🏷️ 餐點名牌</h3>
+<p class="muted">把想吃的餐點直接秀給店員，也可以按一下讓手機念日文。</p>
+<div class="name-card" id="nameCard"><div class="jp" id="nameJP">おまかせします</div><div class="zh" id="nameZH">請店家推薦</div></div>
+<div class="translate-actions"><button class="btn secondary" type="button" data-card="おまかせします|請店家推薦">🍽️ 推薦餐</button><button class="btn" type="button" data-card="これを一つお願いします|請給我一份這個">☝️ 這個一份</button><button class="btn ghost" type="button" id="speakJP">🔊 唸給店員聽</button></div>
+</div>
+</div>
+<div class="translate-note">💡 <b>使用方式：</b>固定句子可直接點一下播放日文；菜單、包裝或商品說明，點「Google Lens」用相機辨識；需要雙向即時對話時，點「Google 翻譯」使用語音／翻譯功能。這樣一個入口就把吃飯、問路、購物三件事包起來。</div>
+</section>
+
+<section class="card" id="maps">
+<h2>🗺️ 景點地圖快速入口</h2>
+<div class="mapgrid">
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Tokyo+Station">📍 東京車站</a>
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Imperial+Palace+Tokyo">🏰 皇居</a>
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=KITTE+Tokyo">🌿 KITTE</a>
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=SHIBUYA+SKY">🌇 SHIBUYA SKY</a>
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Costco+Makuhari">🛒 Costco 幕張</a>
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Narita+International+Airport+Terminal+2">✈️ 成田 T2</a>
+</div>
+</section>
+
+<section class="card" id="food">
+<h2>🍽️ 周邊美食｜Tabelog</h2>
+<p class="muted">跟著每天的行程找吃的，不用另外開地圖慢慢翻。點進 Tabelog 可查看評分、評論、預算與網路預約資訊。</p>
+<div class="mapgrid">
+<a target="_blank" rel="noopener" href="https://tabelog.com/tokyo/A1302/A130201/R11665/rstLst/RC/">🍁 東京站・丸之內</a>
+<a target="_blank" rel="noopener" href="https://tabelog.com/tokyo/A1314/A131403/">🍵 品川周邊</a>
+<a target="_blank" rel="noopener" href="https://tabelog.com/tokyo/C13103/C36166/rstLst/">🌿 高輪周邊</a>
+<a target="_blank" rel="noopener" href="https://tabelog.com/tokyo/A1303/A130301/R4698/rstLst/RC980101/">🌇 渋谷站周邊</a>
+<a target="_blank" rel="noopener" href="https://tabelog.com/chiba/A1201/A120102/rstLst/RC/">🛒 幕張・海浜幕張</a>
+</div>
+<div class="tip">💡 小訣竅：Day 2、Day 3、Day 4 的晚餐可直接從對應區域進 Tabelog，先看「網路預約」與營業時間，再決定。</div>
+</section>
+
+<section class="card" id="vjw">
+<h2>🛂 Visit Japan Web</h2>
+<p>出發前把入境相關資料先準備好，到日本後少一點手忙腳亂。</p>
+<div class="tip">📱 建議：出發前完成 Visit Japan Web 登錄，並把必要的 QR Code／畫面準備好。</div>
+<a class="btn secondary" href="https://www.vjw.digital.go.jp/" target="_blank" rel="noopener">🔗 開啟 Visit Japan Web</a>
+</section>
+
+<section class="card pack" id="pack">
+<h2>🎒 出發前打包</h2>
+<div class="progress"><div class="bar" id="packBar"></div></div><div class="muted" id="packPct">0% 完成</div>
+<label><input type="checkbox" data-pack>護照／證件</label><label><input type="checkbox" data-pack>藥品與常備用品</label><label><input type="checkbox" data-pack>充電器與行動電源</label><label><input type="checkbox" data-pack>薄外套與雨具</label><label><input type="checkbox" data-pack>交通／門票／餐廳預約資料</label>
+<div class="tip" style="margin-top:14px"><b>🔎 出入境違禁品快速辨識</b><br><small>輸入或貼上商品名稱、成分或品項，例如「牛肉乾」「抹茶」「水果」「藥品」。系統會做初步分類，最後請以日本／台灣官方規定與現場檢疫、海關判定為準。</small></div>
+<div class="tool-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><input id="banItem" placeholder="輸入想帶回／帶入的物品" style="flex:1;min-width:220px"><button class="btn" type="button" id="checkBan">🔎 開始辨識</button></div>
+<div id="banResult" class="tip" style="display:none;margin-top:10px"></div>
+<div class="trip-links" style="margin-top:8px"><a target="_blank" rel="noopener" href="https://www.customs.go.jp/english/summary/passenger.htm">🇯🇵 日本海關規定</a><a target="_blank" rel="noopener" href="https://www.maff.go.jp/aqs/tetuzuki/product/aq2.html">🥩 日本動物檢疫</a><a target="_blank" rel="noopener" href="https://www.maff.go.jp/pps/j/trip/keikouhin.html">🌱 日本植物檢疫</a><a target="_blank" rel="noopener" href="https://web.customs.gov.tw/">🇹🇼 台灣海關</a></div>
+</section>
+
+<section class="card">
+<h2>💡 四個旅行小提醒</h2>
+<div class="tip">① 東京車站地下較複雜，優先尋找「丸之內地下中央口」與直達電梯。</div>
+<div class="tip">② SHIBUYA SKY 建議提前預約想看的時段，尤其夕陽時段。</div>
+<div class="tip">③ 敘敘苑熱門分店建議提早預約，夕陽後的晚餐時段尤其熱門。</div>
+<div class="tip">④ Costco 建議提前安排交通，採買後直接回飯店整理戰利品。</div>
+</section>
+<div class="footer">🍁 2026 東京楓旅行手帳 V6.3｜3 girls，一起慢慢走，剛剛好。<br><span class="muted">天氣採東京即時資料；出發日期進入預報範圍後會自動顯示逐日預報。</span></div>
+</div>
+
+<script>
+const trip=new Date('2026-10-26T00:00:00+08:00');
+function tick(){let d=trip-new Date();if(d<0)d=0;document.getElementById('cdD').textContent=Math.floor(d/864e5);document.getElementById('cdH').textContent=String(Math.floor(d%864e5/36e5)).padStart(2,'0');document.getElementById('cdM').textContent=String(Math.floor(d%36e5/6e4)).padStart(2,'0');document.getElementById('cdS').textContent=String(Math.floor(d%6e4/1e3)).padStart(2,'0')}tick();setInterval(tick,1000);
+
+const tabs=document.querySelectorAll('.nav button');tabs.forEach(b=>b.onclick=()=>document.getElementById(b.dataset.target).scrollIntoView({behavior:'smooth',block:'start'}));
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){tabs.forEach(b=>b.classList.toggle('active',b.dataset.target===e.target.id))}}),{rootMargin:'-25% 0px -65% 0px'});document.querySelectorAll('section.card[id]').forEach(s=>obs.observe(s));
+
+function fx(){const j=+document.getElementById('jpy').value||0,r=+document.getElementById('rate').value||0;document.getElementById('twd').textContent='NT$ '+Math.round(j*r).toLocaleString()}document.getElementById('fx').onclick=fx;document.getElementById('jpy').oninput=fx;document.getElementById('rate').oninput=fx;
+
+let expenses=JSON.parse(localStorage.getItem('tokyoExpensesV6')||'[]');
+function renderEx(){const l=document.getElementById('exList');l.innerHTML='';let total=0;expenses.forEach((x,i)=>{total+=+x.amount;let li=document.createElement('li');li.innerHTML='<span>'+x.name+'</span><b>¥'+(+x.amount).toLocaleString()+'</b><button class="del" data-i="'+i+'">刪除</button>';li.querySelector('button').onclick=()=>{expenses.splice(i,1);saveEx()};l.appendChild(li)});document.getElementById('exTotal').textContent='¥'+total.toLocaleString()}function saveEx(){localStorage.setItem('tokyoExpensesV6',JSON.stringify(expenses));renderEx()}document.getElementById('addEx').onclick=()=>{let n=document.getElementById('exName'),a=document.getElementById('exAmount');if(!n.value||!a.value)return;expenses.push({name:n.value,amount:+a.value});n.value='';a.value='';saveEx()};renderEx();
+
+const notes=document.getElementById('notes');notes.value=localStorage.getItem('tokyoNotesV6')||'';document.getElementById('saveNotes').onclick=()=>{localStorage.setItem('tokyoNotesV6',notes.value);document.getElementById('noteSaved').textContent='已儲存 ✓';setTimeout(()=>document.getElementById('noteSaved').textContent='',1600)};
+
+document.querySelectorAll('[data-pack]').forEach((x,i)=>{x.checked=localStorage.getItem('packV6_'+i)==='1';x.onchange=()=>{localStorage.setItem('packV6_'+i,x.checked?'1':'0');renderPack()}});function renderPack(){let a=[...document.querySelectorAll('[data-pack]')],n=a.filter(x=>x.checked).length,p=Math.round(n/a.length*100);document.getElementById('packBar').style.width=p+'%';document.getElementById('packPct').textContent=p+'% 完成'}renderPack();
+// 出入境物品初步辨識：以關鍵字提示高風險類別，不取代海關／檢疫正式判定。
+const banRules=[
+ {keys:['肉乾','牛肉乾','豬肉乾','雞肉乾','香腸','火腿','培根','生火腿','臘肉','salami','ham','sausage','jerky','餃子','肉包','漢堡','肉鬆'],level:'高風險／原則上不可直接帶入日本',msg:'🥩 肉類或含肉製品：日本對旅客攜入管制非常嚴格，多數情況禁止，真空包裝、熟製、免稅店購買也不代表可以攜入。',url:'https://www.maff.go.jp/aqs/tetuzuki/product/aq2.html'},
+ {keys:['水果','蘋果','芒果','香蕉','橘子','柑橘','荔枝','蔬菜','種子','種苗','盆栽','鮮花','花束','植物'],level:'高風險／需植物檢疫確認',msg:'🌱 植物、蔬果、種子等：可能涉及植物檢疫，少量伴手禮也可能受規範。先查官方規定，不要直接放進行李。',url:'https://www.maff.go.jp/pps/j/trip/keikouhin.html'},
+ {keys:['毒品','大麻','cannabis','麻薬','安非他命','mdma','槍','子彈','手榴彈','炸藥','仿冒','盜版'],level:'禁止攜入',msg:'⛔ 涉及日本海關明列的禁止攜入物品，請勿攜帶。',url:'https://www.customs.go.jp/english/summary/passenger.htm'},
+ {keys:['藥','藥品','處方藥','感冒藥','止痛藥','安眠藥','supplement','保健品'],level:'需個別確認',msg:'💊 藥品／保健品不能只看「是不是藥」判斷，成分、數量與日本法規可能影響是否可攜入。請先查官方規定。',url:'https://www.mhlw.go.jp/english/policy/health-medical/pharmaceuticals/01.html'}
+];
+function checkBan(){const input=document.getElementById('banItem'),box=document.getElementById('banResult'),v=input.value.trim().toLowerCase();if(!v){box.style.display='block';box.innerHTML='請先輸入物品名稱或成分。';return}let hit=banRules.find(r=>r.keys.some(k=>v.includes(k.toLowerCase())));box.style.display='block';if(hit){box.innerHTML='<b>'+hit.level+'</b><br>'+hit.msg+'<br><a target="_blank" rel="noopener" href="'+hit.url+'">🔗 查看官方規定</a>'}else{box.innerHTML='<b>🟡 暫未辨識到高風險關鍵字</b><br>這不代表一定可以攜帶。食品、動植物、藥品、仿冒品及其他受管制物品仍可能有個別限制，建議再查官方規定。'}}
+document.getElementById('checkBan').onclick=checkBan;document.getElementById('banItem').addEventListener('keydown',e=>{if(e.key==='Enter')checkBan()});
+
+const defaultDays=[
+{no:'Day 1',date:'10/26（一）',title:'抵達東京・丸之內夜景與晚餐',badge:'✈️ Welcome!',items:[['13:25','🛬 抵達成田機場 T2（JX314）','入境、領行李'],['14:30',"🚆 N'EX 前往東京車站",'成田→東京；再轉地鐵前往押上飯店'],['16:30','🏨 京成里士滿飯店東京押上 Check-in','放行李、稍作休息'],['17:45','🚆 押上 → 大手町／東京站','半藏門線，往丸之內移動'],['18:30','🌃 丸之內夜景散步','東京站丸之內站舍 → 丸之內仲通 → KITTE'],['19:00','🍽️ The INNOCENT CARVERY 新丸大樓店','高樓層和牛燒肉＋東京站景；第一晚不再跨區'],['21:00','🍵 HIGASHIYA man Marunouchi','若還有胃，茶與和菓子作為第一晚收尾']]},
+{no:'Day 2',date:'10/27（二）',title:'皇居・東京站深度散策',badge:'🏰 悠閒散策',items:[['08:00','🍳 飯店早餐','以飯店早餐為主，減少早晨轉乘'],['09:15','🚆 押上 → 大手町','半藏門線'],['10:00','🌳 皇居東御苑・二重橋','秋色散策，保留充裕步行時間'],['12:15','🍣 Manten Sushi Marunouchi','丸之內人氣壽司，午餐建議預約'],['14:00','🌿 KITTE Marunouchi 屋頂庭園','東京站正面景觀'],['15:00','☕ HIGASHIYA man Marunouchi','茶＋和菓子，安排正式咖啡甜點休息'],['16:00','🛍️ 丸之內仲通・東京站・GRANSTA','伴手禮、甜點、百貨慢逛'],['18:00','🍲 Sukiyaki Jyuniten 丸之內店','和牛壽喜燒／涮涮鍋，第二晚好好吃一頓'],['20:00','🚆 東京站／大手町 → 押上','返回飯店休息']]},
+{no:'Day 3',date:'10/28（三）',title:'高輪庭園・高輪 Gateway・SHIBUYA SKY',badge:'🌇 今日高光',items:[['08:00','🍳 飯店早餐',''],['09:00','🚆 押上 → 高輪台／高輪 Gateway','依即時路況選擇最順轉乘'],['09:30','🍃 高輪庭園','今日主軸：庭園＋高輪歷史散策'],['11:00','⛩️ 泉岳寺','赤穗浪士相關歷史，與高輪庭園串成一線'],['12:00','🍱 Takanawa Soregashi','NEWoMan 高輪 28F；午餐兼看高輪景色'],['13:30','☕ BLUE BOTTLE COFFEE 高輪咖啡','專業咖啡＋利耶日鬆餅，安排休息'],['14:15','🏙️ Takanawa Gateway City','新舊高輪對照散策'],['15:45','🚆 高輪 Gateway → 澀谷','前往 SHIBUYA SKY'],['17:00','🌇 SHIBUYA SKY','鎖定夕陽前後時段；建議提前購票'],['19:00','🥩 叙々苑 渋谷店','東京燒肉晚餐；建議提前預約'],['21:00','🚆 澀谷 → 押上','回飯店']]},
+{no:'Day 4',date:'10/29（四）',title:'Costco 幕張・幕張海濱',badge:'🛒 Shopping!',items:[['08:00','🍳 飯店早餐',''],['09:00','🚆 押上 → Costco 幕張','以幕張店為本日主軸，較適合從押上往返'],['10:00','🛒 Costco Wholesale Makuhari','採買主行程；會員購物'],['12:30','🍕 Costco Food Court','簡單午餐，不另繞路'],['13:30','🌊 幕張海濱公園／幕張海濱','天氣好散步；若下雨改逛商場'],['15:00','🍰 Pâtisserie SATSUKI','Hotel New Otani Makuhari 甜點，作為下午茶備案'],['16:00','🚆 幕張 → 押上','帶著戰利品回飯店'],['17:00','🏨 飯店休息・整理戰利品','洗澡、整理行李，保留體力'],['19:00','🍲 壽喜燒／涮涮鍋','建議在押上／錦糸町一帶選店，晚餐後直接回飯店']]},
+{no:'Day 5',date:'10/30（五）',title:'押上最後採買・N’EX・返台',badge:'🎁 滿載而歸',items:[['07:30','🍳 飯店早餐',''],['08:30','🧳 Check-out／行李寄放','先完成退房，保留最後採買時間'],['09:00','🗼 東京晴空塔・東京Solamachi','飯店步行圈最後伴手禮；不再跨區'],['10:00','🏨 回飯店取行李','確認護照、票券、戰利品'],['10:30','🚆 押上 → 東京車站','往東京站搭 N’EX'],['11:30',"🚆 N'EX 前往成田機場 T2",'預留機場作業緩衝'],['12:30','✈️ 成田 T2・午餐／最後伴手禮','畸零時間用於免稅、咖啡、整理行李'],['14:25','🛫 JX315 起飛','NRT T2 → RMQ']]}
+]
+const dayKey='tokyoDaysV6_3';
+function cloneDays(x){return JSON.parse(JSON.stringify(x))}
+let savedDays;try{savedDays=JSON.parse(localStorage.getItem(dayKey)||'null')}catch(e){savedDays=null}
+let tripDays=Array.isArray(savedDays)&&savedDays.length===5?savedDays:cloneDays(defaultDays);
+let collapsedDays=JSON.parse(localStorage.getItem('tokyoCollapsedDaysV6')||'[false,false,false,false,false]');
+if(!Array.isArray(collapsedDays)||collapsedDays.length!==5)collapsedDays=[false,false,false,false,false];
+function esc(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function saveDays(){localStorage.setItem(dayKey,JSON.stringify(tripDays))}
+function mapsUrl(place){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(place)}
+function transitUrl(place){return 'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(place)+'&travelmode=transit'}
+function itemLinks(title,note){
+  const t=(title+' '+(note||'')).toLowerCase();
+  let place=title.replace(/^[^\w一-龥ぁ-んァ-ヶ]+/,'').replace(/（.*?）/g,'').trim();
+  let links='';
+  if(t.includes("n'ex")||t.includes('n’​​ex')||t.includes('n’ex')){
+    const jr='https://www.jreast.co.jp/multi/zh-CHT/pass/nex.html';
+    links=`<a href="${mapsUrl('Narita Airport Terminal 2')}" target="_blank" rel="noopener">📍地圖</a><a href="${transitUrl('Tokyo Station')}" target="_blank" rel="noopener">🚆交通</a><a class="primary" href="${jr}" target="_blank" rel="noopener">🎫N’EX資訊／購票</a>`;
+  }else if(t.includes('shibuya sky')){
+    links=`<a href="${mapsUrl('SHIBUYA SKY')}" target="_blank" rel="noopener">📍地圖</a><a href="${transitUrl('SHIBUYA SKY')}" target="_blank" rel="noopener">🚆交通</a><a class="primary" href="https://www.shibuya-scramble-square.com/sky/ticket/" target="_blank" rel="noopener">🎫官方購票</a>`;
+  }else if(t.includes('敘敘苑')||t.includes('叙々苑')){
+    links=`<a href="${mapsUrl('叙々苑 東京')}" target="_blank" rel="noopener">📍地圖</a><a href="${transitUrl('叙々苑 東京')}" target="_blank" rel="noopener">🚆交通</a><a class="primary" href="https://www.jojoen.co.jp/" target="_blank" rel="noopener">🍽️官方預約</a>`;
+  }else if(t.includes('costco')){
+    links=`<a href="${mapsUrl('Costco Makuhari Chiba')}" target="_blank" rel="noopener">📍地圖</a><a href="${transitUrl('Costco Makuhari Chiba')}" target="_blank" rel="noopener">🚆交通</a><a class="primary" href="https://www.costco.co.jp/" target="_blank" rel="noopener">🛒門市資訊</a>`;
+  }else if(t.includes('和食')||t.includes('居酒屋')||t.includes('壽喜燒')||t.includes('涮涮鍋')||t.includes('餐廳')||t.includes('午餐')){
+    const q=encodeURIComponent(place);
+    links=`<a href="${mapsUrl(place)}" target="_blank" rel="noopener">📍地圖</a><a href="${transitUrl(place)}" target="_blank" rel="noopener">🚆交通</a><a class="primary" href="https://tabelog.com/rstLst/?vs=1&sa=${q}" target="_blank" rel="noopener">🍽️找店／預約</a>`;
+  }else{
+    links=`<a href="${mapsUrl(place)}" target="_blank" rel="noopener">📍地圖</a><a href="${transitUrl(place)}" target="_blank" rel="noopener">🚆交通</a>`;
+  }
+  return `<div class="item-info-drawer"><div class="item-info-label">地點工具</div><div class="trip-links">${links}</div></div>`;
+}
+function dayMapStart(di){
+ const starts={
+  0:[35.7720,140.3929,'🏨 成田機場 T2'],
+  1:[35.6586,139.8157,'🏨 押上飯店'],
+  2:[35.6586,139.8157,'🏨 押上飯店'],
+  3:[35.6586,139.8157,'🏨 押上飯店'],
+  4:[35.6586,139.8157,'🏨 押上飯店']
+ };
+ return starts[di]||null;
+}
+function dayMapPlaces(di){
+ const places={
+  0:[
+   [35.6814,139.7658,'🚆 東京車站'],[35.6860,139.7630,'🌃 丸之內仲通'],[35.6802,139.7647,'🛍️ KITTE／GRANSTA'],[35.6814,139.7650,'🍽️ The INNOCENT CARVERY'],[35.6815,139.7651,'☕ HIGASHIYA man']
+  ],
+  1:[
+   [35.6852,139.7528,'🌳 皇居東御苑'],[35.6814,139.7658,'🚆 東京車站'],[35.6819,139.7702,'🍣 Manten Sushi'],[35.6800,139.7647,'🌿 KITTE Marunouchi'],[35.6815,139.7651,'☕ HIGASHIYA man'],[35.6820,139.7658,'🍲 Sukiyaki Jyuniten']
+  ],
+  2:[
+   [35.6359,139.7345,'🍃 高輪庭園'],[35.6383,139.7341,'⛩️ 泉岳寺'],[35.6353,139.7401,'🍱 Takanawa Soregashi'],[35.6352,139.7396,'☕ BLUE BOTTLE 高輪'],[35.6353,139.7399,'🏙️ 高輪 Gateway'],[35.6580,139.7016,'🌇 SHIBUYA SKY'],[35.6610,139.6987,'🥩 叙々苑']
+  ],
+  3:[
+   [35.6487,140.0357,'🛒 Costco 幕張'],[35.6459,140.0350,'🌊 幕張海濱'],[35.6462,140.0390,'🍰 SATSUKI']
+  ],
+  4:[
+   [35.7101,139.8107,'🗼 晴空塔／Solamachi'],[35.6814,139.7658,'🚆 東京車站'],[35.7720,140.3929,'✈️ 成田 T2']
+  ]
+ };
+ return (places[di]||[]).filter((p,i,a)=>i===a.findIndex(q=>q[0]===p[0]&&q[1]===p[1]));
+}
+function dayMapFocus(di){
+ const f={0:['東京站・丸之內',35.6830,139.7650],1:['皇居・東京站・丸之內',35.6830,139.7605],2:['高輪・泉岳寺・高輪 Gateway',35.6380,139.7365],3:['幕張・海濱・幕張豐砂',35.6470,140.0360],4:['晴空塔 → 東京站 → 成田',35.7100,139.8100]};
+ return f[di]||['今日路線',35.6814,139.7658];
+}
+function shortPlace(name){return name.replace(/^[^\u4e00-\u9fffA-Za-z0-9]+/,'').replace(/（.*?）/g,'').replace(/／.*/,'').trim().slice(0,14)}
+function mapRoads(di,project,w,h){
+ const road=(pts,cls='map-road')=>`<polyline class="${cls}" points="${pts.map(project).map(p=>p.x.toFixed(1)+','+p.y.toFixed(1)).join(' ')}"/>`;
+ const features=[];
+ if(di===1){
+  features.push(`<path class="map-palace" d="M55 38 C125 12 225 16 310 48 L345 112 C285 137 170 133 82 103 Z"/>`);
+  features.push(`<path class="map-moat" d="M42 52 C125 20 235 25 330 57 C360 68 380 87 416 106"/>`);
+  features.push(`<path class="map-moat-2" d="M58 105 C145 133 252 135 338 112"/>`);
+  features.push(`<text class="map-area-label strong" x="154" y="72">皇居</text>`);
+  features.push(`<text class="map-area-label" x="92" y="119">二重橋</text>`);
+  const roads=[
+   [[35.690,139.748],[35.685,139.754],[35.681,139.760],[35.677,139.766]],
+   [[35.690,139.757],[35.685,139.762],[35.681,139.768],[35.676,139.774]],
+   [[35.691,139.766],[35.686,139.768],[35.681,139.770],[35.675,139.772]],
+   [[35.684,139.750],[35.683,139.758],[35.681,139.766],[35.680,139.776]],
+   [[35.678,139.752],[35.679,139.760],[35.681,139.768],[35.685,139.777]],
+   [[35.688,139.774],[35.684,139.776],[35.680,139.779]]
+  ];
+  roads.forEach(r=>features.push(road(r)));
+  features.push(`<text class="map-street" x="470" y="50">丸之內仲通</text><text class="map-street" x="620" y="116">行幸通り</text><text class="map-street" x="738" y="48">大手町</text>`);
+  features.push(`<text class="map-street small" x="470" y="144">日比谷通り</text><text class="map-street small" x="700" y="142">八重洲</text>`);
+ }else if(di===2){
+  features.push(`<path class="map-park" d="M58 42 C125 22 225 28 286 60 C270 102 205 116 112 98 Z"/>`);
+  features.push(`<path class="map-rail" d="M318 6 L330 124 M346 6 L358 124 M374 6 L386 124"/>`);
+  features.push(`<text class="map-area-label strong" x="118" y="70">高輪庭園</text><text class="map-area-label" x="308" y="22">高輪 Gateway</text>`);
+  const roads=[[[35.646,139.729],[35.642,139.733],[35.638,139.735],[35.634,139.739]],[[35.642,139.728],[35.637,139.731],[35.632,139.735],[35.628,139.740]],[[35.649,139.738],[35.643,139.739],[35.637,139.740],[35.631,139.741]],[[35.640,139.744],[35.636,139.739],[35.632,139.734]]];
+  roads.forEach(r=>features.push(road(r)));
+  features.push(`<path class="map-long-route" d="M395 80 C470 75 550 55 620 48 C700 40 770 44 850 28"/>`);
+  features.push(`<circle class="map-inset" cx="830" cy="30" r="23"/><text class="map-inset-label" x="807" y="34">澀谷</text>`);
+ }else if(di===3){
+  features.push(`<path class="map-sea" d="M0 0 H900 V38 C790 46 690 27 570 36 C450 44 340 24 210 38 C120 46 60 40 0 48 Z"/>`);
+  features.push(`<path class="map-park" d="M18 56 C150 45 270 52 402 48 L402 120 L18 120 Z"/>`);
+  features.push(`<text class="map-area-label strong" x="45" y="78">幕張海濱公園</text><text class="map-area-label" x="560" y="30">幕張豐砂</text>`);
+  const roads=[[[35.654,140.030],[35.650,140.034],[35.647,140.036],[35.643,140.039]],[[35.654,140.042],[35.650,140.040],[35.646,140.038],[35.642,140.035]],[[35.650,140.026],[35.648,140.034],[35.648,140.041],[35.648,140.047]],[[35.642,140.028],[35.644,140.035],[35.646,140.042]]];
+  roads.forEach(r=>features.push(road(r)));
+ }else if(di===0||di===4){
+  features.push(`<path class="map-rail" d="M40 82 C220 74 380 70 540 60 C700 50 810 38 870 28"/>`);
+  features.push(`<path class="map-road-light" d="M45 94 C220 90 360 86 520 76 C690 65 790 55 865 44"/>`);
+  features.push(`<text class="map-area-label" x="70" y="62">押上</text><text class="map-area-label" x="390" y="53">東京</text><text class="map-area-label" x="790" y="20">成田</text>`);
+ }
+ return features.join('');
+}
+function initDayMap(di){
+ const wrap=document.getElementById('day-map-wrap-'+di); if(!wrap) return;
+ const el=document.getElementById('day-map-'+di); if(!el) return;
+ const places=dayMapPlaces(di); if(!places.length) return;
+ const start=dayMapStart(di), focus=dayMapFocus(di);
+ const w=900,h=320,padX=38,padY=30;
+ let nodes;
+ let minLon,maxLon,minLat,maxLat;
+ if(di===1){
+   /* Day 2 只用核心景點計算比例，押上保留為出發端點。 */
+   const core=places;
+   const coreLons=core.map(p=>p[1]),coreLats=core.map(p=>p[0]);
+   minLon=Math.min(...coreLons)-0.0038; maxLon=Math.max(...coreLons)+0.0038;
+   minLat=Math.min(...coreLats)-0.0028; maxLat=Math.max(...coreLats)+0.0028;
+   nodes=core;
+ }else{
+   nodes=(start?[start]:[]).concat(places);
+   const lons=nodes.map(p=>p[1]),lats=nodes.map(p=>p[0]);
+   minLon=Math.min(...lons);maxLon=Math.max(...lons);minLat=Math.min(...lats);maxLat=Math.max(...lats);
+   let lonPad=Math.max((maxLon-minLon)*0.13,0.004),latPad=Math.max((maxLat-minLat)*0.22,0.0025);
+   if(di===2){lonPad=Math.max(lonPad,0.006);latPad=Math.max(latPad,0.004)}
+   minLon-=lonPad; maxLon+=lonPad; minLat-=latPad; maxLat+=latPad;
+ }
+ const lonSpan=Math.max(maxLon-minLon,0.001),latSpan=Math.max(maxLat-minLat,0.001);
+ const project=(p)=>({x:padX+(p[1]-minLon)/lonSpan*(w-padX*2),y:h-padY-(p[0]-minLat)/latSpan*(h-padY*2)});
+ const corePts=places.map((p,i)=>{const q=project(p);return {x:q.x,y:q.y,name:p[2],seq:i+1,lat:p[0],lon:p[1]};});
+ let routePts=corePts;
+ let startPt=null;
+ if(di===1 && start){
+   startPt={x:850,y:255,name:start[2],start:true};
+   const tokyo=corePts[1];
+   routePts=[startPt,tokyo,...corePts.slice(2)];
+ }else if(start){
+   startPt={...project(start),name:start[2],start:true};
+   routePts=[startPt,...corePts];
+ }
+ const route=routePts.map(p=>p.x.toFixed(1)+','+p.y.toFixed(1)).join(' ');
+ const bg=`<rect class="map-paper" x="0" y="0" width="${w}" height="${h}" rx="22"/>`;
+ const water=di===1?`<path class="map-river" d="M790 0 C820 55 805 105 825 150 C845 196 830 258 860 320 H900 V0 Z"/>`:'';
+ const roads=mapRoads(di,project,w,h);
+ const compass=`<g class="map-compass"><text x="845" y="28">N</text><path d="M845 35 L837 55 L845 50 L853 55 Z"/></g>`;
+ const scale=`<g class="map-scale"><line x1="690" y1="282" x2="825" y2="282"/><line x1="690" y1="277" x2="690" y2="287"/><line x1="825" y1="277" x2="825" y2="287"/><text x="706" y="270">約 500 m</text></g>`;
+ const day2Offsets=di===1?[
+   {dx:22,dy:-18,anchor:'start'},
+   {dx:-20,dy:-18,anchor:'end'},
+   {dx:20,dy:24,anchor:'start'},
+   {dx:-20,dy:24,anchor:'end'},
+   {dx:22,dy:-4,anchor:'start'},
+   {dx:-20,dy:-4,anchor:'end'}
+ ]:[];
+ const dots=corePts.map(p=>{
+   const first=p.seq===1,r=first?28:15,ring=first?`<circle class="map-first-ring" cx="${p.x}" cy="${p.y}" r="39"/>`:'';
+   let labelX=p.x>700?p.x-18:p.x+18, labelY=p.y-14, anchor=p.x>700?'end':'start', leader='';
+   if(di===1 && day2Offsets[p.seq-1]){
+     const o=day2Offsets[p.seq-1]; labelX=p.x+o.dx; labelY=p.y+o.dy; anchor=o.anchor;
+     if(Math.abs(o.dx)>18 || Math.abs(o.dy)>18) leader=`<line class="map-label-leader" x1="${p.x}" y1="${p.y}" x2="${labelX}" y2="${labelY}"/>`;
+   }
+   return `<g><a href="${mapsUrl(p.name)}" target="_blank" rel="noopener"><title>${esc(p.name)} · 開啟地圖</title>${ring}${leader}<circle class="map-pin" cx="${p.x}" cy="${p.y}" r="${r}"/><text class="map-num ${first?'big':''}" x="${p.x}" y="${p.y+1}">${p.seq}</text><text class="map-label" text-anchor="${anchor}" x="${labelX}" y="${labelY}">${esc(shortPlace(p.name))}</text></a></g>`;
+ }).join('');
+ const startMarkup=startPt?`<g><circle class="map-start" cx="${startPt.x}" cy="${startPt.y}" r="12"/><text class="map-start-text" x="${startPt.x}" y="${startPt.y+4}">⌂</text><text class="map-label start-label" text-anchor="end" x="${startPt.x-17}" y="${startPt.y-13}">出發・押上飯店</text></g>`:'';
+ const routeSoft=`<polyline class="map-route-soft" points="${route}"/>`;
+ const routeMain=`<polyline class="map-route" points="${route}"/>`;
+ const departConnector=di===1?`<line class="map-depart-line" x1="850" y1="255" x2="${corePts[1].x}" y2="${corePts[1].y}"/>`:'';
+ el.innerHTML=`<svg class="real-route-map" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(focus[0])} 當日地理相對位置圖">${bg}${water}${roads}${departConnector}${routeSoft}${routeMain}${dots}${startMarkup}${compass}${scale}</svg>`;
+ wrap.querySelector('.day-map-start').textContent='出發 · '+(start?start[2]:'');
+ const old=wrap.nextElementSibling;
+ const legend=document.createElement('div');legend.className='route-legend';
+ legend.innerHTML=places.map((p,i)=>`<a href="${mapsUrl(p[2])}" target="_blank" rel="noopener"><b>${i+1}</b><span>${esc(shortPlace(p[2]))}</span></a>`).join('')+`<a class="map-open" href="${mapsUrl(focus[0])}" target="_blank" rel="noopener">📍 在 Google Maps 開啟 ↗</a>`;
+ if(old&&old.classList.contains('route-legend'))old.replaceWith(legend);else wrap.after(legend);
+}
+
+function renderDayTabs(){
+ const tabs=document.getElementById('dayTabs'); if(!tabs) return;
+ const active=Math.max(0,Math.min(4,parseInt(localStorage.getItem('tokyoActiveDayV6')||'0',10)||0));
+ tabs.innerHTML=tripDays.map((d,i)=>`<button type="button" role="tab" aria-selected="${i===active}" aria-controls="day-${i}" class="${i===active?'active':''}" data-day-tab="${i}">${esc(d.no)}<span>${esc(d.date)}</span></button>`).join('');
+ tabs.querySelectorAll('[data-day-tab]').forEach(btn=>btn.onclick=()=>{
+   const i=+btn.dataset.dayTab; localStorage.setItem('tokyoActiveDayV6',String(i)); renderDays();
+ });
+}
+function renderDays(){
+ const root=document.getElementById('dayList');
+ root.innerHTML='';
+ renderDayTabs();
+ const active=Math.max(0,Math.min(4,parseInt(localStorage.getItem('tokyoActiveDayV6')||'0',10)||0));
+ tripDays.forEach((d,di)=>{
+  const article=document.createElement('article');
+  article.className='day'+(collapsedDays[di]?' collapsed':'')+(di!==active?' tab-hidden':'');
+  article.id='day-'+di;
+  article.dataset.day=di;
+  const head=collapsedDays[di]
+   ? `<div class="day-head collapsed-head"><button type="button" class="day-toggle" aria-label="展開 ${esc(d.no)}">▸</button><h3>${esc(d.no)} | ${esc(d.date)}</h3></div>`
+   : `<div class="day-head"><button type="button" class="day-toggle" aria-label="收折 ${esc(d.no)}">▾</button><h3>${esc(d.no)} | ${esc(d.date)}</h3><div class="day-actions"><button type="button" class="edit-day">✏️ 編輯</button></div></div>`;
+  article.innerHTML=head+(collapsedDays[di]?'':`
+    <div class="day-route-card" id="day-map-wrap-${di}">
+      <div class="day-route-head"><strong>🗺️ 今日路線</strong><span class="day-map-start">出發 · </span></div>
+      <div id="day-map-${di}" class="day-map"></div>
+    </div>
+    <div class="day-items"></div>
+  `);
+  if(collapsedDays[di]){
+   root.appendChild(article);
+   article.querySelector('.day-toggle').onclick=()=>{collapsedDays[di]=false;localStorage.setItem('tokyoCollapsedDaysV6',JSON.stringify(collapsedDays));renderDays()};
+   article.querySelector('.day-head').onclick=(e)=>{if(e.target.closest('.day-toggle'))return;collapsedDays[di]=false;localStorage.setItem('tokyoCollapsedDaysV6',JSON.stringify(collapsedDays));renderDays()};
+   return;
+  }
+  const items=article.querySelector('.day-items');
+  d.items.forEach((x,idx)=>{
+   const row=document.createElement('div');row.className='item';
+   row.innerHTML=`<div class="time">${esc(x[0])}</div><div class="item-main"><div class="item-place"><div class="item-title toggle-info" role="button" tabindex="0" aria-expanded="false">${esc(x[1])}</div></div>${x[2]?`<small>${esc(x[2])}</small>`:''}${itemLinks(x[1],x[2])}</div>`;
+   const titleBtn=row.querySelector('.toggle-info');
+   const toggleInfo=()=>{const open=row.classList.toggle('expanded');titleBtn.setAttribute('aria-expanded',open?'true':'false')};
+   titleBtn.onclick=(e)=>{e.stopPropagation();toggleInfo()};
+   titleBtn.onkeydown=(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();toggleInfo()}};
+   items.appendChild(row);
+  });
+  const toggleDay=()=>{collapsedDays[di]=true;localStorage.setItem('tokyoCollapsedDaysV6',JSON.stringify(collapsedDays));renderDays()};
+  article.querySelector('.day-toggle').onclick=toggleDay;
+  article.querySelector('.day-head').onclick=(e)=>{if(e.target.closest('.edit-day')||e.target.closest('.day-toggle')||e.target.closest('a'))return;toggleDay()};
+  const editBtn=article.querySelector('.edit-day');
+  if(editBtn)editBtn.onclick=(e)=>{e.stopPropagation();editDay(di)};
+  root.appendChild(article);
+  initDayMap(di);
+ });
+}
+function editDay(di){const d=tripDays[di],article=document.querySelector(`[data-day="${di}"]`);article.classList.remove('collapsed');article.classList.add('editing');const head=article.querySelector('.day-head');head.innerHTML=`<div style="flex:1"><div class="day-edit-grid"><input id="editDate" aria-label="日期" value="${esc(d.date)}"></div></div>`;const items=article.querySelector('.day-items');items.innerHTML='';d.items.forEach(x=>{const row=document.createElement('div');row.className='item edit-row';row.innerHTML=`<div><input aria-label="時間" value="${esc(x[0])}"></div><div class="edit-content"><input aria-label="行程名稱" value="${esc(x[1])}"><input aria-label="備註" placeholder="備註（可留白）" value="${esc(x[2]||'')}"><button type="button" class="remove-item">🗑️ 刪除此行</button></div>`;row.querySelector('.remove-item').onclick=()=>row.remove();items.appendChild(row)});const controls=document.createElement('div');controls.className='edit-controls';controls.innerHTML='<button type="button" class="add-item">＋ 新增一段行程</button><button type="button" class="save-day">💾 儲存這一天</button><button type="button" class="cancel-day">取消</button>';article.appendChild(controls);controls.querySelector('.add-item').onclick=()=>{const row=document.createElement('div');row.className='item edit-row';row.innerHTML='<div><input aria-label="時間" placeholder="例如 15:00"></div><div class="edit-content"><input aria-label="行程名稱" placeholder="例如 ☕ 咖啡時間"><input aria-label="備註" placeholder="備註（可留白）"><button type="button" class="remove-item">🗑️ 刪除此行</button></div>';row.querySelector('.remove-item').onclick=()=>row.remove();items.appendChild(row);row.querySelector('input').focus()};controls.querySelector('.save-day').onclick=()=>{const rows=[...items.querySelectorAll('.edit-row')];const arr=rows.map(r=>{const ins=r.querySelectorAll('input');return [ins[0].value.trim(),ins[1].value.trim(),ins[2].value.trim()]}).filter(x=>x[0]||x[1]||x[2]);tripDays[di].date=article.querySelector('#editDate').value.trim()||d.date;tripDays[di].title=d.title;tripDays[di].badge=d.badge;tripDays[di].items=arr;saveDays();renderDays()};controls.querySelector('.cancel-day').onclick=()=>renderDays()}
+if(!localStorage.getItem('tokyoActiveDayV6'))localStorage.setItem('tokyoActiveDayV6','0');
+renderDays();
+
+const wmap={0:['☀️','晴朗'],1:['🌤️','大致晴朗'],2:['⛅','局部多雲'],3:['☁️','多雲'],45:['🌫️','霧'],48:['🌫️','霧'],51:['🌦️','毛毛雨'],53:['🌦️','毛毛雨'],55:['🌧️','細雨'],61:['🌧️','小雨'],63:['🌧️','中雨'],65:['🌧️','大雨'],71:['🌨️','小雪'],73:['🌨️','中雪'],75:['❄️','大雪'],80:['🌦️','陣雨'],81:['🌦️','陣雨'],82:['⛈️','強陣雨'],95:['⛈️','雷雨'],96:['⛈️','雷雨伴冰雹'],99:['⛈️','雷雨伴冰雹']};
+async function weather(){try{const api='https://api.open-meteo.com/v1/forecast?latitude=35.6762&longitude=139.6503&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=16';let r=await fetch(api,{cache:'no-store',mode:'cors'});if(!r.ok)throw 0;let d=await r.json(),q=wmap[d.current.weather_code]||['🌤️','天氣'];document.getElementById('weatherNow').innerHTML='<div class="weather-icon">'+q[0]+'</div><div><b>東京目前 '+Math.round(d.current.temperature_2m)+'°C</b><br>'+q[1]+'｜體感 '+Math.round(d.current.apparent_temperature)+'°C<br><small>風速 '+Math.round(d.current.wind_speed_10m)+' km/h</small></div>';let g=document.getElementById('weatherGrid');g.innerHTML='';['2026-10-26','2026-10-27','2026-10-28','2026-10-29','2026-10-30'].forEach((date,i)=>{let k=d.daily.time.indexOf(date),el=document.createElement('div');el.className='weather-day';if(k<0)el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi">🍁</div><div>尚未進入預報</div>';else{let z=wmap[d.daily.weather_code[k]]||['🌤️','天氣'];el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi">'+z[0]+'</div><div>'+z[1]+'</div><b>'+Math.round(d.daily.temperature_2m_max[k])+'°/'+Math.round(d.daily.temperature_2m_min[k])+'°</b><br><small>雨 '+(d.daily.precipitation_probability_max[k]??'--')+'%</small>'}g.appendChild(el)});document.getElementById('weatherNote').textContent='東京即時資料已更新｜'+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});}catch(e){document.getElementById('weatherNow').textContent='⚠️ 暫時無法取得天氣，請確認網路後重新整理。';document.getElementById('weatherNote').textContent='天氣服務連線失敗';}}weather();
+
+// 航班即時查詢提示：星宇官方班機動態可查未來約一個月內的航班狀況；在開放前，網站不假造狀態。
+(function(){
+  const box=document.getElementById('flightLiveText');
+  if(!box) return;
+  const now=new Date();
+  const flights=[new Date('2026-10-26T09:15:00+08:00'),new Date('2026-10-30T14:25:00+09:00')];
+  const openDates=flights.map(d=>new Date(d.getTime()-30*24*60*60*1000));
+  const next=openDates.find(d=>now<d);
+  if(next){
+    const days=Math.ceil((next-now)/86400000);
+    box.textContent='目前尚未進入官方即時航班查詢期；約 '+days+' 天後可開始留意班機動態。按上方按鈕可直接前往星宇官方查詢。';
+  }else{
+    box.textContent='已進入航班動態關注期。出發前請按上方按鈕，以星宇航空官方班機動態為準。';
+  }
+})();
+
+
+// 翻譯小幫手：固定日文句子可直接朗讀，餐點名牌可切換並秀給店員。
+function speakJapanese(text){try{const u=new SpeechSynthesisUtterance(text);u.lang='ja-JP';u.rate=.88;window.speechSynthesis.cancel();window.speechSynthesis.speak(u)}catch(e){}}
+document.querySelectorAll('.phrase').forEach(b=>b.addEventListener('click',()=>{speakJapanese(b.dataset.jp);const old=b.innerHTML;b.innerHTML=old+'<small>🔊 已播放日文</small>';setTimeout(()=>b.innerHTML=old,1400)}));
+document.querySelectorAll('[data-card]').forEach(b=>b.addEventListener('click',()=>{const [jp,zh]=b.dataset.card.split('|');document.getElementById('nameJP').textContent=jp;document.getElementById('nameZH').textContent=zh}));
+document.getElementById('speakJP').onclick=()=>speakJapanese(document.getElementById('nameJP').textContent);
+
+if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body></html>
+<style id="v20-map-ui">
+/* V21 map refinement: V6.3 layout remains locked. Only the daily map card is rebuilt. */
+.day-route-card{margin:14px 12px 12px!important;padding:12px!important;border:1px solid #ead9d3!important;border-radius:24px!important;background:#fffaf6!important;box-shadow:0 6px 20px rgba(110,76,76,.06)!important}
+.day-route-head{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;margin:0 5px 10px!important}
+.day-route-head strong{font-size:16px!important;letter-spacing:.03em;color:#51494a!important}
+.day-map-start{font-size:11px!important;background:#fffdf9!important;border:1px solid #ead9d3!important;border-radius:999px!important;padding:6px 10px!important;color:#806d6f!important;white-space:nowrap}
+.day-map{height:300px!important;border-radius:20px!important;border:1px solid #eadfd8!important;overflow:hidden!important;background:#fbf8f2!important}
+.real-route-map{width:100%;height:100%;display:block}
+.map-paper{fill:#fbf8f2}
+.map-river{fill:#e7f1f0;opacity:.88}
+.map-palace{fill:#e9f0e5;stroke:#cfdcc8;stroke-width:2.2}
+.map-park{fill:#e7f0e2;stroke:#d1ddca;stroke-width:1.8}
+.map-moat{fill:none;stroke:#d6e9e6;stroke-width:12;opacity:.95}
+.map-moat-2{fill:none;stroke:#dbece9;stroke-width:7;opacity:.9}
+.map-rail{fill:none;stroke:#d4cdca;stroke-width:6;opacity:.82}
+.map-road{fill:none;stroke:#d9d1cd;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.map-road-light{fill:none;stroke:#eee4de;stroke-width:8;stroke-linecap:round}
+.map-long-route{fill:none;stroke:#d2b8be;stroke-width:2.4;stroke-dasharray:6 6}
+.map-sea{fill:#e6f1f2;opacity:.92}
+.map-area-label{font-size:14px;fill:#8b9788;font-weight:700;paint-order:stroke;stroke:#eef4e9;stroke-width:3px}.map-area-label.strong{font-size:18px;fill:#74816f}.map-street{font-size:12px;fill:#9a8e8c;paint-order:stroke;stroke:#fbf8f2;stroke-width:4px}.map-street.small{font-size:10px}
+.map-inset{fill:#f4dfe4;stroke:#c78390;stroke-width:2}.map-inset-label{font-size:10px;fill:#76545b;font-weight:800}
+.map-route{fill:none;stroke:#c87889;stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1 10}.map-route-soft{fill:none;stroke:#fffaf6;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;opacity:.98}
+.map-depart-line{stroke:#c99aa4;stroke-width:3;stroke-dasharray:6 7;opacity:.9}
+.map-pin{fill:#fffdf8;stroke:#c87888;stroke-width:3.2}.map-start{fill:#f3e3d5;stroke:#9d8068;stroke-width:2.5}.map-start-text{font-size:10px;fill:#8c6b59;text-anchor:middle;font-weight:800}
+.map-first-ring{fill:#f5d8df;opacity:.72}.map-num{font-size:12px;font-weight:900;fill:#684e55;text-anchor:middle;dominant-baseline:middle}.map-num.big{font-size:20px}.map-compass text{font-size:13px;fill:#6c5a5d;font-weight:900;text-anchor:middle}.map-compass path{fill:#6c5a5d}.map-scale line{stroke:#8f7b77;stroke-width:2}.map-scale text{font-size:10px;fill:#8f7b77}.map-label{font-size:13px;fill:#5f5557;font-weight:800;paint-order:stroke;stroke:#fffaf6;stroke-width:5px;stroke-linejoin:round}.map-label.start-label{font-size:12px;fill:#7d665c}
+.route-legend{display:flex!important;gap:7px!important;flex-wrap:wrap!important;margin:11px 8px 3px!important;align-items:center!important}.route-legend a{display:inline-flex!important;align-items:center!important;gap:6px!important;font-size:11px!important;padding:6px 9px!important;background:#fffdf9!important;border:1px solid #ead9d3!important;border-radius:999px!important;color:#6d5c60!important;text-decoration:none!important}.route-legend b{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:21px!important;height:21px!important;border-radius:50%!important;background:#f2dce0!important;color:#76545b!important}.route-legend .map-open{background:#fff1f3!important;border-color:#e7c6cb!important;font-weight:700!important}
+@media(max-width:620px){.day-route-card{margin:11px 8px 10px!important;padding:9px!important;border-radius:22px!important}.day-route-head{margin:0 3px 9px!important}.day-route-head strong{font-size:15px!important}.day-map-start{font-size:10px!important;padding:5px 8px!important}.day-map{height:285px!important;border-radius:18px!important}.route-legend{margin:10px 5px 2px!important;gap:6px!important}.route-legend a{font-size:10px!important;padding:5px 7px!important}.route-legend b{width:19px!important;height:19px!important}.map-label{font-size:11px}.map-area-label.strong{font-size:16px}.map-street{font-size:10px}}
+</style>
+/* V19: 真正的五日分區結構，地圖為摘要，時間軸為主角 */
+#dayList{display:block;padding:2px 0 20px}
+#dayList>.day{position:relative;margin:0 0 30px !important;padding:0 !important;border:1px solid var(--line) !important;border-left:4px solid var(--blue) !important;border-radius:0 24px 24px 24px !important;background:rgba(255,253,248,.96) !important;box-shadow:0 8px 22px rgba(120,82,78,.07) !important;overflow:hidden}
+#dayList>.day:nth-child(2){border-left-color:var(--orange) !important}
+#dayList>.day:nth-child(3){border-left-color:var(--green) !important}
+#dayList>.day:nth-child(4){border-left-color:var(--pink) !important}
+#dayList>.day:nth-child(5){border-left-color:#9fa9cf !important}
+#dayList>.day+.day{margin-top:30px !important}
+#dayList>.day:last-child{margin-bottom:10px !important}
+.day-head{min-height:50px;margin:0 !important;padding:10px 12px 9px 10px !important;background:rgba(255,248,244,.72);border-bottom:1px solid #eee1da}
+.day-head h3{font-size:17px !important;font-weight:800 !important;line-height:1.3;margin:0 !important;flex:1}
+.day-toggle{width:28px;height:28px;border:0;border-radius:50%;background:#fff;border:1px solid #ead9d3;color:#7e6266;display:grid;place-items:center;padding:0;flex:0 0 auto}
+.day-actions{display:flex;gap:5px}.edit-day{border:1px solid #ead9d3;background:#fff;border-radius:999px;padding:5px 9px;font-size:11px;color:#725d60}
+.day-route-card{margin:12px 12px 8px !important;padding:9px !important;border:1px solid #eadfd8;border-radius:18px;background:linear-gradient(145deg,#fffaf7,#fdf8f3);box-shadow:none !important}
+.day-route-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 2px 7px;font-size:12px}
+.day-route-head strong{font-size:12px}.day-map-start{font-size:10px !important;padding:4px 8px !important}
+.day-map{height:92px !important;border-radius:14px !important;background:#fbf8f4 !important}
+.day-map-wrap{margin:0 !important}.route-map-footer{display:none !important}.route-legend{margin:7px 12px 0 !important;gap:5px !important}
+.route-legend a{font-size:9px !important;padding:3px 6px !important}
+.route-legend b{width:15px !important;height:15px !important}
+.day-items{padding:0 12px 8px !important;margin:0 !important}
+.item{grid-template-columns:52px 1fr !important;gap:9px !important;padding:11px 0 !important;border-bottom:1px dashed #e5d9d2 !important}
+.item:last-child{border-bottom:0 !important;padding-bottom:10px !important}
+.time{font-size:14px;line-height:1.45;padding-top:1px}.item-title{font-size:13px !important;line-height:1.4 !important}.item small{font-size:10.5px !important;line-height:1.45 !important;margin-top:2px}
+.item-info-drawer{margin-top:7px !important;padding-top:7px !important}.item-info-drawer .trip-links a{font-size:11px !important}
+.day.collapsed{margin-bottom:18px !important;padding:0 !important;border-radius:0 18px 18px 18px !important;box-shadow:0 3px 12px rgba(120,82,78,.04) !important}
+.day.collapsed + .day{margin-top:18px !important}.day.collapsed .day-head{min-height:42px;margin:0 !important;padding:7px 10px !important;border-bottom:0}
+.day.collapsed .day-head h3{font-size:15px !important}
+@media(max-width:620px){
+ #dayList>.day{margin-bottom:28px !important}.day-route-card{margin:10px 9px 7px !important}.day-map{height:92px !important}.day-items{padding:0 10px 7px !important}.item{grid-template-columns:48px 1fr !important;padding:10px 0 !important}.time{font-size:13px}
+}
+</style>
+<style>
+/* V16: 五日一致的資訊分層與呼吸空間 */
+#dayList{padding-top:4px}
+.day{margin:0 0 34px;padding:14px 14px 18px 14px;border-left-width:4px;border-radius:0 22px 22px 0;background:rgba(255,253,248,.78);box-shadow:0 5px 18px rgba(120,82,78,.055)}
+.day+ .day{margin-top:34px}
+.day-head{min-height:42px;margin-bottom:10px;padding:0 2px}
+.day-head h3{font-size:18px;line-height:1.3}
+.day-map-wrap{margin:0 0 14px;padding:8px;border-radius:18px;box-shadow:0 4px 12px rgba(141,102,102,.045)}
+.day-map-top{margin:0 2px 6px}
+.day-map{height:100px}
+.day-items{margin-top:2px}
+.item{padding:13px 2px;border-bottom:1px dashed #e4d8d1}
+.item:last-child{border-bottom:0;padding-bottom:4px}
+.item-title.toggle-info{line-height:1.45}
+.item small{margin-top:3px;line-height:1.5}
+.item-info-drawer{margin-top:8px;padding-top:8px}
+.day.collapsed{margin-bottom:18px;padding:8px 10px;border-radius:0 16px 16px 0;box-shadow:none;background:rgba(255,253,248,.9)}
+.day.collapsed + .day{margin-top:18px}
+.day.collapsed .day-head{margin:0;min-height:36px}
+.day.collapsed .day-head h3{font-size:16px}
+@media(max-width:620px){
+  .day{margin-bottom:28px;padding:12px 10px 16px 10px}
+  .day+.day{margin-top:28px}
+  .day-head{margin-bottom:9px}
+  .day-map-wrap{margin-bottom:12px}
+  .item{padding:12px 0}
+}
+</style>
+
+<style>
+/* V18: 真正的每日分區與行程資訊抽屜 */
+#dayList{padding-top:2px}
+#dayList>.day{margin:0 0 34px !important;padding:14px 12px 18px !important;border-left-width:4px;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:0 22px 22px 0;background:rgba(255,253,248,.88);box-shadow:0 6px 18px rgba(120,82,78,.055)}
+#dayList>.day+.day{margin-top:34px !important}
+#dayList>.day:last-child{margin-bottom:12px !important}
+.day-head{min-height:42px;margin-bottom:10px;padding:0 2px}
+.day-map-wrap{margin:0 0 14px}
+.item{padding:13px 2px}
+.item-hint{display:none !important}
+.item-info-drawer{display:none !important}
+.item.expanded .item-info-drawer{display:block !important}
+.item.expanded .item-title::after{content:'  · 收起';font-size:10px;font-weight:500;color:#a18384}
+.route-map-footer{display:none !important}
+@media(max-width:620px){
+ #dayList>.day{margin-bottom:30px !important;padding:12px 10px 16px !important}
+ #dayList>.day+.day{margin-top:30px !important}
+ .day-head{margin-bottom:10px}
+ .day-map-wrap{margin-bottom:14px}
+ .item{padding:13px 0}
+}
+</style>
