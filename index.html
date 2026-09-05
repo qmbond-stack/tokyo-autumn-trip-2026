@@ -148,6 +148,22 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 .hot-grid{grid-template-columns:1fr 1fr!important}.hot-item{overflow:hidden;padding:0!important}.hot-media{width:100%;height:118px;background:linear-gradient(145deg,#fff3ef,#f8e8ea);display:grid;place-items:center;overflow:hidden}.hot-media img{width:100%;height:100%;object-fit:cover;display:block}.hot-media .hot-placeholder{font-size:42px}.hot-copy{padding:9px}.hot-item b{font-size:13px}.hot-link-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.hot-link-row a,.hot-link-row button{border:1px solid #e2c6c9;background:#fff6f7;color:#76565c;border-radius:9px;padding:5px 7px;font-size:10px;text-decoration:none}.hot-link-row button{cursor:pointer}.shopping-card-media{display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:start}.shopping-thumb{width:76px;height:76px;border-radius:14px;overflow:hidden;background:linear-gradient(145deg,#fff3ef,#f8e8ea);display:grid;place-items:center}.shopping-thumb img{width:100%;height:100%;object-fit:cover}.shopping-thumb span{font-size:28px}.shopping-card .product-link{display:inline-flex;align-items:center;gap:4px;text-decoration:none;color:#76565c;background:#fff6f7;border:1px solid #ead5d8;border-radius:9px;padding:5px 8px;font-size:10px}.shopping-media-field{display:grid;grid-template-columns:1fr 1fr;gap:7px}.shopping-media-field .full{grid-column:1/-1}.shopping-brand-menu{padding-bottom:4px}.brand-menu-title{font-size:10px;color:#8a7375;margin:2px 0 4px}.brand-menu-wrap{border:1px solid #ead9d3;border-radius:14px;background:#fffaf7;padding:7px}.brand-count{font-size:9px;opacity:.65;margin-left:3px}.hot-note{font-size:10px;color:#8a7375;margin:0 0 7px}.hot-item .hot-tag{margin:0}.hot-item small{min-height:30px}.shopping-center-tabs + .shopping-controls{margin-top:10px}
 @media(max-width:620px){.hot-grid{grid-template-columns:1fr!important}.hot-media{height:150px}.shopping-media-field{grid-template-columns:1fr}.shopping-media-field .full{grid-column:auto}.shopping-card-media{grid-template-columns:64px 1fr}.shopping-thumb{width:64px;height:64px}}
 </style>
+
+<style>
+/* v8: replace unreliable pseudo-map with an accurate, compact route schematic */
+.route-schematic{margin:0 0 14px;padding:14px 14px 12px;border:1px solid #ead9d3;border-radius:22px;background:linear-gradient(145deg,#fffaf7,#fdf7f1);box-shadow:0 5px 14px rgba(141,102,102,.045)}
+.route-schematic-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 2px 10px}
+.route-schematic-head strong{font-size:15px;color:#5e4d50}.route-schematic-head small{font-size:10px;color:#9a8582}
+.route-track{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding:3px 2px 8px;scrollbar-width:thin}
+.route-node{flex:0 0 auto;min-width:92px;max-width:130px;text-decoration:none;color:#624f54;background:#fffdf9;border:1px solid #ead9d3;border-radius:15px;padding:9px 9px 8px;position:relative}
+.route-node .rn-num{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#f2dce0;color:#6e4d55;font-weight:800;font-size:11px;margin-bottom:6px}
+.route-node .rn-title{font-size:11px;font-weight:700;line-height:1.35;display:block}.route-node .rn-place{font-size:9px;color:#9a8582;margin-top:3px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.route-arrow{flex:0 0 22px;display:grid;place-items:center;color:#c98392;font-size:17px;font-weight:700}
+.route-start{background:#fdf1e9;border-color:#e8cfc2}.route-start .rn-num{background:#eadccf;color:#806653}
+.route-schematic-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid #f0e4df;padding-top:9px;margin-top:2px}
+.route-schematic-foot span{font-size:9px;color:#9a8582}.route-open{font-size:10px;color:#8a5f68;text-decoration:none;background:#fff;border:1px solid #ead9d3;border-radius:999px;padding:6px 9px;white-space:nowrap}
+@media(max-width:620px){.route-schematic{margin:0 8px 12px;padding:11px;border-radius:20px}.route-schematic-head strong{font-size:14px}.route-node{min-width:88px;max-width:118px;padding:8px}.route-arrow{flex-basis:18px}.route-schematic-foot span{font-size:8.5px}}
+</style>
 </head>
 <body>
 <div class="app">
@@ -604,6 +620,27 @@ function initDayMap(di){
  legend.innerHTML=places.map((p,i)=>`<a href="${mapsUrl(p[2])}" target="_blank" rel="noopener"><b>${i+1}</b><span>${esc(shortPlace(p[2]))}</span></a>`).join('')+`<a class="map-open" href="${mapsUrl(focus[0])}" target="_blank" rel="noopener">📍 在 Google Maps 開啟 ↗</a>`;
  if(old&&old.classList.contains('route-legend'))old.replaceWith(legend);else wrap.after(legend);
 }
+function renderRouteSchematic(di,d){
+ const stops=dayMapPlaces(di);
+ const start=dayMapStart(di);
+ const nodes=[];
+ if(start) nodes.push({name:start[2],start:true});
+ stops.forEach(p=>nodes.push({name:p[2],lat:p[0],lon:p[1]}));
+ const unique=[]; const seen=new Set();
+ nodes.forEach(n=>{const key=n.start?'start':(n.lat+','+n.lon); if(!seen.has(key)){seen.add(key);unique.push(n)}});
+ const shown=unique.slice(0,8);
+ const cards=shown.map((n,i)=>{
+   const title=shortPlace(n.name);
+   const href=n.start?mapsUrl('SUPER HOTEL Premier Tokyo Station Yaesu Central Exit'):mapsUrl(n.name);
+   return `<a class="route-node ${n.start?'route-start':''}" href="${href}" target="_blank" rel="noopener"><span class="rn-num">${n.start?'⌂':i}</span><span class="rn-title">${esc(title)}</span><span class="rn-place">${n.start?'住宿基地':'開啟地圖'}</span></a>`;
+ }).join('<span class="route-arrow" aria-hidden="true">›</span>');
+ const focus=dayMapFocus(di)[0];
+ return `<div class="route-schematic" aria-label="${esc(focus)} 路線示意">
+   <div class="route-schematic-head"><strong>🗺️ 今日路線</strong><small>精確節點・不使用失真的示意地圖</small></div>
+   <div class="route-track">${cards}</div>
+   <div class="route-schematic-foot"><span>點任一站可直接開啟 Google Maps</span><a class="route-open" href="${mapsUrl(focus)}" target="_blank" rel="noopener">📍 查看完整路線</a></div>
+ </div>`;
+}
 function renderDayTabs(){
  const tabs=document.getElementById('dayTabs'); if(!tabs) return;
  const active=Number(localStorage.getItem('tokyoActiveDayV22')||0);
@@ -627,10 +664,7 @@ function renderDays(){
    ? `<div class="day-head collapsed-head"><button type="button" class="day-toggle" aria-label="展開 ${esc(d.no)}">▸</button><h3>${esc(d.no)} | ${esc(d.date)}</h3></div>`
    : `<div class="day-head"><button type="button" class="day-toggle" aria-label="收折 ${esc(d.no)}">▾</button><h3>${esc(d.no)} | ${esc(d.date)}</h3><div class="day-actions"><button type="button" class="edit-day">✏️ 編輯</button></div></div>`;
   article.innerHTML=head+(collapsedDays[di]?'':`
-    <div class="day-route-card" id="day-map-wrap-${di}">
-      <div class="day-route-head"><strong>🗺️ 今日路線</strong><span class="day-map-start">出發 · </span></div>
-      <div id="day-map-${di}" class="day-map"></div>
-    </div>
+    ${renderRouteSchematic(di,d)}
     <div class="day-items"></div>
   `);
   if(collapsedDays[di]){
@@ -655,7 +689,6 @@ function renderDays(){
   const editBtn=article.querySelector('.edit-day');
   if(editBtn)editBtn.onclick=(e)=>{e.stopPropagation();editDay(di)};
   root.appendChild(article);
-  initDayMap(di);
  });
 }
 function editDay(di){const d=tripDays[di],article=document.querySelector(`[data-day="${di}"]`);article.classList.remove('collapsed');article.classList.add('editing');const head=article.querySelector('.day-head');head.innerHTML=`<div style="flex:1"><div class="day-edit-grid"><input id="editDate" aria-label="日期" value="${esc(d.date)}"></div></div>`;const items=article.querySelector('.day-items');items.innerHTML='';d.items.forEach(x=>{const row=document.createElement('div');row.className='item edit-row';row.innerHTML=`<div><input aria-label="時間" value="${esc(x[0])}"></div><div class="edit-content"><input aria-label="行程名稱" value="${esc(x[1])}"><input aria-label="備註" placeholder="備註（可留白）" value="${esc(x[2]||'')}"><button type="button" class="remove-item">🗑️ 刪除此行</button></div>`;row.querySelector('.remove-item').onclick=()=>row.remove();items.appendChild(row)});const controls=document.createElement('div');controls.className='edit-controls';controls.innerHTML='<button type="button" class="add-item">＋ 新增一段行程</button><button type="button" class="save-day">💾 儲存這一天</button><button type="button" class="cancel-day">取消</button>';article.appendChild(controls);controls.querySelector('.add-item').onclick=()=>{const row=document.createElement('div');row.className='item edit-row';row.innerHTML='<div><input aria-label="時間" placeholder="例如 15:00"></div><div class="edit-content"><input aria-label="行程名稱" placeholder="例如 ☕ 咖啡時間"><input aria-label="備註" placeholder="備註（可留白）"><button type="button" class="remove-item">🗑️ 刪除此行</button></div>';row.querySelector('.remove-item').onclick=()=>row.remove();items.appendChild(row);row.querySelector('input').focus()};controls.querySelector('.save-day').onclick=()=>{const rows=[...items.querySelectorAll('.edit-row')];const arr=rows.map(r=>{const ins=r.querySelectorAll('input');return [ins[0].value.trim(),ins[1].value.trim(),ins[2].value.trim()]}).filter(x=>x[0]||x[1]||x[2]);tripDays[di].date=article.querySelector('#editDate').value.trim()||d.date;tripDays[di].title=d.title;tripDays[di].badge=d.badge;tripDays[di].items=arr;saveDays();renderDays()};controls.querySelector('.cancel-day').onclick=()=>renderDays()}
