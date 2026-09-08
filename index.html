@@ -349,19 +349,14 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 <h2>🎒 出發前打包</h2>
 <div class="progress"><div class="bar" id="packBar"></div></div><div class="muted" id="packPct">0% 完成</div>
 <label><input type="checkbox" data-pack>護照／證件</label><label><input type="checkbox" data-pack>藥品與常備用品</label><label><input type="checkbox" data-pack>充電器與行動電源</label><label><input type="checkbox" data-pack>薄外套與雨具</label><label><input type="checkbox" data-pack>交通／門票／餐廳預約資料</label>
-<div class="tip" style="margin-top:14px"><b>🔎 出入境違禁品快速辨識</b><br><small>輸入或貼上商品名稱、成分或品項，例如「牛肉乾」「抹茶」「水果」「藥品」。系統會做初步分類，最後請以日本／台灣官方規定與現場檢疫、海關判定為準。</small></div>
-<div class="tool-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><input id="banItem" placeholder="輸入想帶回／帶入的物品" style="flex:1;min-width:220px"><button class="btn" type="button" id="checkBan">🔎 開始辨識</button></div>
-<div id="banResult" class="tip" style="display:none;margin-top:10px"></div>
-<div class="tip" style="margin-top:10px">🛍️ <b>商品條碼／圖片辨識已整合到下方「日本採買中心」</b><br><small>想買的商品直接掃描後加入待買清單；需要確認攜入／帶回規定時，再使用本區快速檢查。</small></div>
-
-
+<div class="tip" style="margin-top:14px"><b>🛍️ 商品辨識與出入境風險已整合至「日本採買中心」</b><br><small>掃描條碼、拍照或輸入商品後，系統會直接提示可能的出入境／檢疫風險，不再另外維護一個檢驗區。</small></div>
 <div class="trip-links" style="margin-top:8px"><a target="_blank" rel="noopener" href="https://www.customs.go.jp/english/summary/passenger.htm">🇯🇵 日本海關規定</a><a target="_blank" rel="noopener" href="https://www.maff.go.jp/aqs/tetuzuki/product/aq2.html">🥩 日本動物檢疫</a><a target="_blank" rel="noopener" href="https://www.maff.go.jp/pps/j/trip/keikouhin.html">🌱 日本植物檢疫</a><a target="_blank" rel="noopener" href="https://web.customs.gov.tw/">🇹🇼 台灣海關</a></div>
 <div class="shopping-zone" id="shoppingZone">
 <h2>🛍️ 日本採買中心</h2>
-<p class="muted">從 0 開始建立你的採買清單：① 掃商品／搜尋熱門商品 → ② 確認後加入待買 → ③ 購買後標記已買與記帳。伴手禮直接放進「吃的」。</p>
+<p class="muted">從 0 開始建立你的採買清單：① 掃商品／搜尋熱門商品 → ② 立即查看商品與出入境風險 → ③ 確認後加入待買 → ④ 購買後標記已買與記帳。伴手禮直接放進「吃的」。</p>
 <div class="shopping-summary"><div class="shopping-stat"><b id="shopCount">0</b><small>待買品項</small></div><div class="shopping-stat"><b id="shopBought">0</b><small>已買品項</small></div><div class="shopping-stat"><b id="shopTotal">¥0</b><small>待買預算</small></div></div>
 <div class="identify-v2" id="identifyV2">
-  <div class="identify-v2-head"><div><b>📦 掃商品加入採買</b><small>條碼、拍照／圖片、手動 JAN／EAN 都在這裡。辨識後可直接帶入待買清單，必要時再一鍵檢查出入境。</small></div><span class="identify-badge">整合</span></div>
+  <div class="identify-v2-head"><div><b>📦 商品掃描＋出入境風險</b><small>條碼、拍照／圖片、手動 JAN／EAN 都在這裡。辨識商品後立即顯示可能的檢疫／海關風險，再決定是否加入採買清單。</small></div><span class="identify-badge">一站式</span></div>
   <div class="identify-actions">
     <button class="btn" type="button" id="v2StartCamera">📷 掃條碼</button>
     <button class="btn secondary" type="button" id="v2UploadImage">🖼️ 拍照／選圖片</button>
@@ -374,7 +369,8 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
   <div id="v2Preview" class="identify-preview" hidden></div>
   <div id="v2Status" class="scan-status">掃一下、拍一下或手動輸入即可。辨識成功後不會自動加入，確認後再加入你的待買清單。</div><div id="barcodeStatus" class="scan-status">查到商品後可確認資料，再加入採買清單。</div>
   <div id="v2Result" class="identify-result" hidden></div>
-  <div class="identify-note">💡 一次辨識，多處使用：商品資料可帶入採買；食品、藥品等需要時再送出入境檢查。</div>
+  <div id="v2Risk" class="identify-risk" hidden></div>
+  <div class="identify-note">💡 掃一次就好：商品辨識後立即提示可能風險，確認沒問題再加入採買。此為初步提醒，不取代官方與現場判定。</div>
 </div>
 <div class="shopping-center-tabs" id="shoppingCenterTabs" role="tablist" aria-label="日本採買中心分類">
 <button class="shopping-center-tab active" data-center="all" type="button">🛍️ 全部</button>
@@ -434,8 +430,8 @@ const banRules=[
  {keys:['毒品','大麻','cannabis','麻薬','安非他命','mdma','槍','子彈','手榴彈','炸藥','仿冒','盜版'],level:'禁止攜入',msg:'⛔ 涉及日本海關明列的禁止攜入物品，請勿攜帶。',url:'https://www.customs.go.jp/english/summary/passenger.htm'},
  {keys:['藥','藥品','處方藥','感冒藥','止痛藥','安眠藥','supplement','保健品'],level:'需個別確認',msg:'💊 藥品／保健品不能只看「是不是藥」判斷，成分、數量與日本法規可能影響是否可攜入。請先查官方規定。',url:'https://www.mhlw.go.jp/english/policy/health-medical/pharmaceuticals/01.html'}
 ];
-function checkBan(){const input=document.getElementById('banItem'),box=document.getElementById('banResult'),v=input.value.trim().toLowerCase();if(!v){box.style.display='block';box.innerHTML='請先輸入物品名稱或成分。';return}let hit=banRules.find(r=>r.keys.some(k=>v.includes(k.toLowerCase())));box.style.display='block';if(hit){box.innerHTML='<b>'+hit.level+'</b><br>'+hit.msg+'<br><a target="_blank" rel="noopener" href="'+hit.url+'">🔗 查看官方規定</a>'}else{box.innerHTML='<b>🟡 暫未辨識到高風險關鍵字</b><br>這不代表一定可以攜帶。食品、動植物、藥品、仿冒品及其他受管制物品仍可能有個別限制，建議再查官方規定。'}}
-document.getElementById('checkBan').onclick=checkBan;document.getElementById('banItem').addEventListener('keydown',e=>{if(e.key==='Enter')checkBan()});
+function renderEntryRisk(text,targetId='v2Risk'){const box=document.getElementById(targetId);if(!box)return;const v=String(text||'').trim().toLowerCase();box.hidden=false;if(!v){box.innerHTML='<b>🟡 尚無足夠商品資訊</b><br>請先掃描條碼、拍照辨識或輸入商品名稱。';return}const hit=banRules.find(r=>r.keys.some(k=>v.includes(k.toLowerCase())));if(hit){box.className='identify-risk risk-high';box.innerHTML='<b>🛃 出入境風險提示：'+hit.level+'</b><br>'+hit.msg+'<br><a target="_blank" rel="noopener" href="'+hit.url+'">🔗 查看官方規定</a>'}else{box.className='identify-risk risk-low';box.innerHTML='<b>🟢 暫未辨識到明顯高風險關鍵字</b><br>這不代表一定可以攜帶。食品、動植物、藥品、仿冒品及其他受管制物品仍可能有個別限制。'}}
+window.renderEntryRisk=renderEntryRisk;
 
 const defaultDays=[
 {no:'Day 1',date:'10/26（一）',title:'抵達東京・丸之內夜景與晚餐',badge:'✈️ Welcome!',items:[['13:25','🛬 抵達成田機場 T2（JX314）','入境、領行李'],['14:30',"🚆 N'EX 前往東京車站",'成田→東京；抵達後步行前往八重洲飯店'],['16:30','🏨 SUPER HOTEL Premier 東京站八重洲中央口 Check-in','放行李、稍作休息；東京站八重洲中央口步行約 3 分鐘'],['17:15','🚶 飯店 → 東京站／丸之內','八重洲中央口出發，步行跨過東京站前往丸之內'],['18:00','🌃 丸之內夜景散步','東京站丸之內站舍 → 丸之內仲通 → KITTE'],['19:00','🍽️ The INNOCENT CARVERY 新丸大樓店','高樓層和牛燒肉＋東京站景；第一晚不再跨區'],['21:00','🍵 HIGASHIYA man Marunouchi','若還有胃，茶與和菓子作為第一晚收尾；之後步行回八重洲飯店']]},
@@ -796,7 +792,7 @@ async function weather(){try{const api='https://api.open-meteo.com/v1/forecast?l
  $('shoppingSearch').oninput=render;
  $('addShoppingItem').onclick=()=>{const name=$('newShopName').value.trim();if(!name){alert('請先輸入商品名稱');return}items.unshift({id:'custom-'+Date.now(),cat:$('newShopCategory').value,brand:$('newShopBrand').value.trim(),name,price:+$('newShopPrice').value||0,qty:Math.max(1,+$('newShopQty').value||1),store:$('newShopStore').value.trim(),barcode:$('newShopBarcode').value.trim(),url:$('newShopUrl').value.trim(),image:$('newShopImage').value.trim(),note:$('newShopNote').value.trim(),bought:false});save();['newShopName','newShopBrand','newShopPrice','newShopStore','newShopBarcode','newShopUrl','newShopImage','newShopNote'].forEach(id=>$(id).value='');$('newShopQty').value=1;render()};
  async function lookup(code){code=(code||$('barcodeInput').value).replace(/\D/g,'');if(!code){$('barcodeStatus').textContent='請輸入 JAN／EAN 條碼。';return} $('barcodeInput').value=code;$('barcodeStatus').textContent='正在查詢公開商品資料…';try{const r=await fetch('https://world.openfoodfacts.org/api/v2/product/'+encodeURIComponent(code)+'.json',{cache:'no-store'});const d=await r.json();const p=d.product||{};const name=p.product_name_zh_tw||p.product_name_ja||p.product_name||'';if(name){$('newShopName').value=name;$('newShopBrand').value=p.brands||'';$('newShopCategory').value='吃的';$('newShopBarcode').value=code;$('barcodeStatus').textContent='✅ 找到：'+name+'。價格與店家請自行填寫。'}else{$('barcodeStatus').innerHTML='🟡 找不到公開資料。<a target="_blank" rel="noopener" href="https://www.google.com/search?q='+encodeURIComponent(code)+'">用 Google 搜尋此條碼</a>'}}catch(e){$('barcodeStatus').innerHTML='🟡 查詢服務暫時不可用。<a target="_blank" rel="noopener" href="https://www.google.com/search?q='+encodeURIComponent(code)+'">用 Google 搜尋此條碼</a>'}}
- $('lookupBarcode').onclick=()=>lookup();
+ $('lookupBarcode').onclick=async()=>{await lookup();const name=$('newShopName')?.value||'';const brand=$('newShopBrand')?.value||'';const code=$('barcodeInput')?.value||'';if(typeof window.renderEntryRisk==='function')window.renderEntryRisk([name,brand,code].filter(Boolean).join(' '));};
  $('barcodeInput').addEventListener('keydown',e=>{if(e.key==='Enter')lookup()});
  render();
 })();
@@ -943,7 +939,7 @@ if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.se
 <style id="identify-v2-style">
 .identify-v2{margin-top:12px;padding:14px;border:1px solid #e6cfd1;border-radius:20px;background:linear-gradient(145deg,#fffaf7,#fff3f4);box-shadow:0 5px 14px rgba(141,102,102,.045)}
 .identify-v2-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.identify-v2-head b{display:block;font-size:16px}.identify-v2-head small{display:block;color:#806d6f;font-size:11px;line-height:1.55;margin-top:3px}.identify-badge{font-size:10px;font-weight:800;color:#fff;background:#c98291;border-radius:999px;padding:4px 8px}
-.identify-actions{display:flex;gap:7px;flex-wrap:wrap;margin:11px 0 8px}.identify-manual{display:grid;grid-template-columns:1fr auto;gap:7px;margin:0 0 8px}.identify-manual input{min-width:0;border:1px solid #d9ccbd;background:#fffdfa;border-radius:12px;padding:9px}.identify-actions .btn{font-size:12px;padding:8px 10px}.identify-video{display:none;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:15px;background:#151212;border:1px solid #33292a}.identify-video.live{display:block}.identify-preview{margin-top:9px;border:1px solid #ead9d3;border-radius:15px;overflow:hidden;background:#fff;max-height:300px}.identify-preview img{display:block;width:100%;max-height:300px;object-fit:contain;background:#f6f2ee}.identify-result{margin-top:9px;padding:11px;border:1px solid #e5d2d2;border-radius:15px;background:#fffdf9;font-size:12px;line-height:1.65}.identify-result b{font-size:14px}.identify-result .ocr-text{max-height:120px;overflow:auto;margin-top:7px;padding:8px;background:#faf5f2;border-radius:10px;white-space:pre-wrap;color:#6e5c5e}.identify-result-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.identify-note{font-size:10px;color:#8a7375;margin-top:8px;line-height:1.55}
+.identify-actions{display:flex;gap:7px;flex-wrap:wrap;margin:11px 0 8px}.identify-manual{display:grid;grid-template-columns:1fr auto;gap:7px;margin:0 0 8px}.identify-manual input{min-width:0;border:1px solid #d9ccbd;background:#fffdfa;border-radius:12px;padding:9px}.identify-actions .btn{font-size:12px;padding:8px 10px}.identify-video{display:none;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:15px;background:#151212;border:1px solid #33292a}.identify-video.live{display:block}.identify-preview{margin-top:9px;border:1px solid #ead9d3;border-radius:15px;overflow:hidden;background:#fff;max-height:300px}.identify-preview img{display:block;width:100%;max-height:300px;object-fit:contain;background:#f6f2ee}.identify-result{margin-top:9px;padding:11px;border:1px solid #e5d2d2;border-radius:15px;background:#fffdf9;font-size:12px;line-height:1.65}.identify-result b{font-size:14px}.identify-result .ocr-text{max-height:120px;overflow:auto;margin-top:7px;padding:8px;background:#faf5f2;border-radius:10px;white-space:pre-wrap;color:#6e5c5e}.identify-result-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.identify-note{font-size:10px;color:#8a7375;margin-top:8px;line-height:1.55}.identify-risk{margin-top:9px;padding:11px;border-radius:15px;font-size:12px;line-height:1.65}.risk-high{border:1px solid #e5c4bd;background:#fff4ef;color:#704b43}.risk-low{border:1px solid #cfe0d3;background:#f4faf5;color:#4d6754}
 @media(max-width:620px){.identify-manual{grid-template-columns:1fr}.identify-actions{display:grid;grid-template-columns:1fr 1fr}.identify-actions .btn:last-child{grid-column:1/-1}.identify-v2{padding:12px}}
 </style>
 <script id="identify-v2-script">
@@ -969,13 +965,13 @@ if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.se
     const name=$('newShopName')?.value||'';
     const brand=$('newShopBrand')?.value||'';
     showResult({code,name,brand,source});
-    const text=[name,brand,code].filter(Boolean).join(' '); if(text&&$('banItem')){$('banItem').value=text; if(typeof window.checkBan==='function')window.checkBan(); else if(typeof checkBan==='function')checkBan();}
+    const text=[name,brand,code].filter(Boolean).join(' '); if(typeof window.renderEntryRisk==='function') window.renderEntryRisk(text);
   }
   function showResult(data){
     result.hidden=false;
-    result.innerHTML=`<b>🔎 辨識結果</b><br>${data.code?`🏷️ 條碼：<strong>${escText(data.code)}</strong><br>`:''}${data.name?`📦 商品：${escText(data.name)}<br>`:''}${data.brand?`🏷️ 品牌：${escText(data.brand)}<br>`:''}<span class="muted">來源：${escText(data.source||'商品辨識')}</span><div class="identify-result-actions"><button type="button" class="btn secondary" id="v2UseResult">🛍️ 前往採買並帶入</button><button type="button" class="btn ghost" id="v2CheckEntry">🛃 檢查出入境</button></div>`;
+    result.innerHTML=`<b>🔎 辨識結果</b><br>${data.code?`🏷️ 條碼：<strong>${escText(data.code)}</strong><br>`:''}${data.name?`📦 商品：${escText(data.name)}<br>`:''}${data.brand?`🏷️ 品牌：${escText(data.brand)}<br>`:''}<span class="muted">來源：${escText(data.source||'商品辨識')}</span><div class="identify-result-actions"><button type="button" class="btn secondary" id="v2UseResult">🛍️ 確認後加入採買</button></div>`;
     $('v2UseResult')?.addEventListener('click',()=>{document.getElementById('shoppingZone')?.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>$('newShopName')?.focus(),400)});
-    $('v2CheckEntry')?.addEventListener('click',()=>{document.getElementById('pack')?.scrollIntoView({behavior:'smooth',block:'start'});$('banItem')?.focus()});
+    
   }
   async function nativeScanLoop(){
     if(!('BarcodeDetector' in window)) return false;
@@ -1036,12 +1032,12 @@ if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.se
       const text=await ocrImage(img);
       const lines=text.split(/\n+/).map(x=>x.trim()).filter(x=>x.length>=2).slice(0,12);
       const guessed=lines.find(x=>/[A-Za-zぁ-んァ-ヶ一-龯]{3,}/.test(x))||'';
+      if(typeof window.renderEntryRisk==='function') window.renderEntryRisk((text+' '+guessed).slice(0,1200));
       if(guessed&&$('newShopName')&&!$('newShopName').value)$('newShopName').value=guessed;
       if(lastImageData&&$('newShopImage'))$('newShopImage').value=lastImageData;
       result.hidden=false;
-      result.innerHTML=`<b>🖼️ 商品圖片已讀取</b><br>${guessed?`可能商品名稱：<strong>${escText(guessed)}</strong><br>`:''}<span class="muted">${text?'已讀到包裝文字，請確認後再加入。':'未能可靠讀取文字，可直接手動填寫商品名稱。'}</span>${text?`<div class="ocr-text">${escText(text.slice(0,1200))}</div>`:''}<div class="identify-result-actions"><button type="button" class="btn secondary" id="v2UseImage">🛍️ 前往採買並帶入</button><button type="button" class="btn ghost" id="v2UseImageCheck">🛃 用辨識文字檢查</button></div>`;
+      result.innerHTML=`<b>🖼️ 商品圖片已讀取</b><br>${guessed?`可能商品名稱：<strong>${escText(guessed)}</strong><br>`:''}<span class="muted">${text?'已讀到包裝文字，請確認後再加入。':'未能可靠讀取文字，可直接手動填寫商品名稱。'}</span>${text?`<div class="ocr-text">${escText(text.slice(0,1200))}</div>`:''}<div class="identify-result-actions"><button type="button" class="btn secondary" id="v2UseImage">🛍️ 確認後加入採買</button></div>`;
       $('v2UseImage')?.addEventListener('click',()=>{if(lastImageData&&$('newShopImage'))$('newShopImage').value=lastImageData;document.getElementById('shoppingZone')?.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>$('newShopName')?.focus(),400)});
-      $('v2UseImageCheck')?.addEventListener('click',()=>{if($('banItem')){$('banItem').value=(guessed+' '+text).slice(0,800);if(typeof checkBan==='function')checkBan();}document.getElementById('pack')?.scrollIntoView({behavior:'smooth',block:'start'})});
       setStatus(text?'✅ 已完成包裝文字辨識，請確認結果。':'🟡 圖片已加入，但未讀到可靠文字。');
     }catch(e){setStatus('⚠️ 圖片處理失敗，請換一張清楚、正面的商品照片。')}
   }
