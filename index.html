@@ -352,27 +352,30 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 <div class="tip" style="margin-top:14px"><b>🔎 出入境違禁品快速辨識</b><br><small>輸入或貼上商品名稱、成分或品項，例如「牛肉乾」「抹茶」「水果」「藥品」。系統會做初步分類，最後請以日本／台灣官方規定與現場檢疫、海關判定為準。</small></div>
 <div class="tool-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><input id="banItem" placeholder="輸入想帶回／帶入的物品" style="flex:1;min-width:220px"><button class="btn" type="button" id="checkBan">🔎 開始辨識</button></div>
 <div id="banResult" class="tip" style="display:none;margin-top:10px"></div>
+<div class="tip" style="margin-top:10px">🛍️ <b>商品條碼／圖片辨識已整合到下方「日本採買中心」</b><br><small>想買的商品直接掃描後加入待買清單；需要確認攜入／帶回規定時，再使用本區快速檢查。</small></div>
 
+
+<div class="trip-links" style="margin-top:8px"><a target="_blank" rel="noopener" href="https://www.customs.go.jp/english/summary/passenger.htm">🇯🇵 日本海關規定</a><a target="_blank" rel="noopener" href="https://www.maff.go.jp/aqs/tetuzuki/product/aq2.html">🥩 日本動物檢疫</a><a target="_blank" rel="noopener" href="https://www.maff.go.jp/pps/j/trip/keikouhin.html">🌱 日本植物檢疫</a><a target="_blank" rel="noopener" href="https://web.customs.gov.tw/">🇹🇼 台灣海關</a></div>
+<div class="shopping-zone" id="shoppingZone">
+<h2>🛍️ 日本採買中心</h2>
+<p class="muted">從 0 開始建立你的採買清單：① 掃商品／搜尋熱門商品 → ② 確認後加入待買 → ③ 購買後標記已買與記帳。伴手禮直接放進「吃的」。</p>
+<div class="shopping-summary"><div class="shopping-stat"><b id="shopCount">0</b><small>待買品項</small></div><div class="shopping-stat"><b id="shopBought">0</b><small>已買品項</small></div><div class="shopping-stat"><b id="shopTotal">¥0</b><small>待買預算</small></div></div>
 <div class="identify-v2" id="identifyV2">
-  <div class="identify-v2-head"><div><b>📦 出入境商品辨識 V2</b><small>掃條碼、拍商品或上傳圖片，辨識後可直接帶入商品與出入境提醒。</small></div><span class="identify-badge">V2</span></div>
+  <div class="identify-v2-head"><div><b>📦 掃商品加入採買</b><small>條碼、拍照／圖片、手動 JAN／EAN 都在這裡。辨識後可直接帶入待買清單，必要時再一鍵檢查出入境。</small></div><span class="identify-badge">整合</span></div>
   <div class="identify-actions">
-    <button class="btn" type="button" id="v2StartCamera">📷 開啟相機掃條碼</button>
-    <button class="btn secondary" type="button" id="v2UploadImage">🖼️ 拍照／上傳商品</button>
+    <button class="btn" type="button" id="v2StartCamera">📷 掃條碼</button>
+    <button class="btn secondary" type="button" id="v2UploadImage">🖼️ 拍照／選圖片</button>
     <button class="btn ghost" type="button" id="v2StopCamera">停止</button>
   </div>
+  <div class="identify-manual"><input id="barcodeInput" inputmode="numeric" autocomplete="off" placeholder="或手動輸入 JAN／EAN 條碼"><button class="btn secondary" type="button" id="lookupBarcode">🔎 查商品</button></div>
   <input id="v2ImageInput" type="file" accept="image/*" capture="environment" hidden>
   <video id="v2Video" class="identify-video" playsinline muted></video>
   <canvas id="v2Canvas" hidden></canvas>
   <div id="v2Preview" class="identify-preview" hidden></div>
-  <div id="v2Status" class="scan-status">準備完成。iPhone 請在部署後的 HTTPS 網址按「開啟相機」，並允許相機權限。</div>
+  <div id="v2Status" class="scan-status">掃一下、拍一下或手動輸入即可。辨識成功後不會自動加入，確認後再加入你的待買清單。</div><div id="barcodeStatus" class="scan-status">查到商品後可確認資料，再加入採買清單。</div>
   <div id="v2Result" class="identify-result" hidden></div>
-  <div class="identify-note">💡 圖片辨識採「條碼辨識＋包裝文字 OCR」。辨識結果會先讓你確認，不會假裝 100% 知道商品或海關結論。</div>
+  <div class="identify-note">💡 一次辨識，多處使用：商品資料可帶入採買；食品、藥品等需要時再送出入境檢查。</div>
 </div>
-<div class="trip-links" style="margin-top:8px"><a target="_blank" rel="noopener" href="https://www.customs.go.jp/english/summary/passenger.htm">🇯🇵 日本海關規定</a><a target="_blank" rel="noopener" href="https://www.maff.go.jp/aqs/tetuzuki/product/aq2.html">🥩 日本動物檢疫</a><a target="_blank" rel="noopener" href="https://www.maff.go.jp/pps/j/trip/keikouhin.html">🌱 日本植物檢疫</a><a target="_blank" rel="noopener" href="https://web.customs.gov.tw/">🇹🇼 台灣海關</a></div>
-<div class="shopping-zone" id="shoppingZone">
-<h2>🛍️ 日本採買中心</h2>
-<p class="muted">推薦商品只是候選，不會自動算進你的採買。從 0 開始，想買的再按「＋加入清單」。伴手禮直接放進「吃的」。</p>
-<div class="shopping-summary"><div class="shopping-stat"><b id="shopCount">0</b><small>待買品項</small></div><div class="shopping-stat"><b id="shopBought">0</b><small>已買品項</small></div><div class="shopping-stat"><b id="shopTotal">¥0</b><small>待買預算</small></div></div>
 <div class="shopping-center-tabs" id="shoppingCenterTabs" role="tablist" aria-label="日本採買中心分類">
 <button class="shopping-center-tab active" data-center="all" type="button">🛍️ 全部</button>
 <button class="shopping-center-tab" data-center="food" type="button">🍪 吃的</button>
@@ -386,13 +389,6 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 <div class="brand-menu-wrap"><div class="brand-menu-title"><strong>🏷️ 品牌快速篩選</strong> <span class="brand-count" id="brandMenuHint">先選分類，再選品牌</span></div><div class="brand-menu-context" id="brandMenuContext">目前：全部品牌 · 顯示所有推薦</div><div class="shopping-brand-menu" id="shoppingBrandMenu" aria-label="品牌快速篩選"></div></div>
 <div id="shoppingHot" class="hot-box"></div>
 <div id="shoppingList" style="margin-top:10px"></div>
-
-<div class="barcode-panel">
-  <b>🏷️ 條碼查商品</b>
-  <div class="muted">可手動輸入 JAN／EAN；也可使用上方「出入境商品辨識 V2」直接掃碼或從圖片讀取。</div>
-  <div class="barcode-row"><input id="barcodeInput" inputmode="numeric" autocomplete="off" placeholder="輸入 8／12／13 位 JAN／EAN 條碼"><button class="btn secondary" type="button" id="lookupBarcode">🔎 查商品</button></div>
-  <div id="barcodeStatus" class="scan-status">掃描成功後會自動帶入條碼與商品查詢。</div>
-</div>
 
 <div class="shopping-card" style="margin-top:10px">
 <div class="shopping-card-head"><div><h4>✏️ 新增採買</h4><div class="shopping-brand">手動加入願望清單／現場看到想買的東西</div></div></div>
@@ -947,8 +943,8 @@ if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.se
 <style id="identify-v2-style">
 .identify-v2{margin-top:12px;padding:14px;border:1px solid #e6cfd1;border-radius:20px;background:linear-gradient(145deg,#fffaf7,#fff3f4);box-shadow:0 5px 14px rgba(141,102,102,.045)}
 .identify-v2-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.identify-v2-head b{display:block;font-size:16px}.identify-v2-head small{display:block;color:#806d6f;font-size:11px;line-height:1.55;margin-top:3px}.identify-badge{font-size:10px;font-weight:800;color:#fff;background:#c98291;border-radius:999px;padding:4px 8px}
-.identify-actions{display:flex;gap:7px;flex-wrap:wrap;margin:11px 0 8px}.identify-actions .btn{font-size:12px;padding:8px 10px}.identify-video{display:none;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:15px;background:#151212;border:1px solid #33292a}.identify-video.live{display:block}.identify-preview{margin-top:9px;border:1px solid #ead9d3;border-radius:15px;overflow:hidden;background:#fff;max-height:300px}.identify-preview img{display:block;width:100%;max-height:300px;object-fit:contain;background:#f6f2ee}.identify-result{margin-top:9px;padding:11px;border:1px solid #e5d2d2;border-radius:15px;background:#fffdf9;font-size:12px;line-height:1.65}.identify-result b{font-size:14px}.identify-result .ocr-text{max-height:120px;overflow:auto;margin-top:7px;padding:8px;background:#faf5f2;border-radius:10px;white-space:pre-wrap;color:#6e5c5e}.identify-result-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.identify-note{font-size:10px;color:#8a7375;margin-top:8px;line-height:1.55}
-@media(max-width:620px){.identify-actions{display:grid;grid-template-columns:1fr 1fr}.identify-actions .btn:last-child{grid-column:1/-1}.identify-v2{padding:12px}}
+.identify-actions{display:flex;gap:7px;flex-wrap:wrap;margin:11px 0 8px}.identify-manual{display:grid;grid-template-columns:1fr auto;gap:7px;margin:0 0 8px}.identify-manual input{min-width:0;border:1px solid #d9ccbd;background:#fffdfa;border-radius:12px;padding:9px}.identify-actions .btn{font-size:12px;padding:8px 10px}.identify-video{display:none;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:15px;background:#151212;border:1px solid #33292a}.identify-video.live{display:block}.identify-preview{margin-top:9px;border:1px solid #ead9d3;border-radius:15px;overflow:hidden;background:#fff;max-height:300px}.identify-preview img{display:block;width:100%;max-height:300px;object-fit:contain;background:#f6f2ee}.identify-result{margin-top:9px;padding:11px;border:1px solid #e5d2d2;border-radius:15px;background:#fffdf9;font-size:12px;line-height:1.65}.identify-result b{font-size:14px}.identify-result .ocr-text{max-height:120px;overflow:auto;margin-top:7px;padding:8px;background:#faf5f2;border-radius:10px;white-space:pre-wrap;color:#6e5c5e}.identify-result-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.identify-note{font-size:10px;color:#8a7375;margin-top:8px;line-height:1.55}
+@media(max-width:620px){.identify-manual{grid-template-columns:1fr}.identify-actions{display:grid;grid-template-columns:1fr 1fr}.identify-actions .btn:last-child{grid-column:1/-1}.identify-v2{padding:12px}}
 </style>
 <script id="identify-v2-script">
 (function(){
@@ -977,7 +973,7 @@ if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.se
   }
   function showResult(data){
     result.hidden=false;
-    result.innerHTML=`<b>🔎 辨識結果</b><br>${data.code?`🏷️ 條碼：<strong>${escText(data.code)}</strong><br>`:''}${data.name?`📦 商品：${escText(data.name)}<br>`:''}${data.brand?`🏷️ 品牌：${escText(data.brand)}<br>`:''}<span class="muted">來源：${escText(data.source||'商品辨識')}</span><div class="identify-result-actions"><button type="button" class="btn secondary" id="v2UseResult">＋ 帶入採買商品</button><button type="button" class="btn ghost" id="v2CheckEntry">🛃 檢查出入境</button></div>`;
+    result.innerHTML=`<b>🔎 辨識結果</b><br>${data.code?`🏷️ 條碼：<strong>${escText(data.code)}</strong><br>`:''}${data.name?`📦 商品：${escText(data.name)}<br>`:''}${data.brand?`🏷️ 品牌：${escText(data.brand)}<br>`:''}<span class="muted">來源：${escText(data.source||'商品辨識')}</span><div class="identify-result-actions"><button type="button" class="btn secondary" id="v2UseResult">🛍️ 前往採買並帶入</button><button type="button" class="btn ghost" id="v2CheckEntry">🛃 檢查出入境</button></div>`;
     $('v2UseResult')?.addEventListener('click',()=>{document.getElementById('shoppingZone')?.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>$('newShopName')?.focus(),400)});
     $('v2CheckEntry')?.addEventListener('click',()=>{document.getElementById('pack')?.scrollIntoView({behavior:'smooth',block:'start'});$('banItem')?.focus()});
   }
@@ -1043,7 +1039,7 @@ if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.se
       if(guessed&&$('newShopName')&&!$('newShopName').value)$('newShopName').value=guessed;
       if(lastImageData&&$('newShopImage'))$('newShopImage').value=lastImageData;
       result.hidden=false;
-      result.innerHTML=`<b>🖼️ 商品圖片已讀取</b><br>${guessed?`可能商品名稱：<strong>${escText(guessed)}</strong><br>`:''}<span class="muted">${text?'已讀到包裝文字，請確認後再加入。':'未能可靠讀取文字，可直接手動填寫商品名稱。'}</span>${text?`<div class="ocr-text">${escText(text.slice(0,1200))}</div>`:''}<div class="identify-result-actions"><button type="button" class="btn secondary" id="v2UseImage">＋ 帶入採買商品</button><button type="button" class="btn ghost" id="v2UseImageCheck">🛃 用辨識文字檢查</button></div>`;
+      result.innerHTML=`<b>🖼️ 商品圖片已讀取</b><br>${guessed?`可能商品名稱：<strong>${escText(guessed)}</strong><br>`:''}<span class="muted">${text?'已讀到包裝文字，請確認後再加入。':'未能可靠讀取文字，可直接手動填寫商品名稱。'}</span>${text?`<div class="ocr-text">${escText(text.slice(0,1200))}</div>`:''}<div class="identify-result-actions"><button type="button" class="btn secondary" id="v2UseImage">🛍️ 前往採買並帶入</button><button type="button" class="btn ghost" id="v2UseImageCheck">🛃 用辨識文字檢查</button></div>`;
       $('v2UseImage')?.addEventListener('click',()=>{if(lastImageData&&$('newShopImage'))$('newShopImage').value=lastImageData;document.getElementById('shoppingZone')?.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>$('newShopName')?.focus(),400)});
       $('v2UseImageCheck')?.addEventListener('click',()=>{if($('banItem')){$('banItem').value=(guessed+' '+text).slice(0,800);if(typeof checkBan==='function')checkBan();}document.getElementById('pack')?.scrollIntoView({behavior:'smooth',block:'start'})});
       setStatus(text?'✅ 已完成包裝文字辨識，請確認結果。':'🟡 圖片已加入，但未讀到可靠文字。');
