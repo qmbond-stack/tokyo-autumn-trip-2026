@@ -352,6 +352,22 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 <div class="tip" style="margin-top:14px"><b>🔎 出入境違禁品快速辨識</b><br><small>輸入或貼上商品名稱、成分或品項，例如「牛肉乾」「抹茶」「水果」「藥品」。系統會做初步分類，最後請以日本／台灣官方規定與現場檢疫、海關判定為準。</small></div>
 <div class="tool-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><input id="banItem" placeholder="輸入想帶回／帶入的物品" style="flex:1;min-width:220px"><button class="btn" type="button" id="checkBan">🔎 開始辨識</button></div>
 <div id="banResult" class="tip" style="display:none;margin-top:10px"></div>
+
+<div class="identify-v2" id="identifyV2">
+  <div class="identify-v2-head"><div><b>📦 出入境商品辨識 V2</b><small>掃條碼、拍商品或上傳圖片，辨識後可直接帶入商品與出入境提醒。</small></div><span class="identify-badge">V2</span></div>
+  <div class="identify-actions">
+    <button class="btn" type="button" id="v2StartCamera">📷 開啟相機掃條碼</button>
+    <button class="btn secondary" type="button" id="v2UploadImage">🖼️ 拍照／上傳商品</button>
+    <button class="btn ghost" type="button" id="v2StopCamera">停止</button>
+  </div>
+  <input id="v2ImageInput" type="file" accept="image/*" capture="environment" hidden>
+  <video id="v2Video" class="identify-video" playsinline muted></video>
+  <canvas id="v2Canvas" hidden></canvas>
+  <div id="v2Preview" class="identify-preview" hidden></div>
+  <div id="v2Status" class="scan-status">準備完成。iPhone 請在部署後的 HTTPS 網址按「開啟相機」，並允許相機權限。</div>
+  <div id="v2Result" class="identify-result" hidden></div>
+  <div class="identify-note">💡 圖片辨識採「條碼辨識＋包裝文字 OCR」。辨識結果會先讓你確認，不會假裝 100% 知道商品或海關結論。</div>
+</div>
 <div class="trip-links" style="margin-top:8px"><a target="_blank" rel="noopener" href="https://www.customs.go.jp/english/summary/passenger.htm">🇯🇵 日本海關規定</a><a target="_blank" rel="noopener" href="https://www.maff.go.jp/aqs/tetuzuki/product/aq2.html">🥩 日本動物檢疫</a><a target="_blank" rel="noopener" href="https://www.maff.go.jp/pps/j/trip/keikouhin.html">🌱 日本植物檢疫</a><a target="_blank" rel="noopener" href="https://web.customs.gov.tw/">🇹🇼 台灣海關</a></div>
 <div class="shopping-zone" id="shoppingZone">
 <h2>🛍️ 日本採買中心</h2>
@@ -373,9 +389,9 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 
 <div class="barcode-panel">
   <b>🏷️ 條碼查商品</b>
-  <div class="muted">取消不穩定的相機掃描，改用 JAN／EAN 數字查詢。食品資料若查得到，會直接帶入新增表單。</div>
+  <div class="muted">可手動輸入 JAN／EAN；也可使用上方「出入境商品辨識 V2」直接掃碼或從圖片讀取。</div>
   <div class="barcode-row"><input id="barcodeInput" inputmode="numeric" autocomplete="off" placeholder="輸入 8／12／13 位 JAN／EAN 條碼"><button class="btn secondary" type="button" id="lookupBarcode">🔎 查商品</button></div>
-  <div id="barcodeStatus" class="scan-status">也可以直接用 Google Lens 拍商品，再把條碼數字貼到這裡。</div>
+  <div id="barcodeStatus" class="scan-status">掃描成功後會自動帶入條碼與商品查詢。</div>
 </div>
 
 <div class="shopping-card" style="margin-top:10px">
@@ -926,3 +942,119 @@ if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.se
  .item{padding:13px 0}
 }
 </style>
+
+
+<style id="identify-v2-style">
+.identify-v2{margin-top:12px;padding:14px;border:1px solid #e6cfd1;border-radius:20px;background:linear-gradient(145deg,#fffaf7,#fff3f4);box-shadow:0 5px 14px rgba(141,102,102,.045)}
+.identify-v2-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.identify-v2-head b{display:block;font-size:16px}.identify-v2-head small{display:block;color:#806d6f;font-size:11px;line-height:1.55;margin-top:3px}.identify-badge{font-size:10px;font-weight:800;color:#fff;background:#c98291;border-radius:999px;padding:4px 8px}
+.identify-actions{display:flex;gap:7px;flex-wrap:wrap;margin:11px 0 8px}.identify-actions .btn{font-size:12px;padding:8px 10px}.identify-video{display:none;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:15px;background:#151212;border:1px solid #33292a}.identify-video.live{display:block}.identify-preview{margin-top:9px;border:1px solid #ead9d3;border-radius:15px;overflow:hidden;background:#fff;max-height:300px}.identify-preview img{display:block;width:100%;max-height:300px;object-fit:contain;background:#f6f2ee}.identify-result{margin-top:9px;padding:11px;border:1px solid #e5d2d2;border-radius:15px;background:#fffdf9;font-size:12px;line-height:1.65}.identify-result b{font-size:14px}.identify-result .ocr-text{max-height:120px;overflow:auto;margin-top:7px;padding:8px;background:#faf5f2;border-radius:10px;white-space:pre-wrap;color:#6e5c5e}.identify-result-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.identify-note{font-size:10px;color:#8a7375;margin-top:8px;line-height:1.55}
+@media(max-width:620px){.identify-actions{display:grid;grid-template-columns:1fr 1fr}.identify-actions .btn:last-child{grid-column:1/-1}.identify-v2{padding:12px}}
+</style>
+<script id="identify-v2-script">
+(function(){
+  const $=id=>document.getElementById(id);
+  const video=$('v2Video'), input=$('v2ImageInput'), preview=$('v2Preview'), status=$('v2Status'), result=$('v2Result');
+  let stream=null, stopZX=null, nativeTimer=null, lastImageData='';
+  const setStatus=t=>status.textContent=t;
+  const escText=v=>String(v||'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function cleanCode(v){return String(v||'').replace(/[^0-9A-Za-z-]/g,'');}
+  function stop(){
+    if(nativeTimer){clearInterval(nativeTimer);nativeTimer=null}
+    if(stopZX){try{stopZX()}catch(e){} stopZX=null}
+    if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}
+    try{video.pause()}catch(e){} video.srcObject=null;video.classList.remove('live');setStatus('掃描已停止。');
+  }
+  async function handleCode(code, source){
+    code=cleanCode(code); if(!code)return;
+    stop(); setStatus('✅ 已辨識條碼：'+code+'，正在查詢商品…');
+    if($('barcodeInput')) $('barcodeInput').value=code;
+    if($('newShopBarcode')) $('newShopBarcode').value=code;
+    if(typeof window.lookup==='function') await window.lookup(code); else if(typeof lookup==='function') await lookup(code);
+    const name=$('newShopName')?.value||'';
+    const brand=$('newShopBrand')?.value||'';
+    showResult({code,name,brand,source});
+    const text=[name,brand,code].filter(Boolean).join(' '); if(text&&$('banItem')){$('banItem').value=text; if(typeof window.checkBan==='function')window.checkBan(); else if(typeof checkBan==='function')checkBan();}
+  }
+  function showResult(data){
+    result.hidden=false;
+    result.innerHTML=`<b>🔎 辨識結果</b><br>${data.code?`🏷️ 條碼：<strong>${escText(data.code)}</strong><br>`:''}${data.name?`📦 商品：${escText(data.name)}<br>`:''}${data.brand?`🏷️ 品牌：${escText(data.brand)}<br>`:''}<span class="muted">來源：${escText(data.source||'商品辨識')}</span><div class="identify-result-actions"><button type="button" class="btn secondary" id="v2UseResult">＋ 帶入採買商品</button><button type="button" class="btn ghost" id="v2CheckEntry">🛃 檢查出入境</button></div>`;
+    $('v2UseResult')?.addEventListener('click',()=>{document.getElementById('shoppingZone')?.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>$('newShopName')?.focus(),400)});
+    $('v2CheckEntry')?.addEventListener('click',()=>{document.getElementById('pack')?.scrollIntoView({behavior:'smooth',block:'start'});$('banItem')?.focus()});
+  }
+  async function nativeScanLoop(){
+    if(!('BarcodeDetector' in window)) return false;
+    let detector;
+    try{detector=new BarcodeDetector({formats:['ean_13','ean_8','upc_a','upc_e','code_128','qr_code']})}catch(e){detector=new BarcodeDetector()}
+    setStatus('相機已開啟，正在使用原生條碼辨識…');
+    nativeTimer=setInterval(async()=>{
+      if(!stream||video.readyState<2)return;
+      try{const codes=await detector.detect(video);if(codes&&codes[0])handleCode(codes[0].rawValue,'相機條碼掃描')}catch(e){}
+    },450);
+    return true;
+  }
+  async function zxingScan(){
+    try{
+      setStatus('正在載入相容掃描引擎…');
+      const mod=await import('https://cdn.jsdelivr.net/npm/@zxing/browser@0.1.5/+esm');
+      const reader=new mod.BrowserMultiFormatReader();
+      setStatus('相機已開啟，正在使用相容掃描引擎…');
+      const controls=await reader.decodeFromVideoDevice(undefined,video,(res,err)=>{if(res)handleCode(res.getText(),'相機條碼掃描')});
+      stopZX=()=>{try{controls.stop()}catch(e){} try{reader.reset()}catch(e){}};
+    }catch(e){
+      setStatus('⚠️ 此瀏覽器的相機掃描引擎未能啟動。請改用「拍照／上傳商品」，或確認已部署 HTTPS 並允許相機權限。');
+    }
+  }
+  async function startCamera(){
+    stop();
+    if(!navigator.mediaDevices?.getUserMedia){setStatus('⚠️ 此環境不支援相機 API，請改用拍照／上傳商品。');return}
+    try{
+      setStatus('正在要求相機權限…');
+      stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}},audio:false});
+      video.srcObject=stream; video.classList.add('live'); await video.play();
+      const ok=await nativeScanLoop(); if(!ok) await zxingScan();
+    }catch(e){
+      setStatus('⚠️ 無法開啟相機：'+(e.name==='NotAllowedError'?'請在 Safari／瀏覽器允許相機權限。':e.message||'請改用拍照／上傳商品。'));
+    }
+  }
+  function compress(file){return new Promise((resolve,reject)=>{const fr=new FileReader();fr.onerror=reject;fr.onload=()=>{const img=new Image();img.onload=()=>{const max=1200;let w=img.naturalWidth,h=img.naturalHeight;if(w>max||h>max){const r=Math.min(max/w,max/h);w=Math.round(w*r);h=Math.round(h*r)}const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.drawImage(img,0,0,w,h);resolve(c.toDataURL('image/jpeg',.82))};img.onerror=reject;img.src=fr.result};fr.readAsDataURL(file)})}
+  async function detectImageBarcode(img){
+    if('BarcodeDetector' in window){try{const d=new BarcodeDetector();const codes=await d.detect(img);if(codes?.[0])return codes[0].rawValue}catch(e){}}
+    try{const mod=await import('https://cdn.jsdelivr.net/npm/@zxing/browser@0.1.5/+esm');const reader=new mod.BrowserMultiFormatReader();const res=await reader.decodeFromImageElement(img);return res?.getText()||''}catch(e){return ''}
+  }
+  async function ocrImage(img){
+    try{
+      setStatus('正在讀取商品包裝文字（首次使用會載入 OCR）…');
+      const T=await import('https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/+esm');
+      const {data}=await T.recognize(img.src,'eng+jpn+chi_tra',{logger:m=>{if(m.status==='recognizing text')setStatus('圖片文字辨識中：'+Math.round((m.progress||0)*100)+'%')}});
+      return (data.text||'').trim();
+    }catch(e){return ''}
+  }
+  async function analyzeFile(file){
+    if(!file)return;stop();result.hidden=true;setStatus('正在處理商品圖片…');
+    try{
+      lastImageData=await compress(file);
+      preview.hidden=false;preview.innerHTML='<img id="v2PreviewImg" alt="商品預覽">';const img=$('v2PreviewImg');img.src=lastImageData;
+      await new Promise((r,j)=>{img.onload=r;img.onerror=j});
+      const code=await detectImageBarcode(img);
+      if(code){await handleCode(code,'商品圖片條碼辨識');return}
+      const text=await ocrImage(img);
+      const lines=text.split(/\n+/).map(x=>x.trim()).filter(x=>x.length>=2).slice(0,12);
+      const guessed=lines.find(x=>/[A-Za-zぁ-んァ-ヶ一-龯]{3,}/.test(x))||'';
+      if(guessed&&$('newShopName')&&!$('newShopName').value)$('newShopName').value=guessed;
+      if(lastImageData&&$('newShopImage'))$('newShopImage').value=lastImageData;
+      result.hidden=false;
+      result.innerHTML=`<b>🖼️ 商品圖片已讀取</b><br>${guessed?`可能商品名稱：<strong>${escText(guessed)}</strong><br>`:''}<span class="muted">${text?'已讀到包裝文字，請確認後再加入。':'未能可靠讀取文字，可直接手動填寫商品名稱。'}</span>${text?`<div class="ocr-text">${escText(text.slice(0,1200))}</div>`:''}<div class="identify-result-actions"><button type="button" class="btn secondary" id="v2UseImage">＋ 帶入採買商品</button><button type="button" class="btn ghost" id="v2UseImageCheck">🛃 用辨識文字檢查</button></div>`;
+      $('v2UseImage')?.addEventListener('click',()=>{if(lastImageData&&$('newShopImage'))$('newShopImage').value=lastImageData;document.getElementById('shoppingZone')?.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>$('newShopName')?.focus(),400)});
+      $('v2UseImageCheck')?.addEventListener('click',()=>{if($('banItem')){$('banItem').value=(guessed+' '+text).slice(0,800);if(typeof checkBan==='function')checkBan();}document.getElementById('pack')?.scrollIntoView({behavior:'smooth',block:'start'})});
+      setStatus(text?'✅ 已完成包裝文字辨識，請確認結果。':'🟡 圖片已加入，但未讀到可靠文字。');
+    }catch(e){setStatus('⚠️ 圖片處理失敗，請換一張清楚、正面的商品照片。')}
+  }
+  $('v2StartCamera')?.addEventListener('click',startCamera);
+  $('v2StopCamera')?.addEventListener('click',stop);
+  $('v2UploadImage')?.addEventListener('click',()=>input.click());
+  input?.addEventListener('change',e=>analyzeFile(e.target.files?.[0]));
+  window.addEventListener('pagehide',stop);
+  window.addEventListener('beforeunload',stop);
+  window.v2AnalyzeProductImage=analyzeFile;
+})();
+</script>
