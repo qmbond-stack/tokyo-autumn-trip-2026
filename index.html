@@ -416,7 +416,7 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 <div class="tip">③ 敘敘苑熱門分店建議提早預約，夕陽後的晚餐時段尤其熱門。</div>
 <div class="tip">④ Costco 建議提前安排交通，採買後直接回飯店整理戰利品。</div>
 </section>
-<div class="footer">🍁 2026 東京楓旅行手帳 V6.4｜3 girls，一起慢慢走，剛剛好。<br><span class="muted">天氣採東京即時資料；出發日期進入預報範圍後會自動顯示逐日預報。</span></div>
+<div class="footer">🍁 2026 東京楓旅行手帳 V6.5｜3 girls，一起慢慢走，剛剛好。<br><span class="muted">天氣採東京即時資料；出發日期進入預報範圍後會自動顯示逐日預報。</span></div>
 </div>
 
 <script>
@@ -455,8 +455,33 @@ const defaultDays=[
 const dayKey='tokyoDaysV7_yaesu';
 function cloneDays(x){return JSON.parse(JSON.stringify(x))}
 let savedDays;try{savedDays=JSON.parse(localStorage.getItem(dayKey)||'null')}catch(e){savedDays=null}
-let tripDays=Array.isArray(savedDays)&&savedDays.length===5?savedDays:cloneDays(defaultDays);
-let collapsedDays=JSON.parse(localStorage.getItem('tokyoCollapsedDaysV6')||'[false,false,false,false,false]');
+
+/* V6.5：修復舊版 localStorage 行程資料不完整，避免 D3 起渲染中斷，連帶讓 D4/D5 消失 */
+function normalizeTripDays(saved, defaults){
+  const base=cloneDays(defaults);
+  if(!Array.isArray(saved)) return base;
+  return base.map((fallback,i)=>{
+    const candidate=saved[i];
+    if(!candidate || typeof candidate!=='object') return fallback;
+    const out={...fallback};
+    if(typeof candidate.no==='string' && candidate.no.trim()) out.no=candidate.no;
+    if(typeof candidate.date==='string' && candidate.date.trim()) out.date=candidate.date;
+    if(typeof candidate.title==='string') out.title=candidate.title;
+    if(typeof candidate.badge==='string') out.badge=candidate.badge;
+    if(Array.isArray(candidate.items)){
+      const cleaned=candidate.items.map(x=>{
+        if(Array.isArray(x)) return [String(x[0]??''),String(x[1]??''),String(x[2]??'')];
+        if(x && typeof x==='object') return [String(x.time??x[0]??''),String(x.name??x.title??x[1]??''),String(x.note??x[2]??'')];
+        return null;
+      }).filter(x=>x && (x[0]||x[1]||x[2]));
+      out.items=cleaned.length?cleaned:fallback.items;
+    }
+    return out;
+  });
+}
+let tripDays=normalizeTripDays(savedDays,defaultDays);
+try{localStorage.setItem(dayKey,JSON.stringify(tripDays))}catch(e){}
+let collapsedDays;try{collapsedDays=JSON.parse(localStorage.getItem('tokyoCollapsedDaysV6')||'[false,false,false,false,false]')}catch(e){collapsedDays=[false,false,false,false,false]}
 if(!Array.isArray(collapsedDays)||collapsedDays.length!==5)collapsedDays=[false,false,false,false,false];
 function esc(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function saveDays(){localStorage.setItem(dayKey,JSON.stringify(tripDays))}
@@ -711,18 +736,21 @@ function renderDays(){
    return;
   }
   const items=article.querySelector('.day-items');
-  d.items.forEach((x,idx)=>{
+  const safeItems=Array.isArray(d.items)?d.items:[];
+  safeItems.forEach((raw,idx)=>{
+   const x=Array.isArray(raw)?[String(raw[0]??''),String(raw[1]??''),String(raw[2]??'')]:['','', ''];
+   const safeDay={...d,items:safeItems};
    const row=document.createElement('div');row.className='item';
-   row.innerHTML=`<div class="time">${esc(x[0])}</div><div class="item-main"><div class="item-place"><div class="item-title toggle-info" role="button" tabindex="0" aria-expanded="false">${esc(x[1])}</div></div>${x[2]?`<small>${esc(x[2])}</small>`:''}${renderStayMeta(di,idx,d)}${itemLinks(x[1],x[2])}</div>`;
+   row.innerHTML=`<div class="time">${esc(x[0])}</div><div class="item-main"><div class="item-place"><div class="item-title toggle-info" role="button" tabindex="0" aria-expanded="false">${esc(x[1])}</div></div>${x[2]?`<small>${esc(x[2])}</small>`:''}${renderStayMeta(di,idx,safeDay)}${itemLinks(x[1],x[2])}</div>`;
    const titleBtn=row.querySelector('.toggle-info');
    const toggleInfo=()=>{const open=row.classList.toggle('expanded');titleBtn.setAttribute('aria-expanded',open?'true':'false')};
    titleBtn.onclick=(e)=>{e.stopPropagation();toggleInfo()};
    titleBtn.onkeydown=(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();toggleInfo()}};
    items.appendChild(row);
-   if(idx<d.items.length-1){const leg=document.createElement('div');leg.innerHTML=renderCarLeg(di,idx);items.appendChild(leg.firstElementChild)}
+   if(idx<safeItems.length-1){const leg=document.createElement('div');leg.innerHTML=renderCarLeg(di,idx);items.appendChild(leg.firstElementChild)}
   });
-  const feasibility=document.createElement('div');feasibility.innerHTML=renderFeasibility(di,d);if(feasibility.firstElementChild)article.appendChild(feasibility.firstElementChild);
-  const summary=document.createElement('div');summary.innerHTML=renderCarSummary(di,d.items.length);if(summary.firstElementChild)article.appendChild(summary.firstElementChild);
+  const feasibility=document.createElement('div');feasibility.innerHTML=renderFeasibility(di,{...d,items:safeItems});if(feasibility.firstElementChild)article.appendChild(feasibility.firstElementChild);
+  const summary=document.createElement('div');summary.innerHTML=renderCarSummary(di,safeItems.length);if(summary.firstElementChild)article.appendChild(summary.firstElementChild);
   const toggleDay=()=>{collapsedDays[di]=!collapsedDays[di];localStorage.setItem('tokyoCollapsedDaysV6',JSON.stringify(collapsedDays));renderDays()};
   article.querySelector('.day-toggle').onclick=toggleDay;
   article.querySelector('.day-head').onclick=(e)=>{if(e.target.closest('.edit-day')||e.target.closest('.day-toggle')||e.target.closest('a'))return;toggleDay()};
@@ -852,7 +880,7 @@ document.querySelectorAll('.phrase').forEach(b=>b.addEventListener('click',()=>{
 document.querySelectorAll('[data-card]').forEach(b=>b.addEventListener('click',()=>{const [jp,zh]=b.dataset.card.split('|');document.getElementById('nameJP').textContent=jp;document.getElementById('nameZH').textContent=zh}));
 document.getElementById('speakJP').onclick=()=>speakJapanese(document.getElementById('nameJP').textContent);
 
-// V6.4 修復：清除舊版 Service Worker，避免手機仍被舊快取卡住。
+// V6.5 修復：清除舊版 Service Worker，避免手機仍被舊快取卡住。
 if('serviceWorker' in navigator){window.addEventListener('load',async()=>{try{const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()));if(window.caches){const ks=await caches.keys();await Promise.all(ks.map(k=>caches.delete(k)))}}catch(e){}})}
 </script>
 
