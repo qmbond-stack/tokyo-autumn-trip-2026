@@ -688,10 +688,10 @@ function renderRouteSchematic(di,d){
 }
 function renderDayTabs(){
  const tabs=document.getElementById('dayTabs'); if(!tabs) return;
- const active=Number(localStorage.getItem('tokyoActiveDayV22')||0);
+ const active=Number(localStorage.getItem('tokyoActiveDayV23')||localStorage.getItem('tokyoActiveDayV22')||0);
  tabs.innerHTML=tripDays.map((d,i)=>`<button type="button" class="day-tab" role="tab" aria-selected="${i===active?'true':'false'}" aria-controls="day-panel-${i}" data-day-tab="${i}">${esc(d.no.replace('Day ', 'D'))}<small>${esc(d.date)}</small></button>`).join('');
  tabs.querySelectorAll('.day-tab').forEach(btn=>btn.onclick=()=>{
-   const i=Number(btn.dataset.dayTab); localStorage.setItem('tokyoActiveDayV22',String(i)); renderDays();
+   const i=Number(btn.dataset.dayTab); localStorage.setItem('tokyoActiveDayV23',String(i)); localStorage.setItem('tokyoActiveDayV22',String(i)); renderDays();
  });
 }
 const carLegs={
@@ -713,52 +713,85 @@ function renderFeasibility(di,d){let stay=0,short=0;for(let i=0;i<d.items.length
 
 function renderDays(){
  const root=document.getElementById('dayList');
+ if(!root) return;
  root.innerHTML='';
- let active=Number(localStorage.getItem('tokyoActiveDayV22')||0);
- if(!Number.isInteger(active)||active<0||active>=tripDays.length)active=0;
- renderDayTabs();
- tripDays.forEach((d,di)=>{
+ let active=Number(localStorage.getItem('tokyoActiveDayV23')||0);
+ if(!Number.isInteger(active)||active<0||active>=tripDays.length) active=0;
+ try{localStorage.setItem('tokyoActiveDayV23',String(active))}catch(e){}
+ // V6.6：先建立所有日面板，單日失敗不可阻斷 D4/D5
+ renderDayTabsStable(active);
+ tripDays.forEach((raw,di)=>{
+  const d=(raw&&typeof raw==='object')?raw:cloneDays(defaultDays)[di];
   const article=document.createElement('article');
   article.id='day-panel-'+di;
-  article.className='day'+(di===active?' day-active':'')+(collapsedDays[di]?' collapsed':'');
+  article.className='day'+(di===active?' day-active':'');
   article.dataset.day=di;
-  const head=collapsedDays[di]
-   ? `<div class="day-head collapsed-head"><button type="button" class="day-toggle" aria-label="展開 ${esc(d.no)}">▸</button><h3>${esc(d.no)} | ${esc(d.date)}</h3></div>`
-   : `<div class="day-head"><button type="button" class="day-toggle" aria-label="收折 ${esc(d.no)}">▾</button><h3>${esc(d.no)} | ${esc(d.date)}</h3><div class="day-actions"><button type="button" class="edit-day">✏️ 編輯</button></div></div>`;
-  article.innerHTML=head+(collapsedDays[di]?'':`
-    ${renderRouteSchematic(di,d)}
-    <div class="day-items"></div>
-  `);
-  if(collapsedDays[di]){
-   root.appendChild(article);
-   article.querySelector('.day-toggle').onclick=()=>{collapsedDays[di]=false;localStorage.setItem('tokyoCollapsedDaysV6',JSON.stringify(collapsedDays));renderDays()};
-   article.querySelector('.day-head').onclick=(e)=>{if(e.target.closest('.day-toggle'))return;collapsedDays[di]=false;localStorage.setItem('tokyoCollapsedDaysV6',JSON.stringify(collapsedDays));renderDays()};
-   return;
-  }
-  const items=article.querySelector('.day-items');
-  const safeItems=Array.isArray(d.items)?d.items:[];
-  safeItems.forEach((raw,idx)=>{
-   const x=Array.isArray(raw)?[String(raw[0]??''),String(raw[1]??''),String(raw[2]??'')]:['','', ''];
-   const safeDay={...d,items:safeItems};
-   const row=document.createElement('div');row.className='item';
-   row.innerHTML=`<div class="time">${esc(x[0])}</div><div class="item-main"><div class="item-place"><div class="item-title toggle-info" role="button" tabindex="0" aria-expanded="false">${esc(x[1])}</div></div>${x[2]?`<small>${esc(x[2])}</small>`:''}${renderStayMeta(di,idx,safeDay)}${itemLinks(x[1],x[2])}</div>`;
-   const titleBtn=row.querySelector('.toggle-info');
-   const toggleInfo=()=>{const open=row.classList.toggle('expanded');titleBtn.setAttribute('aria-expanded',open?'true':'false')};
-   titleBtn.onclick=(e)=>{e.stopPropagation();toggleInfo()};
-   titleBtn.onkeydown=(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();toggleInfo()}};
-   items.appendChild(row);
-   if(idx<safeItems.length-1){const leg=document.createElement('div');leg.innerHTML=renderCarLeg(di,idx);items.appendChild(leg.firstElementChild)}
-  });
-  const feasibility=document.createElement('div');feasibility.innerHTML=renderFeasibility(di,{...d,items:safeItems});if(feasibility.firstElementChild)article.appendChild(feasibility.firstElementChild);
-  const summary=document.createElement('div');summary.innerHTML=renderCarSummary(di,safeItems.length);if(summary.firstElementChild)article.appendChild(summary.firstElementChild);
-  const toggleDay=()=>{collapsedDays[di]=!collapsedDays[di];localStorage.setItem('tokyoCollapsedDaysV6',JSON.stringify(collapsedDays));renderDays()};
-  article.querySelector('.day-toggle').onclick=toggleDay;
-  article.querySelector('.day-head').onclick=(e)=>{if(e.target.closest('.edit-day')||e.target.closest('.day-toggle')||e.target.closest('a'))return;toggleDay()};
-  const editBtn=article.querySelector('.edit-day');
-  if(editBtn)editBtn.onclick=(e)=>{e.stopPropagation();editDay(di)};
+  // 先掛載 DOM，避免某一日渲染例外導致後面日期完全消失
   root.appendChild(article);
+  try{
+   const isCollapsed=Array.isArray(collapsedDays)&&collapsedDays[di]===true;
+   if(isCollapsed) article.classList.add('collapsed');
+   const no=typeof d.no==='string'?d.no:('Day '+(di+1));
+   const date=typeof d.date==='string'?d.date:'';
+   article.innerHTML=isCollapsed
+    ? `<div class="day-head collapsed-head"><button type="button" class="day-toggle" aria-label="展開 ${esc(no)}">▸</button><h3>${esc(no)} | ${esc(date)}</h3></div>`
+    : `<div class="day-head"><button type="button" class="day-toggle" aria-label="收折 ${esc(no)}">▾</button><h3>${esc(no)} | ${esc(date)}</h3><div class="day-actions"><button type="button" class="edit-day">✏️ 編輯</button></div></div><div class="day-items"></div>`;
+   if(isCollapsed){
+    const open=()=>{collapsedDays[di]=false;try{localStorage.setItem('tokyoCollapsedDaysV6',JSON.stringify(collapsedDays))}catch(e){};renderDays()};
+    article.querySelector('.day-toggle').onclick=open;
+    article.querySelector('.day-head').onclick=e=>{if(!e.target.closest('.day-toggle'))open()};
+    return;
+   }
+   // 路線示意獨立容錯，失敗只略過路線，不影響行程本體
+   try{
+    const route=document.createElement('div');
+    route.innerHTML=renderRouteSchematic(di,d);
+    if(route.firstElementChild) article.querySelector('.day-head').after(route.firstElementChild);
+   }catch(routeErr){console.warn('route render failed',di,routeErr)}
+   const items=article.querySelector('.day-items');
+   const safeItems=Array.isArray(d.items)?d.items:[];
+   safeItems.forEach((rawItem,idx)=>{
+    try{
+     const x=Array.isArray(rawItem)?[String(rawItem[0]??''),String(rawItem[1]??''),String(rawItem[2]??'')]:['','',''];
+     const row=document.createElement('div'); row.className='item';
+     let stay='',links='';
+     try{stay=renderStayMeta(di,idx,{...d,items:safeItems})}catch(e){}
+     try{links=itemLinks(x[1],x[2])}catch(e){links=''}
+     row.innerHTML=`<div class="time">${esc(x[0])}</div><div class="item-main"><div class="item-place"><div class="item-title toggle-info" role="button" tabindex="0" aria-expanded="false">${esc(x[1])}</div></div>${x[2]?`<small>${esc(x[2])}</small>`:''}${stay}${links}</div>`;
+     const titleBtn=row.querySelector('.toggle-info');
+     const toggleInfo=()=>{const open=row.classList.toggle('expanded');titleBtn.setAttribute('aria-expanded',open?'true':'false')};
+     titleBtn.onclick=e=>{e.stopPropagation();toggleInfo()};
+     titleBtn.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleInfo()}};
+     items.appendChild(row);
+     if(idx<safeItems.length-1){try{const leg=document.createElement('div');leg.innerHTML=renderCarLeg(di,idx);if(leg.firstElementChild)items.appendChild(leg.firstElementChild)}catch(e){}}
+    }catch(itemErr){
+     const fallback=document.createElement('div');fallback.className='item';fallback.textContent='⚠️ 此行資料讀取失敗，請點編輯修正';items.appendChild(fallback);
+    }
+   });
+   try{const f=document.createElement('div');f.innerHTML=renderFeasibility(di,{...d,items:safeItems});if(f.firstElementChild)article.appendChild(f.firstElementChild)}catch(e){}
+   try{const sm=document.createElement('div');sm.innerHTML=renderCarSummary(di,safeItems.length);if(sm.firstElementChild)article.appendChild(sm.firstElementChild)}catch(e){}
+   const toggle=()=>{collapsedDays[di]=!collapsedDays[di];try{localStorage.setItem('tokyoCollapsedDaysV6',JSON.stringify(collapsedDays))}catch(e){};renderDays()};
+   article.querySelector('.day-toggle').onclick=toggle;
+   article.querySelector('.day-head').onclick=e=>{if(e.target.closest('.edit-day')||e.target.closest('.day-toggle')||e.target.closest('a'))return;toggle()};
+   const editBtn=article.querySelector('.edit-day'); if(editBtn)editBtn.onclick=e=>{e.stopPropagation();editDay(di)};
+  }catch(dayErr){
+   console.error('day render failed',di,dayErr);
+   article.innerHTML=`<div class="day-head"><h3>${esc(d.no||('Day '+(di+1)))} | ${esc(d.date||'')}</h3></div><div class="day-feasibility danger"><b>⚠️ 此日顯示已啟用保護模式</b>資料不影響其他日期。請重新整理或點「編輯」後儲存。</div>`;
+  }
  });
 }
+function renderDayTabsStable(active){
+ const tabs=document.getElementById('dayTabs'); if(!tabs) return;
+ tabs.innerHTML='';
+ tripDays.forEach((d,i)=>{
+  const btn=document.createElement('button');btn.type='button';btn.className='day-tab';btn.setAttribute('role','tab');btn.setAttribute('aria-selected',i===active?'true':'false');btn.setAttribute('aria-controls','day-panel-'+i);btn.dataset.dayTab=String(i);
+  const no=(d&&d.no?d.no:('Day '+(i+1))).replace('Day ','D');const date=d&&d.date?d.date:'';
+  btn.innerHTML=`${esc(no)}<small>${esc(date)}</small>`;
+  btn.onclick=()=>{try{localStorage.setItem('tokyoActiveDayV23',String(i));localStorage.setItem('tokyoActiveDayV22',String(i))}catch(e){};renderDays()};
+  tabs.appendChild(btn);
+ });
+}
+
 function editDay(di){const d=tripDays[di],article=document.querySelector(`[data-day="${di}"]`);article.classList.remove('collapsed');article.classList.add('editing');const head=article.querySelector('.day-head');head.innerHTML=`<div style="flex:1"><div class="day-edit-grid"><input id="editDate" aria-label="日期" value="${esc(d.date)}"></div></div>`;const items=article.querySelector('.day-items');items.innerHTML='';d.items.forEach(x=>{const row=document.createElement('div');row.className='item edit-row';row.innerHTML=`<div><input aria-label="時間" value="${esc(x[0])}"></div><div class="edit-content"><input aria-label="行程名稱" value="${esc(x[1])}"><input aria-label="備註" placeholder="備註（可留白）" value="${esc(x[2]||'')}"><button type="button" class="remove-item">🗑️ 刪除此行</button></div>`;row.querySelector('.remove-item').onclick=()=>row.remove();items.appendChild(row)});const controls=document.createElement('div');controls.className='edit-controls';controls.innerHTML='<button type="button" class="add-item">＋ 新增一段行程</button><button type="button" class="save-day">💾 儲存這一天</button><button type="button" class="cancel-day">取消</button>';article.appendChild(controls);controls.querySelector('.add-item').onclick=()=>{const row=document.createElement('div');row.className='item edit-row';row.innerHTML='<div><input aria-label="時間" placeholder="例如 15:00"></div><div class="edit-content"><input aria-label="行程名稱" placeholder="例如 ☕ 咖啡時間"><input aria-label="備註" placeholder="備註（可留白）"><button type="button" class="remove-item">🗑️ 刪除此行</button></div>';row.querySelector('.remove-item').onclick=()=>row.remove();items.appendChild(row);row.querySelector('input').focus()};controls.querySelector('.save-day').onclick=()=>{const rows=[...items.querySelectorAll('.edit-row')];const arr=rows.map(r=>{const ins=r.querySelectorAll('input');return [ins[0].value.trim(),ins[1].value.trim(),ins[2].value.trim()]}).filter(x=>x[0]||x[1]||x[2]);tripDays[di].date=article.querySelector('#editDate').value.trim()||d.date;tripDays[di].title=d.title;tripDays[di].badge=d.badge;tripDays[di].items=arr;saveDays();renderDays()};controls.querySelector('.cancel-day').onclick=()=>renderDays()}
 renderDays();
 
@@ -917,7 +950,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',async()=>{try{co
   setTimeout(()=>{if(($('weatherNow')?.textContent||'').includes('載入中')) fallback('天氣資料尚未回應，已停止無限載入。');},10000);
 })();
 </script>
-</body></html>
+<div id="buildStamp" style="position:fixed;right:8px;bottom:8px;z-index:9999;background:#fff8f5;border:1px solid #ead9d3;border-radius:999px;padding:4px 8px;font-size:10px;color:#8a7375">V6.6 D3-D5 Stable</div></body></html>
 <style id="v20-map-ui">
 /* V21 map refinement: V6.3 layout remains locked. Only the daily map card is rebuilt. */
 .day-route-card{margin:14px 12px 12px!important;padding:12px!important;border:1px solid #ead9d3!important;border-radius:24px!important;background:#fffaf6!important;box-shadow:0 6px 20px rgba(110,76,76,.06)!important}
