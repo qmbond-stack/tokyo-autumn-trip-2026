@@ -689,6 +689,13 @@ function renderCarLeg(di,idx){const x=(carLegs[di]||[])[idx];if(!x)return '';con
 function renderCarSummary(di,count){const legs=(carLegs[di]||[]).slice(0,Math.max(0,count-1));if(!legs.length)return '';let max=0,km=0;legs.forEach(x=>{const r=parseRange(x[1]);max+=r[1]+trafficBuffer(x[2])+5;km+=parseFloat(x[0])});return `<div class="travel-summary"><b>🚐 今日包車估算：路線約 ${Math.round(km)} km</b><small>含常見路況＋上下車／停車緩衝，移動預抓約 ${max} 分</small></div>`}
 function renderFeasibility(di,d){let stay=0,short=0;for(let i=0;i<d.items.length-1;i++){const z=itemStay(di,i,d);if(!z)continue;stay+=Math.max(0,z.stay);if(z.stay<0)short+=Math.abs(z.stay)}const cls=short?'danger':stay<180?'warn':'ok';const msg=short?`目前有約 ${short} 分鐘時程不足，建議調整出發時間或刪減停留。`: `依包車＋常見路況模型，可分配的有效停留約 ${Math.round(stay)} 分鐘。`;return `<div class="day-feasibility ${cls}"><b>📊 今日可行性估算</b>${msg} 已把每段包車、常見壅塞、上下車與短暫找停車納入。</div>`}
 
+function safeRouteSchematic(di,d){
+ try{return renderRouteSchematic(di,d)}
+ catch(err){
+  console.warn('route schematic fallback',err);
+  return `<div class="route-schematic"><div class="route-schematic-head"><strong>🗺️ 今日路線</strong><small>路線資訊載入中</small></div><div class="route-schematic-foot"><span>地圖元件暫時略過，不影響行程內容。</span></div></div>`;
+ }
+}
 function renderDays(){
  const root=document.getElementById('dayList');
  root.innerHTML='';
@@ -706,7 +713,7 @@ function renderDays(){
    ? `<div class="day-head collapsed-head"><button type="button" class="day-toggle" aria-label="展開 ${esc(d.no)}">▸</button><h3>${esc(d.no)} | ${esc(d.date)}</h3></div>`
    : `<div class="day-head"><button type="button" class="day-toggle" aria-label="收折 ${esc(d.no)}">▾</button><h3>${esc(d.no)} | ${esc(d.date)}</h3><div class="day-actions"><button type="button" class="edit-day">✏️ 編輯</button></div></div>`;
   article.innerHTML=head+(collapsedDays[di]?'':`
-    ${renderRouteSchematic(di,d)}
+    ${safeRouteSchematic(di,d)}
     <div class="day-items"></div>
   `);
   if(collapsedDays[di]){
@@ -737,7 +744,7 @@ function renderDays(){
  });
 }
 function editDay(di){const d=tripDays[di],article=document.querySelector(`[data-day="${di}"]`);article.classList.remove('collapsed');article.classList.add('editing');const head=article.querySelector('.day-head');head.innerHTML=`<div style="flex:1"><div class="day-edit-grid"><input id="editDate" aria-label="日期" value="${esc(d.date)}"></div></div>`;const items=article.querySelector('.day-items');items.innerHTML='';d.items.forEach(x=>{const row=document.createElement('div');row.className='item edit-row';row.innerHTML=`<div><input aria-label="時間" value="${esc(x[0])}"></div><div class="edit-content"><input aria-label="行程名稱" value="${esc(x[1])}"><input aria-label="備註" placeholder="備註（可留白）" value="${esc(x[2]||'')}"><button type="button" class="remove-item">🗑️ 刪除此行</button></div>`;row.querySelector('.remove-item').onclick=()=>row.remove();items.appendChild(row)});const controls=document.createElement('div');controls.className='edit-controls';controls.innerHTML='<button type="button" class="add-item">＋ 新增一段行程</button><button type="button" class="save-day">💾 儲存這一天</button><button type="button" class="cancel-day">取消</button>';article.appendChild(controls);controls.querySelector('.add-item').onclick=()=>{const row=document.createElement('div');row.className='item edit-row';row.innerHTML='<div><input aria-label="時間" placeholder="例如 15:00"></div><div class="edit-content"><input aria-label="行程名稱" placeholder="例如 ☕ 咖啡時間"><input aria-label="備註" placeholder="備註（可留白）"><button type="button" class="remove-item">🗑️ 刪除此行</button></div>';row.querySelector('.remove-item').onclick=()=>row.remove();items.appendChild(row);row.querySelector('input').focus()};controls.querySelector('.save-day').onclick=()=>{const rows=[...items.querySelectorAll('.edit-row')];const arr=rows.map(r=>{const ins=r.querySelectorAll('input');return [ins[0].value.trim(),ins[1].value.trim(),ins[2].value.trim()]}).filter(x=>x[0]||x[1]||x[2]);tripDays[di].date=article.querySelector('#editDate').value.trim()||d.date;tripDays[di].title=d.title;tripDays[di].badge=d.badge;tripDays[di].items=arr;saveDays();renderDays()};controls.querySelector('.cancel-day').onclick=()=>renderDays()}
-renderDays();
+try{renderDays()}catch(err){console.error('renderDays failed',err);const root=document.getElementById('dayList');if(root)root.innerHTML='<div class="route-schematic"><strong>⚠️ 行程載入異常，請重新整理一次</strong><small>已啟動其他功能，不會連帶卡住天氣。</small></div>'; }
 
 const wmap={0:['☀️','晴朗'],1:['🌤️','大致晴朗'],2:['⛅','局部多雲'],3:['☁️','多雲'],45:['🌫️','霧'],48:['🌫️','霧'],51:['🌦️','毛毛雨'],53:['🌦️','毛毛雨'],55:['🌧️','細雨'],61:['🌧️','小雨'],63:['🌧️','中雨'],65:['🌧️','大雨'],71:['🌨️','小雪'],73:['🌨️','中雪'],75:['❄️','大雪'],80:['🌦️','陣雨'],81:['🌦️','陣雨'],82:['⛈️','強陣雨'],95:['⛈️','雷雨'],96:['⛈️','雷雨伴冰雹'],99:['⛈️','雷雨伴冰雹']};
 function tripCountdown(){
