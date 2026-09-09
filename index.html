@@ -176,6 +176,7 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 .route-schematic-foot span{font-size:9px;color:#9a8582}.route-open{font-size:10px;color:#8a5f68;text-decoration:none;background:#fff;border:1px solid #ead9d3;border-radius:999px;padding:6px 9px;white-space:nowrap}
 @media(max-width:620px){.route-schematic{margin:0 8px 12px;padding:11px;border-radius:20px}.route-schematic-head strong{font-size:14px}.route-node{min-width:88px;max-width:118px;padding:8px}.route-arrow{flex-basis:18px}.route-schematic-foot span{font-size:8.5px}}
 </style>
+<!-- Canonical release: index.html | unified itinerary + shopping + scanner + weather + places -->
 </head>
 <body>
 <div class="app">
@@ -268,7 +269,7 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 <p class="weather-note" id="weatherNote">正在取得東京即時資料…</p>
 <div class="weather-now" id="weatherNow">🌤️ 載入中…</div>
 <div class="weather-grid" id="weatherGrid"></div>
-<p class="weather-note">※ 10/26～10/30 距離現在超過 16 天時，逐日預報尚未發布，App 會顯示「尚未進入預報範圍」，不會拿季節平均冒充真正預報。接近出發日期後重新開啟即可更新。</p>
+<p class="weather-note" id="weatherRangeNote">旅行預報範圍會依今天日期自動計算。尚未進入預報範圍時，不會拿季節平均冒充真正預報。</p>
 </section>
 
 <section class="card" id="tools">
@@ -446,18 +447,18 @@ function renderEntryRisk(text,targetId='v2Risk'){const box=document.getElementBy
 window.renderEntryRisk=renderEntryRisk;
 
 const defaultDays=[
-{no:'Day 1',date:'10/26（一）',title:'抵達東京・丸之內夜景與晚餐',badge:'✈️ Welcome!',items:[['13:25','🛬 抵達成田機場 T2（JX314）','入境、領行李'],['14:30',"🚆 N'EX 前往東京車站",'成田→東京；抵達後步行前往八重洲飯店'],['16:30','🏨 SUPER HOTEL Premier 東京站八重洲中央口 Check-in','放行李、稍作休息；東京站八重洲中央口步行約 3 分鐘'],['17:15','🚶 飯店 → 東京站／丸之內','八重洲中央口出發，步行跨過東京站前往丸之內'],['18:00','🌃 丸之內夜景散步','東京站丸之內站舍 → 丸之內仲通 → KITTE'],['19:00','🍽️ The INNOCENT CARVERY 新丸大樓店','高樓層和牛燒肉＋東京站景；第一晚不再跨區'],['21:00','🍵 HIGASHIYA man Marunouchi','若還有胃，茶與和菓子作為第一晚收尾；之後步行回八重洲飯店']]},
-{no:'Day 2',date:'10/27（二）',title:'MDM採買・皇居・東京站深度散策',badge:'🛍️ 採買＋皇居',items:[['08:00','🍳 飯店早餐','以飯店早餐為主，減少早晨轉乘'],['08:40','🚐 飯店 → MDM 増田増','包車前往日本橋橫山町；建議 09:00 開門即抵達'],['09:00','🛍️ MDM 増田増（會員制批發採買）','日本橋橫山町 7-5；建議停留 90 分。⚠️ 一般消費者入店與購物限制，請務必事前確認會員資格／入店條件'],['10:40','🚐 MDM → 皇居東御苑','經日本橋／大手町方向，預留市區路況與上下車時間'],['11:05','🌳 皇居東御苑・二重橋','精華散策約 65 分，避免壓縮午餐預約'],['12:25','🍣 Manten Sushi Marunouchi','丸之內人氣壽司，午餐建議預約'],['14:00','🌿 KITTE Marunouchi 屋頂庭園','東京站正面景觀'],['15:00','☕ HIGASHIYA man Marunouchi','茶＋和菓子，安排正式咖啡甜點休息'],['16:00','🛍️ 丸之內仲通・東京站・GRANSTA','伴手禮、甜點、百貨慢逛；也可順路回八重洲'],['18:00','🍲 Sukiyaki Jyuniten 丸之內店','和牛壽喜燒／涮涮鍋，第二晚好好吃一頓'],['20:00','🚐 東京站／八重洲 → 飯店','包車或步行回飯店，依當下採買戰利品決定']] },
+{no:'Day 1',date:'10/26（一）',title:'抵達東京・銀座塩麵包・丸之內夜景',badge:'✈️ Welcome!',items:[['13:25','🛬 抵達成田機場 T2（JX314）','入境、領行李'],['14:30',"🚆 N'EX 前往東京車站",'成田→東京；抵達後步行前往八重洲飯店'],['16:30','🏨 SUPER HOTEL Premier 東京站八重洲中央口 Check-in','放行李、稍作休息'],['17:00','🚐 飯店 → pain･maison 銀座店','包車約 10–15 分，視東京站周邊路況'],['17:15','🥐 塩パン屋 pain･maison 銀座店','銀座2-14-5；鹽麵包外帶，建議停留 20–30 分。東銀座站 A7 步行約 3 分'],['17:50','🚐 銀座 → 東京站／丸之內','包車約 10–15 分'],['18:15','🌃 丸之內夜景散步','東京站丸之內站舍 → 丸之內仲通 → KITTE'],['19:15','🍽️ The INNOCENT CARVERY 新丸大樓店','高樓層和牛燒肉＋東京站景；第一晚不再跨區'],['21:15','🚶 丸之內 → 飯店','依體力步行或短程包車回八重洲']]},
+{no:'Day 2',date:'10/27（二）',title:'MDM採買・兜町甜點麵包・皇居・東京站',badge:'🛍️ 採買＋甜點',items:[['08:00','🍳 飯店早餐','以飯店早餐為主，減少早晨轉乘'],['08:40','🚐 飯店 → MDM 増田増','包車前往日本橋橫山町；預留路況與上下車'],['09:00','🛍️ MDM 増田増（會員制批發採買）','日本橋橫山町 7-5；建議停留約 70 分。⚠️ 入店與購物資格請事前確認'],['10:15','🚐 MDM → Bakery BANK','包車約 10–15 分，前往兜町'],['10:30','🥖 Bakery BANK','日本橋兜町6-7；麵包＋短暫休息，建議 25 分'],['11:00','🍰 Pâtisserie ease','日本橋兜町9-1；與 Bakery BANK 很近，甜點／外帶，建議 30–40 分'],['11:45','🚐 兜町 → 皇居東御苑','包車約 15–25 分，計入市區路況'],['12:15','🌳 皇居東御苑・二重橋','精華散策約 60 分；依長輩體力彈性縮短'],['13:30','🍣 Manten Sushi Marunouchi','午餐建議預約；若訂位時間不同，以餐廳時間為主調整'],['15:00','🌿 KITTE Marunouchi 屋頂庭園','東京站正面景觀＋休息'],['15:45','🛍️ 丸之內仲通・東京站・GRANSTA','伴手禮、甜點、百貨慢逛；也可順路回八重洲'],['18:00','🍲 Sukiyaki Jyuniten 丸之內店','和牛壽喜燒／涮涮鍋'],['20:00','🚐 東京站／八重洲 → 飯店','包車或步行回飯店，依戰利品與體力決定']] },
 {no:'Day 3',date:'10/28（三）',title:'高輪庭園・高輪 Gateway・SHIBUYA SKY',badge:'🌇 今日高光',items:[['08:00','🍳 飯店早餐',''],['09:00','🚆 東京站 → 高輪 Gateway','八重洲飯店步行至東京站，搭 JR 前往高輪 Gateway'],['09:30','🍃 高輪庭園','今日主軸：庭園＋高輪歷史散策'],['11:00','⛩️ 泉岳寺','赤穗浪士相關歷史，與高輪庭園串成一線'],['12:00','🍱 Takanawa Soregashi','NEWoMan 高輪 28F；午餐兼看高輪景色'],['13:30','☕ BLUE BOTTLE COFFEE 高輪咖啡','專業咖啡＋利耶日鬆餅，安排休息'],['14:15','🏙️ Takanawa Gateway City','新舊高輪對照散策'],['15:45','🚆 高輪 Gateway → 澀谷','前往 SHIBUYA SKY'],['17:00','🌇 SHIBUYA SKY','鎖定夕陽前後時段；建議提前購票'],['19:00','🥩 叙々苑 渋谷店','東京燒肉晚餐；建議提前預約'],['21:00','🚆 澀谷 → 東京站／八重洲','回東京站後步行返飯店']]},
-{no:'Day 4',date:'10/29（四）',title:'Costco 幕張・幕張海濱',badge:'🛒 Shopping!',items:[['08:00','🍳 飯店早餐',''],['09:00','🚆 東京站 → Costco 幕張','飯店步行至東京站，搭京葉線往幕張豐砂；減少轉乘'],['10:00','🛒 Costco Wholesale Makuhari','採買主行程；會員購物'],['12:30','🍕 Costco Food Court','簡單午餐，不另繞路'],['13:30','🌊 幕張海濱公園／幕張海濱','天氣好散步；若下雨改逛商場'],['15:00','🍰 Pâtisserie SATSUKI','Hotel New Otani Makuhari 甜點，作為下午茶備案'],['16:00','🚆 幕張 → 東京站／八重洲','京葉線返回東京站，帶著戰利品回飯店'],['17:00','🏨 飯店休息・整理戰利品','洗澡、整理行李，八重洲大浴場也可作為收尾'],['19:00','🍲 東京站／八重洲晚餐','改在飯店步行圈用餐，避免再跨區']]},
+{no:'Day 4',date:'10/29（四）',title:'Costco 幕張・幕張海濱',badge:'🛒 Shopping!',items:[['08:00','🍳 飯店早餐',''],['09:00','🚆 東京站 → Costco 幕張','飯店步行至東京站，搭京葉線往幕張豐砂；減少轉乘'],['10:00','🛒 Costco Wholesale Makuhari','採買主行程；會員購物'],['12:30','🍕 Costco Food Court','簡單午餐，不另繞路'],['13:30','🌊 幕張海濱公園／幕張海濱','天氣好散步；若下雨改逛商場'],['14:45','🚐 幕張 → 浅草六区','包車約 50–70 分，視首都高與市區路況；這段作為跨區移動日的主要交通段'],['16:00','🥤 IYOSHI COLA Asakusa Rokku（伊良コーラ 浅草六区）','浅草1-24-8；手工可樂休息約 30–40 分，營業時間請出發前再確認'],['16:45','🚐 浅草 → 東京站／八重洲','包車約 20–35 分；帶著 Costco 戰利品直接回飯店'],['17:30','🏨 飯店休息・整理戰利品','洗澡、整理行李，八重洲大浴場也可作為收尾'],['19:00','🍲 東京站／八重洲晚餐','改在飯店步行圈用餐，避免再跨區']]},
 {no:'Day 5',date:'10/30（五）',title:'八重洲最後採買・N’EX・返台',badge:'🎁 滿載而歸',items:[['07:30','🍳 飯店早餐',''],['08:30','🧳 Check-out／行李寄放','退房後行李寄放飯店，東京站就在步行圈'],['09:00','🚶 東京站・丸之內最後散策','把握最後拍照時間；不再跑押上／晴空塔'],['10:00','🛍️ 八重洲地下街／東京站最後採買','UNIQLO ヤエチカ等 10:00 起營業店家可快速補貨'],['10:30','🏨 回飯店取行李','確認護照、票券、戰利品'],['11:00','🚶 飯店 → 東京站','八重洲中央口步行約 3 分鐘'],['11:30',"🚆 N'EX 前往成田機場 T2",'從東京站出發，保留約 3 小時給成田 T2 報到與免稅'],['12:30','✈️ 成田 T2・午餐／最後伴手禮','機場作為最後緩衝，不再安排市區移動'],['14:25','🛫 JX315 起飛','NRT T2 → RMQ']]}
 ]
-const dayKey='tokyoDaysV7_yaesu';
+const dayKey='tokyoDaysV8_yaesu';
 function cloneDays(x){return JSON.parse(JSON.stringify(x))}
 let savedDays;try{savedDays=JSON.parse(localStorage.getItem(dayKey)||'null')}catch(e){savedDays=null}
 let tripDays=Array.isArray(savedDays)&&savedDays.length===5?savedDays:cloneDays(defaultDays);
-// 住宿／MDM 行程更新：既有儲存資料若尚未加入 MDM，自動套用新版 Day 2，避免瀏覽器舊快取遮蔽更新。
-if(Array.isArray(tripDays)&&tripDays[1]&&!tripDays[1].items.some(x=>String(x[1]||'').includes('MDM'))){tripDays[1]=cloneDays(defaultDays)[1];try{localStorage.setItem(dayKey,JSON.stringify(tripDays))}catch(e){}}
+// V8 行程更新：舊版資料不會覆蓋新版的兜町／銀座整合。
+if(Array.isArray(tripDays)&&tripDays[1]&&!tripDays[1].items.some(x=>String(x[1]||'').includes('Bakery BANK'))){tripDays=cloneDays(defaultDays);try{localStorage.setItem(dayKey,JSON.stringify(tripDays))}catch(e){}}
 let collapsedDays=JSON.parse(localStorage.getItem('tokyoCollapsedDaysV6')||'[false,false,false,false,false]');
 if(!Array.isArray(collapsedDays)||collapsedDays.length!==5)collapsedDays=[false,false,false,false,false];
 function esc(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
@@ -737,7 +738,24 @@ function editDay(di){const d=tripDays[di],article=document.querySelector(`[data-
 renderDays();
 
 const wmap={0:['☀️','晴朗'],1:['🌤️','大致晴朗'],2:['⛅','局部多雲'],3:['☁️','多雲'],45:['🌫️','霧'],48:['🌫️','霧'],51:['🌦️','毛毛雨'],53:['🌦️','毛毛雨'],55:['🌧️','細雨'],61:['🌧️','小雨'],63:['🌧️','中雨'],65:['🌧️','大雨'],71:['🌨️','小雪'],73:['🌨️','中雪'],75:['❄️','大雪'],80:['🌦️','陣雨'],81:['🌦️','陣雨'],82:['⛈️','強陣雨'],95:['⛈️','雷雨'],96:['⛈️','雷雨伴冰雹'],99:['⛈️','雷雨伴冰雹']};
-async function weather(){try{const api='https://api.open-meteo.com/v1/forecast?latitude=35.6762&longitude=139.6503&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=16';let r=await fetch(api,{cache:'no-store',mode:'cors'});if(!r.ok)throw 0;let d=await r.json(),q=wmap[d.current.weather_code]||['🌤️','天氣'];document.getElementById('weatherNow').innerHTML='<div class="weather-icon">'+q[0]+'</div><div><b>東京目前 '+Math.round(d.current.temperature_2m)+'°C</b><br>'+q[1]+'｜體感 '+Math.round(d.current.apparent_temperature)+'°C<br><small>風速 '+Math.round(d.current.wind_speed_10m)+' km/h</small></div>';let g=document.getElementById('weatherGrid');g.innerHTML='';['2026-10-26','2026-10-27','2026-10-28','2026-10-29','2026-10-30'].forEach((date,i)=>{let k=d.daily.time.indexOf(date),el=document.createElement('div');el.className='weather-day';if(k<0)el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi">🍁</div><div>尚未進入預報</div>';else{let z=wmap[d.daily.weather_code[k]]||['🌤️','天氣'];el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi">'+z[0]+'</div><div>'+z[1]+'</div><b>'+Math.round(d.daily.temperature_2m_max[k])+'°/'+Math.round(d.daily.temperature_2m_min[k])+'°</b><br><small>雨 '+(d.daily.precipitation_probability_max[k]??'--')+'%</small>'}g.appendChild(el)});document.getElementById('weatherNote').textContent='東京即時資料已更新｜'+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});}catch(e){document.getElementById('weatherNow').textContent='⚠️ 暫時無法取得天氣，請確認網路後重新整理。';document.getElementById('weatherNote').textContent='天氣服務連線失敗';}}weather();
+async function weather(){
+ const now=new Date(), todayTokyo=new Date(now.toLocaleString('en-US',{timeZone:'Asia/Tokyo'}));
+ const trip=['2026-10-26','2026-10-27','2026-10-28','2026-10-29','2026-10-30'];
+ const start=new Date('2026-10-26T00:00:00+09:00');
+ const days=Math.max(0,Math.ceil((start-now)/86400000));
+ const note=document.getElementById('weatherNote'), range=document.getElementById('weatherRangeNote');
+ range.textContent=`📅 距離出發約 ${days} 天。東京逐日預報通常在出發前約 10～16 天開始提供；尚未進入範圍時會清楚標示。`;
+ const ctrl=new AbortController(), timer=setTimeout(()=>ctrl.abort(),8000);
+ try{
+  const api='https://api.open-meteo.com/v1/forecast?latitude=35.6762&longitude=139.6503&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=16';
+  const r=await fetch(api,{cache:'no-store',mode:'cors',signal:ctrl.signal}); clearTimeout(timer); if(!r.ok)throw new Error('HTTP '+r.status);
+  const d=await r.json(),q=wmap[d.current.weather_code]||['🌤️','天氣'];
+  document.getElementById('weatherNow').innerHTML='<div class="weather-icon">'+q[0]+'</div><div><b>東京目前 '+Math.round(d.current.temperature_2m)+'°C</b><br>'+q[1]+'｜體感 '+Math.round(d.current.apparent_temperature)+'°C<br><small>風速 '+Math.round(d.current.wind_speed_10m)+' km/h</small></div>';
+  const g=document.getElementById('weatherGrid');g.innerHTML='';trip.forEach((date,i)=>{const k=d.daily.time.indexOf(date),el=document.createElement('div');el.className='weather-day';if(k<0){el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi">⏳</div><div>尚未進入預報</div>'}else{const z=wmap[d.daily.weather_code[k]]||['🌤️','天氣'];el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi">'+z[0]+'</div><div>'+z[1]+'</div><b>'+Math.round(d.daily.temperature_2m_max[k])+'°/'+Math.round(d.daily.temperature_2m_min[k])+'°</b><br><small>雨 '+(d.daily.precipitation_probability_max[k]??'--')+'%</small>'}g.appendChild(el)});
+  note.textContent='東京即時資料已更新｜'+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
+ }catch(e){clearTimeout(timer);document.getElementById('weatherNow').innerHTML='⚠️ 暫時無法取得即時天氣<br><small>已停止等待，請確認網路後重新整理。</small>';note.textContent=e.name==='AbortError'?'天氣服務逾時（8 秒）':'天氣服務暫時無法連線';}
+}
+weather();
 
 
 
