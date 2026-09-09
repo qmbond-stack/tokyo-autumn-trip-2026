@@ -694,6 +694,8 @@ function renderDays(){
  root.innerHTML='';
  let active=Number(localStorage.getItem('tokyoActiveDayV22')||0);
  if(!Number.isInteger(active)||active<0||active>=tripDays.length)active=0;
+ // 選中的日期不可維持收合，避免分頁切過去只剩空白。
+ if(collapsedDays[active]){collapsedDays[active]=false;localStorage.setItem('tokyoCollapsedDaysV6',JSON.stringify(collapsedDays));}
  renderDayTabs();
  tripDays.forEach((d,di)=>{
   const article=document.createElement('article');
@@ -738,25 +740,49 @@ function editDay(di){const d=tripDays[di],article=document.querySelector(`[data-
 renderDays();
 
 const wmap={0:['☀️','晴朗'],1:['🌤️','大致晴朗'],2:['⛅','局部多雲'],3:['☁️','多雲'],45:['🌫️','霧'],48:['🌫️','霧'],51:['🌦️','毛毛雨'],53:['🌦️','毛毛雨'],55:['🌧️','細雨'],61:['🌧️','小雨'],63:['🌧️','中雨'],65:['🌧️','大雨'],71:['🌨️','小雪'],73:['🌨️','中雪'],75:['❄️','大雪'],80:['🌦️','陣雨'],81:['🌦️','陣雨'],82:['⛈️','強陣雨'],95:['⛈️','雷雨'],96:['⛈️','雷雨伴冰雹'],99:['⛈️','雷雨伴冰雹']};
-async function weather(){
- const now=new Date(), todayTokyo=new Date(now.toLocaleString('en-US',{timeZone:'Asia/Tokyo'}));
- const trip=['2026-10-26','2026-10-27','2026-10-28','2026-10-29','2026-10-30'];
+function tripCountdown(){
  const start=new Date('2026-10-26T00:00:00+09:00');
- const days=Math.max(0,Math.ceil((start-now)/86400000));
- const note=document.getElementById('weatherNote'), range=document.getElementById('weatherRangeNote');
- range.textContent=`📅 距離出發約 ${days} 天。東京逐日預報通常在出發前約 10～16 天開始提供；尚未進入範圍時會清楚標示。`;
- const ctrl=new AbortController(), timer=setTimeout(()=>ctrl.abort(),8000);
- try{
-  const api='https://api.open-meteo.com/v1/forecast?latitude=35.6762&longitude=139.6503&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=16';
-  const r=await fetch(api,{cache:'no-store',mode:'cors',signal:ctrl.signal}); clearTimeout(timer); if(!r.ok)throw new Error('HTTP '+r.status);
-  const d=await r.json(),q=wmap[d.current.weather_code]||['🌤️','天氣'];
-  document.getElementById('weatherNow').innerHTML='<div class="weather-icon">'+q[0]+'</div><div><b>東京目前 '+Math.round(d.current.temperature_2m)+'°C</b><br>'+q[1]+'｜體感 '+Math.round(d.current.apparent_temperature)+'°C<br><small>風速 '+Math.round(d.current.wind_speed_10m)+' km/h</small></div>';
-  const g=document.getElementById('weatherGrid');g.innerHTML='';trip.forEach((date,i)=>{const k=d.daily.time.indexOf(date),el=document.createElement('div');el.className='weather-day';if(k<0){el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi">⏳</div><div>尚未進入預報</div>'}else{const z=wmap[d.daily.weather_code[k]]||['🌤️','天氣'];el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi">'+z[0]+'</div><div>'+z[1]+'</div><b>'+Math.round(d.daily.temperature_2m_max[k])+'°/'+Math.round(d.daily.temperature_2m_min[k])+'°</b><br><small>雨 '+(d.daily.precipitation_probability_max[k]??'--')+'%</small>'}g.appendChild(el)});
-  note.textContent='東京即時資料已更新｜'+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
- }catch(e){clearTimeout(timer);document.getElementById('weatherNow').innerHTML='⚠️ 暫時無法取得即時天氣<br><small>已停止等待，請確認網路後重新整理。</small>';note.textContent=e.name==='AbortError'?'天氣服務逾時（8 秒）':'天氣服務暫時無法連線';}
+ return Math.max(0,Math.ceil((start-new Date())/86400000));
 }
+function renderWeatherFallback(msg){
+ const days=tripCountdown();
+ const range=document.getElementById('weatherRangeNote');
+ const note=document.getElementById('weatherNote');
+ const nowBox=document.getElementById('weatherNow');
+ const grid=document.getElementById('weatherGrid');
+ if(range)range.textContent=`📅 距離出發約 ${days} 天。逐日預報通常在出發前約 10～16 天開始提供；尚未進入範圍時會清楚標示。`;
+ if(note)note.textContent=msg||'東京天氣資料尚未更新';
+ if(nowBox)nowBox.innerHTML='🌤️ <b>即時天氣暫時無法取得</b><br><small>不會卡在載入中，可按下「重新取得」再試一次。</small>';
+ if(grid){grid.innerHTML='';['10/26','10/27','10/28','10/29','10/30'].forEach(d=>{const el=document.createElement('div');el.className='weather-day';el.innerHTML=`<b>${d}</b><div class="wi">⏳</div><div>尚未進入預報</div>`;grid.appendChild(el)});}
+}
+async function weather(){
+ // 先同步渲染安全狀態，任何 API 卡住都不會讓畫面永遠停在「載入中」。
+ renderWeatherFallback('東京天氣準備更新…');
+ const note=document.getElementById('weatherNote');
+ const trip=['2026-10-26','2026-10-27','2026-10-28','2026-10-29','2026-10-30'];
+ const api='https://api.open-meteo.com/v1/forecast?latitude=35.6762&longitude=139.6503&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=16';
+ const timeout=new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')),8000));
+ try{
+  const r=await Promise.race([fetch(api,{cache:'no-store',mode:'cors'}),timeout]);
+  if(!r||!r.ok)throw new Error('HTTP');
+  const d=await r.json(),q=wmap[d.current.weather_code]||['🌤️','天氣'];
+  const nowBox=document.getElementById('weatherNow'),grid=document.getElementById('weatherGrid');
+  nowBox.innerHTML='<div class="weather-icon">'+q[0]+'</div><div><b>東京目前 '+Math.round(d.current.temperature_2m)+'°C</b><br>'+q[1]+'｜體感 '+Math.round(d.current.apparent_temperature)+'°C<br><small>風速 '+Math.round(d.current.wind_speed_10m)+' km/h</small></div>';
+  grid.innerHTML='';trip.forEach((date,i)=>{const k=d.daily.time.indexOf(date),el=document.createElement('div');el.className='weather-day';if(k<0){el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi">⏳</div><div>尚未進入預報</div>'}else{const z=wmap[d.daily.weather_code[k]]||['🌤️','天氣'];el.innerHTML='<b>10/'+(26+i)+'</b><div class="wi">'+z[0]+'</div><div>'+z[1]+'</div><b>'+Math.round(d.daily.temperature_2m_max[k])+'°/'+Math.round(d.daily.temperature_2m_min[k])+'°</b><br><small>雨 '+(d.daily.precipitation_probability_max[k]??'--')+'%</small>'}grid.appendChild(el)});
+  note.textContent='東京即時資料已更新｜'+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
+ }catch(e){
+  renderWeatherFallback(e.message==='timeout'?'天氣服務逾時，已停止等待':'天氣服務暫時無法連線');
+ }
+}
+// 加上手動重試入口，Safari / file:// 模式失敗時不用整頁重整。
+(function(){
+ const section=document.getElementById('weather');
+ if(section&&!document.getElementById('weatherRetry')){
+  const b=document.createElement('button');b.id='weatherRetry';b.type='button';b.className='btn secondary';b.textContent='🔄 重新取得東京天氣';
+  b.onclick=()=>weather();section.appendChild(b);
+ }
+})();
 weather();
-
 
 
 // 日本採買中心：分類分頁＋品牌快速選單＋近期熱門商品＋願望清單
