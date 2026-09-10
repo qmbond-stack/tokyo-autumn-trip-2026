@@ -263,6 +263,17 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
   .itinerary-tools .trip-links a{font-size:9.5px!important;padding:4px 6px!important}
 }
 
+
+/* ===== V8.2 MOBILITY: ALWAYS PRESENT, DEFAULT COLLAPSED ===== */
+.fixed-travel-tools{display:block!important;width:100%!important}
+.fixed-travel-tools .mobility-details{display:block!important;width:100%!important;box-sizing:border-box!important;margin:8px 0 2px!important;clear:both!important}
+.fixed-travel-tools .mobility-details:not([open]) .mobility-body{display:none!important}
+.fixed-travel-tools .mobility-details summary{display:flex!important;align-items:center!important;min-height:38px!important;padding:8px 10px!important;box-sizing:border-box!important}
+.fixed-travel-tools .mobility-title{font-size:11px!important;font-weight:800!important}
+.fixed-travel-tools .mobility-status{margin-left:auto!important}
+.fixed-travel-tools .mobility-more{margin-left:2px!important;font-size:15px!important}
+.fixed-travel-tools .mobility-details[open] .mobility-body{display:grid!important}
+
 </style>
 <style id="v17-cleanup">
 /* V17: 五日一致的資訊分層與明確日與日斷點 */
@@ -828,7 +839,21 @@ const accessibilityInfo={
   '叙々苑 東京スカイツリータウン・ソラマチ店':{level:'🔵 場館設施完善',step:'東京ソラマチ無障礙導線',elevator:'館內電梯',toilet:'同施設みんなのトイレ',phone:'訂位時告知座位需求'}
 };
 function accessibilityCard(name){
-  const a=accessibilityInfo[name]; if(!a) return '';
+  // V8.2：每一個行程點都固定提供「🧭 行動便利」，預設收折。
+  // 已確認店家顯示具體資訊；尚未確認者保留明確的待確認提示，避免功能直接消失。
+  const a=accessibilityInfo[name] || (String(name).includes('MDM TOKYO') ? {
+    level:'🟡 建議確認',
+    step:'日本橋橫山町店，入口與店內迴轉空間建議抵達前確認',
+    elevator:'一樓店面，若有階差請現場確認',
+    toilet:'店內／周邊洗手間請先確認',
+    phone:'包車下車點與輪椅進出需求建議先聯絡店家'
+  } : {
+    level:'🟡 待確認',
+    step:'入口是否有階差、門寬與通行空間需確認',
+    elevator:'如位於商場或樓層，請確認無障礙電梯',
+    toilet:'請確認多目的／無障礙洗手間位置',
+    phone:'出發前告知店家輪椅或行動便利需求'
+  });
   return `<details class="mobility-details compact-mobility">
     <summary aria-label="展開行動便利資訊"><span class="mobility-title">🧭 行動便利</span><span class="mobility-status">${esc(a.level)}</span><span class="mobility-more">⌄</span></summary>
     <div class="mobility-body">
