@@ -1028,25 +1028,14 @@ function initDayMap(di){
  if(old&&old.classList.contains('route-legend'))old.replaceWith(legend);else wrap.after(legend);
 }
 function renderRouteSchematic(di,d){
- const stops=dayMapPlaces(di);
- const start=dayMapStart(di);
- const nodes=[];
+ const stops=dayMapPlaces(di); const start=dayMapStart(di); const nodes=[];
  if(start) nodes.push({name:start[2],start:true});
  stops.forEach(p=>nodes.push({name:p[2],lat:p[0],lon:p[1]}));
  const unique=[]; const seen=new Set();
- nodes.forEach(n=>{const key=n.start?'start':(n.lat+','+n.lon); if(!seen.has(key)){seen.add(key);unique.push(n)}});
- const shown=unique.slice(0,8);
- const cards=shown.map((n,i)=>{
-   const title=shortPlace(n.name);
-   const href=n.start?mapsUrl(hotelMapByDay(di)):mapsUrl(exactMapQuery(n.name));
-   return `<a class="route-node ${n.start?'route-start':''}" href="${href}" target="_blank" rel="noopener"><span class="rn-num">${n.start?'⌂':i}</span><span class="rn-title">${esc(title)}</span><span class="rn-place">${n.start?'住宿基地':'開啟地圖'}</span></a>`;
- }).join('<span class="route-arrow" aria-hidden="true">›</span>');
- const focus=dayMapFocus(di)[0];
- return `<div class="route-schematic" aria-label="${esc(focus)} 路線示意">
-   <div class="route-schematic-head"><strong>🗺️ 今日路線</strong><small>精確節點・不使用失真的示意地圖</small></div>
-   <div class="route-track">${cards}</div>
-   <div class="route-schematic-foot"><span>點任一站可直接開啟 Google Maps</span><a class="route-open" href="${googleRouteUrl(di,d)}" target="_blank" rel="noopener">🗺️ Google Maps 今日完整路線</a><a class="route-open" href="${mapsUrl(focus)}" target="_blank" rel="noopener">📍 區域定位</a></div>
- </div>`;
+ nodes.forEach(n=>{const key=n.start?'start':(n.lat+','+n.lon);if(!seen.has(key)){seen.add(key);unique.push(n)}});
+ const shown=unique.slice(0,3);
+ const cards=shown.map((n,i)=>`<div class="route-node ${n.start?'route-start':''}"><span class="rn-num">${n.start?'⌂':i}</span><span class="rn-title">${esc(shortPlace(n.name))}</span><span class="rn-place">${n.start?'住宿基地':'今日重點'}</span></div>`).join('<span class="route-arrow" aria-hidden="true">›</span>');
+ return `<div class="route-schematic compact-route"><div class="route-schematic-head"><strong>🗺️ 今日路線</strong><small>精選重點・一目了然</small></div><div class="route-track">${cards}</div><div class="route-schematic-foot"><span>點「查看完整路線」開啟 Google Maps</span><a class="route-open" href="${googleRouteUrl(di,d)}" target="_blank" rel="noopener">📍 查看完整路線</a></div></div>`;
 }
 function renderDayTabs(){
  const tabs=document.getElementById('dayTabs'); if(!tabs) return;
@@ -1139,8 +1128,6 @@ function renderDays(){
      const fallback=document.createElement('div');fallback.className='item';fallback.textContent='⚠️ 此行資料讀取失敗，請點編輯修正';items.appendChild(fallback);
     }
    });
-   try{const f=document.createElement('div');f.innerHTML=renderFeasibility(di,{...d,items:safeItems});if(f.firstElementChild)article.appendChild(f.firstElementChild)}catch(e){}
-   try{const sm=document.createElement('div');sm.innerHTML=renderCarSummary(di,safeItems.length);if(sm.firstElementChild)article.appendChild(sm.firstElementChild)}catch(e){}
    const toggle=()=>{collapsedDays[di]=!collapsedDays[di];try{localStorage.setItem('tokyoCollapsedDaysV6',JSON.stringify(collapsedDays))}catch(e){};renderDays()};
    article.querySelector('.day-toggle').onclick=toggle;
    article.querySelector('.day-head').onclick=e=>{if(e.target.closest('.edit-day')||e.target.closest('.day-toggle')||e.target.closest('a'))return;toggle()};
@@ -1321,6 +1308,15 @@ if('serviceWorker' in navigator){window.addEventListener('load',async()=>{try{co
   setTimeout(()=>{if(($('weatherNow')?.textContent||'').includes('載入中')) fallback('天氣資料尚未回應，已停止無限載入。');},10000);
 })();
 </script>
+<style id="v81-restore-timeline">
+/* V8.1 Restore: 回到原本清楚的垂直行程骨架 */
+.route-schematic.compact-route{margin:10px 0 16px;padding:14px 16px 12px;border-radius:20px}
+.compact-route .route-schematic-head{margin-bottom:10px}.compact-route .route-schematic-head strong{font-size:17px}.compact-route .route-schematic-head small{font-size:10px}
+.compact-route .route-track{justify-content:center;overflow:hidden;padding:2px 0 10px}.compact-route .route-node{flex:1 1 0;min-width:0;max-width:none;text-align:center;background:transparent;border:0;padding:8px 4px}.compact-route .route-node .rn-num{margin:0 auto 7px;width:34px;height:34px;font-size:14px}.compact-route .route-node .rn-title{font-size:14px}.compact-route .route-node .rn-place{font-size:10px}.compact-route .route-arrow{flex:0 0 30px;font-size:28px}.compact-route .route-schematic-foot{justify-content:space-between}.compact-route .route-open{padding:7px 12px;font-weight:800}
+/* 行程維持時間軸，不再插入大型估算卡 */
+.day-items .item{padding:14px 0}.stay-meta.compact{margin:4px 0!important}.travel-leg.compact-leg{margin:4px 0 6px!important;padding:7px 0!important;border-top:1px dashed #e4d9d4!important;border-bottom:0!important;background:transparent!important}.travel-leg.compact-leg .leg-line{display:none!important}.travel-leg.compact-leg span,.travel-leg.compact-leg b{font-size:11px!important}.day-feasibility,.travel-summary{display:none!important}
+@media(max-width:620px){.compact-route .route-schematic-head strong{font-size:16px}.compact-route .route-track{gap:0}.compact-route .route-node .rn-title{font-size:12px}.compact-route .route-arrow{flex-basis:18px;font-size:22px}.compact-route .route-schematic-foot span{font-size:9px}.compact-route .route-open{font-size:10px;padding:7px 9px}}
+</style>
 </body></html>
 <style id="v20-map-ui">
 /* V21 map refinement: V6.3 layout remains locked. Only the daily map card is rebuilt. */
