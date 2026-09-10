@@ -9,6 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="2026 東京楓">
 <link rel="manifest" href="manifest.webmanifest">
 <!-- V7.7 actual structure rebuild -->
+<!-- V7.8 true compact rebuild -->
 <title>🍁 2026 東京楓｜五天四夜旅行手帳</title>
 <style>
 :root{--ink:#51494b;--paper:#fffaf8;--cream:#fff1ed;--blue:#e7a9b3;--blue2:#f9dfe3;--orange:#e9a36f;--green:#a9c3a4;--pink:#e6b5c2;--line:#ead4ce;--shadow:0 12px 30px #8d666617}
@@ -171,6 +172,89 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
   .mobility-details summary{justify-content:flex-start!important}
   .mobility-status{margin-left:auto!important}
   .mobility-body{grid-template-columns:1fr!important}
+}
+
+
+/* ===== V7.8 TRUE COMPACT ITINERARY ===== */
+#buildStamp,#v69badge{display:none!important}
+
+/* Card content: title first, note second, timing third, tools last */
+.item-main{padding-bottom:5px!important}
+.item-main small{display:block!important;margin:2px 0 5px!important;line-height:1.35!important}
+.stay-meta.compact{
+  display:flex!important; flex-wrap:wrap!important; align-items:center!important; gap:5px!important;
+  margin:5px 0!important; padding:0!important; background:transparent!important; border:0!important;
+  font-size:11px!important; color:#766b69!important;
+}
+.stay-meta.compact .stay-chip,
+.stay-meta.compact span{
+  padding:0!important; margin:0!important; background:transparent!important; border:0!important;
+  color:#766b69!important; font-weight:700!important;
+}
+.stay-meta.compact i{font-style:normal!important;color:#d3b8bd!important}
+
+/* One genuinely compact link rail */
+.itinerary-tools{
+  margin:6px 0 0!important; padding:5px 0 0!important;
+  border-top:1px solid #eee7e2!important; background:transparent!important;
+}
+.itinerary-tools .trip-links{
+  display:flex!important; flex-wrap:wrap!important; gap:5px!important; margin:0!important;
+}
+.itinerary-tools .trip-links a{
+  min-height:24px!important; padding:4px 7px!important;
+  border:0!important; border-radius:7px!important; background:#f6f1ee!important;
+  color:#766968!important; font-size:10px!important; line-height:1!important;
+  box-shadow:none!important;
+}
+.itinerary-tools .trip-links a.primary{background:#f3e5e8!important;color:#855f68!important}
+
+/* Mobility becomes the fourth tiny action, not another information card */
+.compact-mobility{
+  display:inline-block!important; vertical-align:middle!important;
+  width:auto!important; margin:5px 0 0!important; padding:0!important;
+  border:0!important; border-radius:7px!important; background:#f6f1ee!important;
+}
+.compact-mobility summary{
+  display:flex!important; align-items:center!important; gap:4px!important;
+  min-height:24px!important; padding:4px 7px!important; list-style:none!important;
+  font-size:10px!important; color:#766968!important; font-weight:700!important;
+}
+.compact-mobility summary::-webkit-details-marker{display:none!important}
+.compact-mobility .mobility-status{padding:0!important;background:transparent!important;font-size:9px!important;color:#9a747d!important}
+.compact-mobility .mobility-more{padding:0!important;background:transparent!important}
+.compact-mobility .mobility-body{
+  position:relative!important; display:grid!important; grid-template-columns:1fr!important; gap:4px!important;
+  width:min(330px,calc(100vw - 80px))!important; margin-top:4px!important; padding:7px!important;
+  border:1px solid #eadfd9!important; border-radius:9px!important; background:#fffdfb!important;
+  box-shadow:0 8px 20px rgba(70,50,45,.08)!important;
+}
+.compact-mobility .mobility-body>div{padding:4px!important;border:0!important;background:transparent!important}
+.compact-mobility .mobility-body b{font-size:9px!important}
+.compact-mobility .mobility-body p{font-size:10px!important;margin:1px 0 0!important}
+
+/* Driving is a connector between cards, not another card */
+.travel-leg.compact-leg{
+  display:flex!important; align-items:center!important; gap:7px!important;
+  min-height:25px!important; margin:0 0 1px 48px!important; padding:2px 0!important;
+  background:transparent!important; border:0!important; color:#8b7c78!important; font-size:10px!important;
+}
+.travel-leg.compact-leg .leg-line{
+  width:12px!important; height:1px!important; background:#d9c8c5!important; flex:0 0 auto!important;
+}
+.travel-leg.compact-leg b{font-weight:800!important;color:#9a747d!important}
+.travel-leg.compact-leg .travel-spacer,.traffic-live-note{display:none!important}
+
+/* Day summaries are secondary */
+.day-feasibility,.travel-summary{margin-top:9px!important;padding:9px 11px!important}
+.day-feasibility{font-size:11px!important}
+.travel-summary small{font-size:10px!important}
+
+@media(max-width:600px){
+  .item-main{padding-bottom:4px!important}
+  .stay-meta.compact{font-size:10.5px!important}
+  .travel-leg.compact-leg{margin-left:42px!important;font-size:9.5px!important}
+  .itinerary-tools .trip-links a{font-size:9.5px!important;padding:4px 6px!important}
 }
 
 </style>
@@ -739,13 +823,8 @@ const accessibilityInfo={
 };
 function accessibilityCard(name){
   const a=accessibilityInfo[name]; if(!a) return '';
-  return `<details class="mobility-details">
-    <summary>
-      <span class="mobility-title">🧭 行動便利</span>
-      <span class="mobility-status">${esc(a.level)}</span>
-      <span class="mobility-preview">🚪 ${esc(a.step)} · 🛗 ${esc(a.elevator)}</span>
-      <span class="mobility-more">詳細⌄</span>
-    </summary>
+  return `<details class="mobility-details compact-mobility">
+    <summary><span>🧭 行動便利</span><span class="mobility-status">${esc(a.level)}</span><span class="mobility-more">⌄</span></summary>
     <div class="mobility-body">
       <div><span>🚪</span><b>入口／動線</b><p>${esc(a.step)}</p></div>
       <div><span>🛗</span><b>電梯</b><p>${esc(a.elevator)}</p></div>
@@ -761,19 +840,19 @@ function itemLinks(title,note,di){
   let links='';
   if(t.includes("n'ex")||t.includes('n’​​ex')||t.includes('n’ex')){
     const jr='https://www.jreast.co.jp/multi/zh-CHT/pass/nex.html';
-    links=`<a href="${mapsUrl('Narita Express NEX Tokyo Station') }" target="_blank" rel="noopener">📍 Google 地圖</a><a href="${transitUrl('Tokyo Station') }" target="_blank" rel="noopener">🚆 交通定位</a><a class="primary" href="${jr}" target="_blank" rel="noopener">🎫 N’EX 資訊／購票</a>`;
+    links=`<a href="${mapsUrl('Narita Express NEX Tokyo Station')}" target="_blank" rel="noopener">📍 地圖</a><a href="${transitUrl('Tokyo Station')}" target="_blank" rel="noopener">🚆 交通</a><a class="primary" href="${jr}" target="_blank" rel="noopener">🎫 購票</a>`;
   }else if(info){
-    const tab=info.tabelog?`<a class="primary" href="${info.tabelog}" target="_blank" rel="noopener">🍽️ Tabelog／訂位</a>`:'';
-    const off=info.official?`<a href="${info.official}" target="_blank" rel="noopener">🏠 官網／訂位</a>`:'';
-    const map=`<a href="${mapsUrl(info.map)}" target="_blank" rel="noopener">📍 Google Maps 定位</a>`;
-    links=tab+off+map;
+    const tab=info.tabelog?`<a class="primary" href="${info.tabelog}" target="_blank" rel="noopener">📖 Tabelog</a>`:'';
+    const off=info.official?`<a href="${info.official}" target="_blank" rel="noopener">🏠 訂位</a>`:'';
+    const map=`<a href="${mapsUrl(info.map)}" target="_blank" rel="noopener">📍 地圖</a>`;
+    links=map+tab+off;
   }else if(t.includes('costco')){
-    links=`<a href="${mapsUrl('コストコホールセール 幕張倉庫店 千葉県千葉市美浜区豊砂1-4')}" target="_blank" rel="noopener">📍 Google Maps</a><a class="primary" href="https://www.costco.co.jp/" target="_blank" rel="noopener">🛒 官方門市</a>`;
+    links=`<a href="${mapsUrl('コストコホールセール 幕張倉庫店 千葉県千葉市美浜区豊砂1-4')}" target="_blank" rel="noopener">📍 地圖</a><a class="primary" href="https://www.costco.co.jp/" target="_blank" rel="noopener">🏠 官網</a>`;
   }else{
     const place=exactMapQuery(title);
-    links=`<a href="${mapsUrl(place)}" target="_blank" rel="noopener">📍 Google Maps 定位</a><a href="${transitUrl(place)}" target="_blank" rel="noopener">🚆 交通定位</a>`;
+    links=`<a href="${mapsUrl(place)}" target="_blank" rel="noopener">📍 地圖</a><a href="${transitUrl(place)}" target="_blank" rel="noopener">🚆 交通</a>`;
   }
-  return `<div class="itinerary-tools"><span class="tools-icon">🔗</span><div class="trip-links">${links}</div></div>`;
+  return `<div class="itinerary-tools"><div class="trip-links">${links}</div></div>`;
 }
 function dayMapStart(di){
  const starts={
@@ -973,9 +1052,19 @@ function parseTime(t){const m=String(t||'').match(/(\d{1,2}):(\d{2})/);return m?
 function parseRange(t){const m=String(t||'').match(/(\d+)\s*[–-]\s*(\d+)/);if(m)return [Number(m[1]),Number(m[2])];const n=String(t||'').match(/(\d+)/);return n?[Number(n[1]),Number(n[1])]:[0,0]}
 function trafficBuffer(note){const v=String(note||'');if(/高速|首都高|灣岸|成田/.test(v))return 15;if(/東京市區|澀谷|皇居|東京站/.test(v))return 10;return 6}
 function itemStay(di,idx,d){if(idx>=d.items.length-1)return null;const now=parseTime(d.items[idx][0]),next=parseTime(d.items[idx+1][0]);if(now===null||next===null)return null;let gap=next-now;if(gap<0)gap+=1440;const leg=(carLegs[di]||[])[idx]||['0 km','0 分',''];const range=parseRange(leg[1]);const base=range[1];const op=trafficBuffer(leg[2])+5;const stay=gap-base-op;return {gap,base,op,stay,level:stay<0?'danger':stay<20?'warn':'ok'} }
-function renderStayMeta(di,idx,d){const z=itemStay(di,idx,d);if(!z)return '<div class="stay-meta"><span class="stay-chip">🏁 當日最後一站</span></div>';const stayTxt=z.stay<0?'時程不足 '+Math.abs(z.stay)+' 分':'約 '+z.stay+' 分';const routeTxt='🚐 下一段 '+z.base+' 分＋路況/停車 '+z.op+' 分';return `<div class="stay-meta"><span class="stay-chip ${z.level}">⏳ 建議停留 <strong>${stayTxt}</strong></span><span class="stay-chip">${routeTxt}</span></div>`}
-function renderCarLeg(di,idx){const x=(carLegs[di]||[])[idx];if(!x)return '';const r=parseRange(x[1]);const b=trafficBuffer(x[2]);const realistic=`${r[0]+b}–${r[1]+b+5} 分`;
- return `<div class="travel-leg"><div class="travel-spacer"></div><div><div class="travel-chip"><b>🚐 包車移動</b><span class="drive-meta">📏 約 ${x[0]}</span><span class="drive-meta">⏱️ ${x[1]} 基準</span><span class="drive-meta">🚦 實際預抓 ${realistic}</span><span class="traffic-note">· ${x[2]}</span></div></div></div><div class="traffic-live-note">※ 已計入平日市區／高速常見壅塞、上下車與短暫找停車緩衝；出發當天仍請以 <a target="_blank" rel="noopener" href="https://www.google.com/maps">Google Maps 即時路況</a> 為準。</div>`}
+function renderStayMeta(di,idx,d){
+  const z=itemStay(di,idx,d);
+  if(!z)return '<div class="stay-meta compact"><span>🏁 當日最後一站</span></div>';
+  const stayTxt=z.stay<0?'時程不足 '+Math.abs(z.stay)+'分':'約 '+z.stay+'分';
+  const realisticMin=z.base+z.op-5, realisticMax=z.base+z.op;
+  return `<div class="stay-meta compact"><span>⏳ ${stayTxt}</span><i>·</i><span>🚐 下一站約 ${realisticMin}–${realisticMax}分</span></div>`;
+}
+function renderCarLeg(di,idx){
+  const x=(carLegs[di]||[])[idx]; if(!x)return '';
+  const r=parseRange(x[1]), b=trafficBuffer(x[2]);
+  const realistic=`${r[0]+b}–${r[1]+b+5}分`;
+  return `<div class="travel-leg compact-leg"><span class="leg-line"></span><span>🚐 → 下一站</span><span>${x[0]}</span><b>${realistic}</b></div>`;
+}
 function renderCarSummary(di,count){const legs=(carLegs[di]||[]).slice(0,Math.max(0,count-1));if(!legs.length)return '';let max=0,km=0;legs.forEach(x=>{const r=parseRange(x[1]);max+=r[1]+trafficBuffer(x[2])+5;km+=parseFloat(x[0])});return `<div class="travel-summary"><b>🚐 今日包車估算：路線約 ${Math.round(km)} km</b><small>含常見路況＋上下車／停車緩衝，移動預抓約 ${max} 分</small></div>`}
 function renderFeasibility(di,d){let stay=0,short=0;for(let i=0;i<d.items.length-1;i++){const z=itemStay(di,i,d);if(!z)continue;stay+=Math.max(0,z.stay);if(z.stay<0)short+=Math.abs(z.stay)}const cls=short?'danger':stay<180?'warn':'ok';const msg=short?`目前有約 ${short} 分鐘時程不足，建議調整出發時間或刪減停留。`: `依包車＋常見路況模型，可分配的有效停留約 ${Math.round(stay)} 分鐘。`;return `<div class="day-feasibility ${cls}"><b>📊 今日可行性估算</b>${msg} 已把每段包車、常見壅塞、上下車與短暫找停車納入。</div>`}
 
