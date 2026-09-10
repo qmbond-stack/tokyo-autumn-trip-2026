@@ -70,6 +70,15 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 .item-map-quick{display:flex;gap:8px;flex-wrap:wrap;margin-top:7px}.item-map-quick a{font-size:13px;padding:6px 10px;border:1px solid #e6c7cf;border-radius:999px;background:#fffaf8;text-decoration:none;color:#6b5057}.item-map-quick a:hover{background:#f7e8ec}.item-links-v67 .trip-links{margin-top:4px}
 
 .access-card{margin-top:9px;padding:10px 11px;border:1px solid #d9d2c7;border-radius:12px;background:#faf9f6;font-size:.82rem;line-height:1.55}.access-head{margin-bottom:5px;color:#4f5d4b}.access-grid{display:grid;gap:3px;color:#5d5d5d}.access-legend{margin:8px 0;padding:8px 10px;border-radius:10px;background:#f7f5f0;font-size:.78rem;color:#666}
+
+/* V7.2：地圖／訂位與行動便利資訊固定顯示，不受行程收折控制 */
+.always-visible-info{display:block!important;margin-top:10px}
+.always-visible-info .item-info-drawer{display:block!important;max-height:none!important;opacity:1!important;overflow:visible!important;transform:none!important;padding:0!important;margin-top:0!important;border:0!important;background:transparent!important}
+.always-visible-info .item-info-label{display:block!important}
+.always-visible-info .item-links,.always-visible-info .item-links-v67{display:flex!important;flex-wrap:wrap;gap:7px!important;margin-top:7px!important}
+.always-visible-info .access-card{display:block!important}
+.access-card{margin-top:10px!important}
+
 </style>
 <style id="v17-cleanup">
 /* V17: 五日一致的資訊分層與明確日與日斷點 */
@@ -421,7 +430,7 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 <div class="tip">③ 敘敘苑熱門分店建議提早預約，夕陽後的晚餐時段尤其熱門。</div>
 <div class="tip">④ Costco 建議提前安排交通，採買後直接回飯店整理戰利品。</div>
 </section>
-<div class="footer">🍁 2026 東京楓旅行手帳 V7.1 Oshiage Stay＋Map＋Booking｜3 girls，一起慢慢走，剛剛好。<br><span class="muted">天氣採東京即時資料；出發日期進入預報範圍後會自動顯示逐日預報。</span></div>
+<div class="footer">🍁 2026 東京楓旅行手帳 V7.2 Oshiage Stay＋Map＋Booking｜3 girls，一起慢慢走，剛剛好。<br><span class="muted">天氣採東京即時資料；出發日期進入預報範圍後會自動顯示逐日預報。</span></div>
 </div>
 
 <script>
@@ -493,7 +502,7 @@ function saveDays(){localStorage.setItem(dayKey,JSON.stringify(tripDays))}
 function mapsUrl(place){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(place)}
 function transitUrl(place){return 'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(place)+'&travelmode=transit'}
 
-/* V7.1：10/28 起住宿切換押上里士滿，地圖與路線基地同步切換；行程地點採「精確店名＋地址」白名單，避免 Google / Tabelog 跳到其他城市或同名分店。 */
+/* V7.2：10/28 起住宿切換押上里士滿，地圖與路線基地同步切換；行程地點採「精確店名＋地址」白名單，避免 Google / Tabelog 跳到其他城市或同名分店。 */
 const placeRegistry=[
   {match:/FRANZ club|フランツクラブ/i,map:'フランツクラブ 新丸ビル 東京都千代田区丸の内1-5-1 新丸の内ビル5F',tabelog:'https://tabelog.com/tokyo/A1302/A130201/13038502/',official:'https://www.zato.co.jp/restaurant/franzclub/franzclub_marunouchi/',label:'FRANZ club 新丸ビル'},
   {match:/MDM TOKYO|マスダ増|MDM.*採買/i,map:'MDM TOKYO 株式会社マスダ増 東京都中央区日本橋横山町7-5',official:'https://www.mdm-net.co.jp/shop/',label:'MDM TOKYO（マスダ増）'},
@@ -814,7 +823,7 @@ function renderDays(){
      let stay='',links='';
      try{stay=renderStayMeta(di,idx,{...d,items:safeItems})}catch(e){}
      try{links=itemLinks(x[1],x[2],di)}catch(e){links=''}
-     row.innerHTML=`<div class="time">${esc(x[0])}</div><div class="item-main"><div class="item-place"><div class="item-title toggle-info" role="button" tabindex="0" aria-expanded="false">${esc(x[1])}</div></div>${x[2]?`<small>${esc(x[2])}</small>`:''}${stay}<div class="item-map-quick"><a href="${mapsUrl(exactMapQuery(x[1]))}" target="_blank" rel="noopener">📍 地圖</a>${getPlaceInfo(x[1])?.tabelog?`<a href="${getPlaceInfo(x[1]).tabelog}" target="_blank" rel="noopener">🍽️ Tabelog</a>`:''}</div>${links}${accessibilityCard(x[1])}</div>`;
+     row.innerHTML=`<div class="time">${esc(x[0])}</div><div class="item-main"><div class="item-place"><div class="item-title toggle-info" role="button" tabindex="0" aria-expanded="false">${esc(x[1])}</div></div>${x[2]?`<small>${esc(x[2])}</small>`:''}${stay}<div class="item-map-quick"><a href="${mapsUrl(exactMapQuery(x[1]))}" target="_blank" rel="noopener">📍 地圖</a>${getPlaceInfo(x[1])?.tabelog?`<a href="${getPlaceInfo(x[1]).tabelog}" target="_blank" rel="noopener">🍽️ Tabelog</a>`:''}</div><div class="always-visible-info">${links}${accessibilityCard(x[1])}</div></div>`;
      const titleBtn=row.querySelector('.toggle-info');
      const toggleInfo=()=>{const open=row.classList.toggle('expanded');titleBtn.setAttribute('aria-expanded',open?'true':'false')};
      titleBtn.onclick=e=>{e.stopPropagation();toggleInfo()};
@@ -1007,7 +1016,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',async()=>{try{co
   setTimeout(()=>{if(($('weatherNow')?.textContent||'').includes('載入中')) fallback('天氣資料尚未回應，已停止無限載入。');},10000);
 })();
 </script>
-<div id="buildStamp" style="position:fixed;right:8px;bottom:8px;z-index:9999;background:#fff8f5;border:1px solid #ead9d3;border-radius:999px;padding:4px 8px;font-size:10px;color:#8a7375">V7.1 Oshiage Stay Stable</div><div id="v69badge" style="position:fixed;right:10px;bottom:10px;z-index:99999;background:#222;color:#fff;padding:7px 10px;border-radius:999px;font-size:11px;opacity:.78">V7.1 MDM + Accessible Dining</div></body></html>
+<div id="buildStamp" style="position:fixed;right:8px;bottom:8px;z-index:9999;background:#fff8f5;border:1px solid #ead9d3;border-radius:999px;padding:4px 8px;font-size:10px;color:#8a7375">V7.2 Oshiage Stay Stable</div><div id="v69badge" style="position:fixed;right:10px;bottom:10px;z-index:99999;background:#222;color:#fff;padding:7px 10px;border-radius:999px;font-size:11px;opacity:.78">V7.2 MDM + Accessible Dining</div></body></html>
 <style id="v20-map-ui">
 /* V21 map refinement: V6.3 layout remains locked. Only the daily map card is rebuilt. */
 .day-route-card{margin:14px 12px 12px!important;padding:12px!important;border:1px solid #ead9d3!important;border-radius:24px!important;background:#fffaf6!important;box-shadow:0 6px 20px rgba(110,76,76,.06)!important}
