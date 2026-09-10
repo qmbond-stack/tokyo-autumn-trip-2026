@@ -416,18 +416,20 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 
 <style>
 /* v8: replace unreliable pseudo-map with an accurate, compact route schematic */
-.route-schematic{margin:0 0 14px;padding:14px 14px 12px;border:1px solid #ead9d3;border-radius:22px;background:linear-gradient(145deg,#fffaf7,#fdf7f1);box-shadow:0 5px 14px rgba(141,102,102,.045)}
-.route-schematic-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 2px 10px}
-.route-schematic-head strong{font-size:15px;color:#5e4d50}.route-schematic-head small{font-size:10px;color:#9a8582}
-.route-track{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding:3px 2px 8px;scrollbar-width:thin}
-.route-node{flex:0 0 auto;min-width:92px;max-width:130px;text-decoration:none;color:#624f54;background:#fffdf9;border:1px solid #ead9d3;border-radius:15px;padding:9px 9px 8px;position:relative}
-.route-node .rn-num{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#f2dce0;color:#6e4d55;font-weight:800;font-size:11px;margin-bottom:6px}
-.route-node .rn-title{font-size:11px;font-weight:700;line-height:1.35;display:block}.route-node .rn-place{font-size:9px;color:#9a8582;margin-top:3px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.route-arrow{flex:0 0 22px;display:grid;place-items:center;color:#c98392;font-size:17px;font-weight:700}
-.route-start{background:#fdf1e9;border-color:#e8cfc2}.route-start .rn-num{background:#eadccf;color:#806653}
-.route-schematic-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid #f0e4df;padding-top:9px;margin-top:2px}
-.route-schematic-foot span{font-size:9px;color:#9a8582}.route-open{font-size:10px;color:#8a5f68;text-decoration:none;background:#fff;border:1px solid #ead9d3;border-radius:999px;padding:6px 9px;white-space:nowrap}
-@media(max-width:620px){.route-schematic{margin:0 8px 12px;padding:11px;border-radius:20px}.route-schematic-head strong{font-size:14px}.route-node{min-width:88px;max-width:118px;padding:8px}.route-arrow{flex-basis:18px}.route-schematic-foot span{font-size:8.5px}}
+.route-schematic{margin:0 0 16px;padding:18px 18px 16px;border:1px solid #eadbd4;border-radius:24px;background:linear-gradient(145deg,#fffdfb,#faf6f1);box-shadow:0 8px 22px rgba(110,82,78,.05)}
+.route-schematic-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin:0 2px 18px}
+.route-schematic-title{display:flex;align-items:center;gap:11px}.route-schematic-title strong{font-size:20px;color:#514447;letter-spacing:.02em}.route-schematic-title small{display:block;margin-top:3px;font-size:11px;color:#9a8582}
+.route-map-hero{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border:1px solid #ead9d3;border-radius:999px;background:#fff;color:#765b60;text-decoration:none;font-size:11px;font-weight:700;white-space:nowrap}
+.route-track{display:flex;align-items:flex-start;justify-content:center;gap:0;padding:6px 0 17px;border-bottom:1px solid #eee3de;overflow-x:auto}
+.route-node{flex:1 0 0;min-width:120px;max-width:220px;display:flex;flex-direction:column;align-items:center;text-align:center;text-decoration:none;color:#54484a;padding:6px 8px}
+.rn-num{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#f6e7ea,#f1dce1);color:#6f555a;font-size:20px;font-weight:800;margin-bottom:10px}
+.route-start .rn-num{background:#f3ede7;color:#695a54;font-size:24px}
+.rn-title{font-size:15px;font-weight:800;line-height:1.35}.rn-place{font-size:10px;color:#a18e8a;margin-top:5px}
+.route-arrow{flex:0 0 46px;align-self:flex-start;margin-top:17px;height:1px;background:repeating-linear-gradient(to right,#c8adae 0 3px,transparent 3px 10px);position:relative;color:transparent}
+.route-arrow:after{content:"›";position:absolute;right:-1px;top:-17px;color:#bd8d94;font-size:33px;line-height:1}
+.route-schematic-foot{display:flex;gap:10px;align-items:center;padding-top:14px}.route-open{flex:1;display:flex;justify-content:center;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#765b60;text-decoration:none;background:#fff;border:1px solid #ead9d3;border-radius:999px;padding:11px 13px;white-space:nowrap}
+.route-open.secondary{flex:0 0 auto;padding-left:17px;padding-right:17px}
+@media(max-width:620px){.route-schematic{margin:0 8px 13px;padding:15px 12px 13px;border-radius:22px}.route-schematic-head{margin-bottom:14px}.route-schematic-title strong{font-size:17px}.route-schematic-title small{font-size:9.5px}.route-map-hero{font-size:10px;padding:8px 10px}.route-track{justify-content:flex-start;padding-bottom:14px}.route-node{min-width:96px;padding:4px}.rn-num{width:42px;height:42px;font-size:18px;margin-bottom:8px}.route-start .rn-num{font-size:21px}.rn-title{font-size:13px}.rn-place{font-size:9px}.route-arrow{flex-basis:26px;margin-top:15px}.route-schematic-foot{gap:7px;padding-top:12px}.route-open{font-size:10px;padding:9px 8px}.route-open.secondary{padding-left:11px;padding-right:11px}}
 </style>
 
 <style id="v74-itinerary-reflow">
@@ -1089,17 +1091,24 @@ function renderRouteSchematic(di,d){
  stops.forEach(p=>nodes.push({name:p[2],lat:p[0],lon:p[1]}));
  const unique=[]; const seen=new Set();
  nodes.forEach(n=>{const key=n.start?'start':(n.lat+','+n.lon); if(!seen.has(key)){seen.add(key);unique.push(n)}});
- const shown=unique.slice(0,8);
+ // 路線區只保留住宿基地與前兩個核心節點，避免橫向資訊過載。
+ const shown=unique.slice(0,3);
  const cards=shown.map((n,i)=>{
    const title=shortPlace(n.name);
    const href=n.start?mapsUrl(hotelMapByDay(di)):mapsUrl(exactMapQuery(n.name));
    return `<a class="route-node ${n.start?'route-start':''}" href="${href}" target="_blank" rel="noopener"><span class="rn-num">${n.start?'⌂':i}</span><span class="rn-title">${esc(title)}</span><span class="rn-place">${n.start?'住宿基地':'開啟地圖'}</span></a>`;
  }).join('<span class="route-arrow" aria-hidden="true">›</span>');
  const focus=dayMapFocus(di)[0];
- return `<div class="route-schematic" aria-label="${esc(focus)} 路線示意">
-   <div class="route-schematic-head"><strong>🗺️ 今日路線</strong><small>精確節點・不使用失真的示意地圖</small></div>
+ return `<div class="route-schematic" aria-label="${esc(focus)} 路線摘要">
+   <div class="route-schematic-head">
+     <div class="route-schematic-title"><span>🗺️</span><div><strong>今日路線</strong><small>精選重點・一目了然</small></div></div>
+     <a class="route-map-hero" href="${googleRouteUrl(di,d)}" target="_blank" rel="noopener">🗺️ 查看完整地圖　›</a>
+   </div>
    <div class="route-track">${cards}</div>
-   <div class="route-schematic-foot"><span>點任一站可直接開啟 Google Maps</span><a class="route-open" href="${googleRouteUrl(di,d)}" target="_blank" rel="noopener">🗺️ Google Maps 今日完整路線</a><a class="route-open" href="${mapsUrl(focus)}" target="_blank" rel="noopener">📍 區域定位</a></div>
+   <div class="route-schematic-foot">
+     <a class="route-open" href="${googleRouteUrl(di,d)}" target="_blank" rel="noopener">📍 Google Maps 今日完整路線　›</a>
+     <a class="route-open secondary" href="${mapsUrl(focus)}" target="_blank" rel="noopener">📌 區域定位　›</a>
+   </div>
  </div>`;
 }
 function renderDayTabs(){
