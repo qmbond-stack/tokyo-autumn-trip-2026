@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="2026 東京楓">
 <link rel="manifest" href="manifest.webmanifest">
 <!-- V7.7 actual structure rebuild -->
-<!-- V7.8 true compact rebuild -->
+<!-- V7.9 true compact rebuild -->
 <title>🍁 2026 東京楓｜五天四夜旅行手帳</title>
 <style>
 :root{--ink:#51494b;--paper:#fffaf8;--cream:#fff1ed;--blue:#e7a9b3;--blue2:#f9dfe3;--orange:#e9a36f;--green:#a9c3a4;--pink:#e6b5c2;--line:#ead4ce;--shadow:0 12px 30px #8d666617}
@@ -175,7 +175,7 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 }
 
 
-/* ===== V7.8 TRUE COMPACT ITINERARY ===== */
+/* ===== V7.9 TRUE COMPACT ITINERARY ===== */
 #buildStamp,#v69badge{display:none!important}
 
 /* Card content: title first, note second, timing third, tools last */
@@ -835,17 +835,26 @@ function accessibilityCard(name){
 }
 
 function itemLinks(title,note,di){
-  const t=(title+' '+(note||'')).toLowerCase();
+  const raw=(title+' '+(note||''));
+  const t=raw.toLowerCase();
   const info=getPlaceInfo(title);
   let links='';
   if(t.includes("n'ex")||t.includes('n’​​ex')||t.includes('n’ex')){
     const jr='https://www.jreast.co.jp/multi/zh-CHT/pass/nex.html';
     links=`<a href="${mapsUrl('Narita Express NEX Tokyo Station')}" target="_blank" rel="noopener">📍 地圖</a><a href="${transitUrl('Tokyo Station')}" target="_blank" rel="noopener">🚆 交通</a><a class="primary" href="${jr}" target="_blank" rel="noopener">🎫 購票</a>`;
   }else if(info){
-    const tab=info.tabelog?`<a class="primary" href="${info.tabelog}" target="_blank" rel="noopener">📖 Tabelog</a>`:'';
-    const off=info.official?`<a href="${info.official}" target="_blank" rel="noopener">🏠 訂位</a>`:'';
     const map=`<a href="${mapsUrl(info.map)}" target="_blank" rel="noopener">📍 地圖</a>`;
-    links=map+tab+off;
+    const tab=info.tabelog?`<a class="primary" href="${info.tabelog}" target="_blank" rel="noopener">📖 Tabelog</a>`:'';
+    const restaurant=/FRANZ|しゃぶしゃぶ|叙々苑|INNOCENT|Manten Sushi|まんてん鮨|HIGASHIYA|Sukiyaki|すき焼き|Takanawa Soregashi|高輪それがし/i.test(raw);
+    const attraction=/SHIBUYA SKY/i.test(raw);
+    const hotel=/SUPER HOTEL|リッチモンドホテル|押上里士滿|押上リッチモンド/i.test(raw);
+    const shop=/MDM TOKYO|マスダ増|Costco/i.test(raw);
+    let action='';
+    if(info.official){
+      const label=restaurant?'🏠 訂位':attraction?'🎫 購票／官網':hotel?'🏨 官網':shop?'🏠 官網':'🏠 官網';
+      action=`<a href="${info.official}" target="_blank" rel="noopener">${label}</a>`;
+    }
+    links=map+tab+action;
   }else if(t.includes('costco')){
     links=`<a href="${mapsUrl('コストコホールセール 幕張倉庫店 千葉県千葉市美浜区豊砂1-4')}" target="_blank" rel="noopener">📍 地圖</a><a class="primary" href="https://www.costco.co.jp/" target="_blank" rel="noopener">🏠 官網</a>`;
   }else{
@@ -1056,8 +1065,7 @@ function renderStayMeta(di,idx,d){
   const z=itemStay(di,idx,d);
   if(!z)return '<div class="stay-meta compact"><span>🏁 當日最後一站</span></div>';
   const stayTxt=z.stay<0?'時程不足 '+Math.abs(z.stay)+'分':'約 '+z.stay+'分';
-  const realisticMin=z.base+z.op-5, realisticMax=z.base+z.op;
-  return `<div class="stay-meta compact"><span>⏳ ${stayTxt}</span><i>·</i><span>🚐 下一站約 ${realisticMin}–${realisticMax}分</span></div>`;
+  return `<div class="stay-meta compact"><span>⏳ ${stayTxt}</span></div>`;
 }
 function renderCarLeg(di,idx){
   const x=(carLegs[di]||[])[idx]; if(!x)return '';
