@@ -10,6 +10,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <!-- V7.7 actual structure rebuild -->
 <!-- V7.9 true compact rebuild -->
+<!-- V8.0 requested compact structure -->
 <title>🍁 2026 東京楓｜五天四夜旅行手帳</title>
 <style>
 :root{--ink:#51494b;--paper:#fffaf8;--cream:#fff1ed;--blue:#e7a9b3;--blue2:#f9dfe3;--orange:#e9a36f;--green:#a9c3a4;--pink:#e6b5c2;--line:#ead4ce;--shadow:0 12px 30px #8d666617}
@@ -255,6 +256,66 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
   .stay-meta.compact{font-size:10.5px!important}
   .travel-leg.compact-leg{margin-left:42px!important;font-size:9.5px!important}
   .itinerary-tools .trip-links a{font-size:9.5px!important;padding:4px 6px!important}
+}
+
+
+/* ===== V8.0 itinerary hierarchy rebuild ===== */
+#buildStamp,#v69badge{display:none!important}
+.item-main{padding-bottom:4px!important}
+.item-main small{margin:2px 0 5px!important}
+.stay-meta.compact{
+ display:flex!important;align-items:center!important;gap:5px!important;
+ margin:5px 0!important;padding:0!important;border:0!important;background:transparent!important;
+ font-size:11px!important;color:#766b69!important;
+}
+.stay-meta.compact span{font-weight:700!important}
+.stay-meta.compact i{font-style:normal!important;color:#d3b8bd!important}
+
+.itinerary-tools{
+ display:flex!important;align-items:center!important;margin:6px 0 0!important;padding:5px 0 0!important;
+ border-top:1px solid #eee7e2!important;background:transparent!important;
+}
+.itinerary-tools .trip-links{display:flex!important;flex-wrap:wrap!important;gap:5px!important;margin:0!important}
+.itinerary-tools .trip-links a{
+ min-height:25px!important;padding:4px 7px!important;border:0!important;border-radius:7px!important;
+ background:#f6f1ee!important;color:#766968!important;font-size:10px!important;box-shadow:none!important;
+}
+.itinerary-tools .trip-links a.primary{background:#f3e5e8!important;color:#855f68!important}
+
+.compact-mobility{
+ display:inline-block!important;vertical-align:middle!important;width:auto!important;margin:5px 0 0!important;
+ border:0!important;border-radius:7px!important;background:#f6f1ee!important;overflow:visible!important;
+}
+.compact-mobility summary{
+ display:flex!important;align-items:center!important;gap:4px!important;min-height:25px!important;
+ padding:4px 7px!important;list-style:none!important;font-size:10px!important;font-weight:700!important;color:#766968!important;
+}
+.compact-mobility summary::-webkit-details-marker{display:none!important}
+.compact-mobility .mobility-status{padding:0!important;background:transparent!important;font-size:9px!important;color:#9a747d!important}
+.compact-mobility .mobility-more{padding:0!important;background:transparent!important}
+.compact-mobility .mobility-body{
+ display:grid!important;grid-template-columns:1fr 1fr!important;gap:5px!important;
+ width:min(340px,calc(100vw - 70px))!important;margin-top:4px!important;padding:7px!important;
+ border:1px solid #eadfd9!important;border-radius:9px!important;background:#fffdfb!important;
+ box-shadow:0 8px 20px rgba(70,50,45,.08)!important;
+}
+.compact-mobility .mobility-body>div{padding:4px!important;border:0!important;background:transparent!important}
+.compact-mobility .mobility-body b{display:block!important;font-size:9px!important}
+.compact-mobility .mobility-body p{margin:1px 0 0!important;font-size:10px!important;line-height:1.35!important}
+
+.travel-leg.compact-leg{
+ display:flex!important;align-items:center!important;gap:7px!important;min-height:26px!important;
+ margin:0 0 1px 48px!important;padding:2px 0!important;border:0!important;background:transparent!important;
+ color:#8b7c78!important;font-size:10px!important;
+}
+.travel-leg.compact-leg .leg-line{width:12px!important;height:1px!important;background:#d9c8c5!important;flex:0 0 auto!important}
+.travel-leg.compact-leg b{font-weight:800!important;color:#9a747d!important}
+.practical-links{display:none!important}
+
+@media(max-width:600px){
+ .stay-meta.compact{font-size:10.5px!important}
+ .travel-leg.compact-leg{margin-left:42px!important;font-size:9.5px!important}
+ .compact-mobility .mobility-body{grid-template-columns:1fr!important}
 }
 
 </style>
@@ -826,10 +887,10 @@ function accessibilityCard(name){
   return `<details class="mobility-details compact-mobility">
     <summary><span>🧭 行動便利</span><span class="mobility-status">${esc(a.level)}</span><span class="mobility-more">⌄</span></summary>
     <div class="mobility-body">
-      <div><span>🚪</span><b>入口／動線</b><p>${esc(a.step)}</p></div>
+      <div><span>🚪</span><b>入口</b><p>${esc(a.step)}</p></div>
       <div><span>🛗</span><b>電梯</b><p>${esc(a.elevator)}</p></div>
       <div><span>🚻</span><b>洗手間</b><p>${esc(a.toilet)}</p></div>
-      <div><span>📞</span><b>行前提醒</b><p>${esc(a.phone)}</p></div>
+      <div><span>📞</span><b>提醒</b><p>${esc(a.phone)}</p></div>
     </div>
   </details>`;
 }
@@ -848,10 +909,9 @@ function itemLinks(title,note,di){
     const restaurant=/FRANZ|しゃぶしゃぶ|叙々苑|INNOCENT|Manten Sushi|まんてん鮨|HIGASHIYA|Sukiyaki|すき焼き|Takanawa Soregashi|高輪それがし/i.test(raw);
     const attraction=/SHIBUYA SKY/i.test(raw);
     const hotel=/SUPER HOTEL|リッチモンドホテル|押上里士滿|押上リッチモンド/i.test(raw);
-    const shop=/MDM TOKYO|マスダ増|Costco/i.test(raw);
     let action='';
     if(info.official){
-      const label=restaurant?'🏠 訂位':attraction?'🎫 購票／官網':hotel?'🏨 官網':shop?'🏠 官網':'🏠 官網';
+      const label=restaurant?'🏠 訂位':attraction?'🎫 購票／官網':hotel?'🏨 官網':'🏠 官網';
       action=`<a href="${info.official}" target="_blank" rel="noopener">${label}</a>`;
     }
     links=map+tab+action;
@@ -1065,7 +1125,8 @@ function renderStayMeta(di,idx,d){
   const z=itemStay(di,idx,d);
   if(!z)return '<div class="stay-meta compact"><span>🏁 當日最後一站</span></div>';
   const stayTxt=z.stay<0?'時程不足 '+Math.abs(z.stay)+'分':'約 '+z.stay+'分';
-  return `<div class="stay-meta compact"><span>⏳ ${stayTxt}</span></div>`;
+  const realisticMin=Math.max(1,z.base+z.op-5), realisticMax=z.base+z.op;
+  return `<div class="stay-meta compact"><span>⏳ ${stayTxt}</span><i>·</i><span>🚐 下一站約 ${realisticMin}–${realisticMax}分</span></div>`;
 }
 function renderCarLeg(di,idx){
   const x=(carLegs[di]||[])[idx]; if(!x)return '';
