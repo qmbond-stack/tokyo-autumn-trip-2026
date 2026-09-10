@@ -424,6 +424,27 @@ input,textarea{width:100%;border:1px solid #d9ccbd;background:#fffdfa;border-rad
 }
 </style>
 
+
+<style id="v76-final-slim-fix">
+/* V7.6 最終瘦身：只保留真正可操作資訊，避免每個行程變成資訊卡牆 */
+.fixed-travel-tools{margin-top:6px!important;padding-top:6px!important;border-top:0!important}
+.fixed-travel-tools .practical-label{display:none!important}
+.fixed-travel-tools .trip-links{gap:5px!important;margin:0!important}
+.fixed-travel-tools .trip-links a{min-height:26px!important;padding:4px 8px!important;border-radius:999px!important;font-size:10px!important;line-height:1!important}
+.fixed-travel-tools .v75-access{margin-top:5px!important}
+.v75-access .access-summary{padding:5px 7px!important;border:0!important;background:#f8f6f3!important;border-radius:9px!important;font-size:9.5px!important;gap:4px 6px!important}
+.v75-access .access-level{padding:1px 5px!important;font-size:8.5px!important}
+.v75-access .access-summary-text{flex:1 1 110px!important}
+.v75-access .access-more{font-size:9px!important}
+.v75-access .access-details{margin-top:4px!important}
+.v75-access .access-details>div{padding:6px!important}
+/* 行程名稱與停留資訊維持主角地位 */
+.item{padding:9px 0!important}
+.item-main small{line-height:1.35!important}
+.item .stay-meta{margin-top:4px!important}
+/* 手機底部不再顯示任何版本提示或除錯浮標 */
+#buildStamp,#v69badge,[id*="badge"]{display:none!important}
+</style>
 </head>
 <body>
 <div class="app">
@@ -1264,7 +1285,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',async()=>{try{co
   setTimeout(()=>{if(($('weatherNow')?.textContent||'').includes('載入中')) fallback('天氣資料尚未回應，已停止無限載入。');},10000);
 })();
 </script>
-<div id="buildStamp" style="position:fixed;right:8px;bottom:8px;z-index:9999;background:#fff8f5;border:1px solid #ead9d3;border-radius:999px;padding:4px 8px;font-size:10px;color:#8a7375">V7.5 Oshiage Stay Stable</div><div id="v69badge" style="position:fixed;right:10px;bottom:10px;z-index:99999;background:#222;color:#fff;padding:7px 10px;border-radius:999px;font-size:11px;opacity:.78">V7.5 MDM + Accessible Dining</div>
+
 <script id="v75-access-toggle">
 document.addEventListener('click',function(e){
   const btn=e.target.closest('.v75-access .access-more');
